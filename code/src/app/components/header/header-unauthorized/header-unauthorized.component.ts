@@ -6,7 +6,6 @@ import {Router} from "@angular/router";
   templateUrl: './header-unauthorized.component.html',
   styleUrls: ['./header-unauthorized.component.css']
 })
-
 export class HeaderUnauthorizedComponent {
   constructor(private router: Router) {}
 
@@ -17,4 +16,5 @@ export class HeaderUnauthorizedComponent {
   onRegistrationPage() {
     this.router.navigate(['/registration']);
   }
+
 }
