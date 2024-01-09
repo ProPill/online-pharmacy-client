@@ -16,6 +16,10 @@ export class PharmacistPageComponent {
   isValidUsage: boolean = true;
   isValidDosage: boolean = true;
   isValidIngredients: boolean = true;
+  isStringLengthValidUsage: boolean = true;
+  isStringLengthValidDosage: boolean = true;
+  isStringLengthValidIngredients: boolean = true;
+  isValidType: boolean = true;
   selectedSpecialization = "";
 
   specializations = ['Специализация 1', 'Специализация 2', 'Специализация 3'];
@@ -28,7 +32,15 @@ export class PharmacistPageComponent {
   selectedImage: File;
 
   imageErrorMessage: string = '';
-  imageErrorColor: string = '#EA455F';
+  imageErrorColor: string = '#ff0000';
+
+  NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -. Максимальное количество символов: 100."
+  MANUFACTURER_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -, "
+  PRICE_ERROR_MESSAGE = "Цена: положительное число"
+  USAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
+  DOSAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
+  INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
+  EMPTY_FIELD_ERROR = "Поле не должно быть пустым"
 
   constructor() {
     this.selectedSpecialization = this.specializations[0];
@@ -54,27 +66,55 @@ export class PharmacistPageComponent {
   onAddReceipt() {
     if (!this.name) {
       this.isValidName = false;
-      // Валидация наименования
+      this.NAME_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     }
-    if (!this.manufacturer){
+    else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.name) || this.name.length > 100) {
+      this.isValidName = false;
+    }
+
+    if (!this.manufacturer) {
       this.isValidManufacturer = false;
-      // изготовитель: длина не более 100 символов латиницы/кириллицы/цифр/+тире/+процент
+      this.MANUFACTURER_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     }
+    else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.manufacturer)){
+      this.isValidManufacturer = false;
+    }
+
     if (!this.price) {
       this.isValidPrice = false;
-      // цена: положительное число
+      this.PRICE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     }
+    else {
+      const priceAsFloat = parseFloat(this.price);
+      if (isNaN(priceAsFloat)) {
+        this.isValidType = false;
+      } else if (priceAsFloat <= 0.00) {
+        this.isValidPrice = false;
+      }
+    }
+
     if (!this.usage) {
-      this.isValidUsage = false;
-      // способ применения, дозировка, действующие вещества: не более 500 символов
+      this.isStringLengthValidUsage = false;
+      this.USAGE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     }
+    else if (this.usage.length > 500) {
+      this.isStringLengthValidUsage = false;
+    }
+
     if (!this.dosage) {
-      this.isValidDosage = false;
-      // способ применения, дозировка, действующие вещества: не более 500 символов
+      this.isStringLengthValidDosage = false;
+      this.DOSAGE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     }
+    else if (this.dosage.length > 500) {
+      this.isStringLengthValidDosage = false;
+    }
+
     if (!this.ingredients) {
-      this.isValidIngredients = false;
-      // способ применения, дозировка, действующие вещества: не более 500 символов
+      this.isStringLengthValidIngredients = false;
+      this.INGREDIENTS_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
+    }
+    else if (this.ingredients.length > 500) {
+      this.isStringLengthValidIngredients = false;
     }
   }
 
@@ -82,27 +122,37 @@ export class PharmacistPageComponent {
     this.isValidName = true;
     this.isValidManufacturer = true;
     this.isValidPrice = true;
-    this.isValidUsage = true;
-    this.isValidDosage = true;
-    this.isValidIngredients = true;
+    this.isValidType = true;
+    this.isStringLengthValidUsage = true;
+    this.isStringLengthValidDosage = true;
+    this.isStringLengthValidIngredients = true;
+
+    this.NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -. Максимальное количество символов: 100."
+    this.MANUFACTURER_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -, "
+    this.PRICE_ERROR_MESSAGE = "Цена: положительное число"
+    this.USAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
+    this.DOSAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
+    this.INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
   }
 
   handleImageUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
       const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(file.type)) {
+        this.imageErrorMessage = 'Неподдерживаемый тип изображения';
+        event.target.value = null;
+        return;
+      }
+
       if (file.size > maxSizeInBytes) {
         event.target.value = null;
         this.imageErrorMessage = 'Размер данного изображения больше 5 Мб';
         return;
       }
 
-      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-      if (!allowedTypes.includes(file.type)) {
-        this.imageErrorMessage = 'Неподдерживаемый тип изображения';
-        event.target.value = null;
-        return;
-      }
       this.selectedImage = event.target.files[0];
     }
   }
