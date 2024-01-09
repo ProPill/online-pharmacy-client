@@ -13,6 +13,14 @@ export class CartOrderCardComponent {
   @Input() order: IOrder
   data: IItemQuantuty[]
   price: number = 0
+  checkboxChecked: boolean
+  hasRecipeItems: boolean = false
+
+  constructor() {
+    window.addEventListener('load', () => {
+      this.hasRecipeOnlyItems();
+    })
+  }
 
   calculatePrice() {
     this.data = this.order.items;
@@ -29,5 +37,33 @@ export class CartOrderCardComponent {
     // сейчас они берутся из шаблона
     return {id: '', date: '', address: '', deliverDate: '',
       price: this.price, orderNumber: '', items: this.order.items}
+  }
+
+  hasRecipeOnlyItems() {
+    this.data.forEach(item => {
+      if (item.hasRecipe) {
+        this.hasRecipeItems = true;
+        this.checkboxChecked = false;
+        document.querySelectorAll(".button-color")
+            .forEach(button => {
+              button.classList.add('inactive')
+            })
+        return }})
+  }
+
+  changeOrderButtonColor() {
+    this.checkboxChecked = !this.checkboxChecked;
+    if (this.checkboxChecked) {
+      document.querySelectorAll(".button-color")
+          .forEach(button => {
+            button.classList.remove('inactive')
+          })
+    }
+    else {
+      document.querySelectorAll(".button-color")
+          .forEach(button => {
+            button.classList.add('inactive')
+          })
+    }
   }
 }

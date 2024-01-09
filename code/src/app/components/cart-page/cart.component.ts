@@ -1,9 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {items} from "../../data/items";
-import {orders} from "../../data/orders";
 import {IOrder} from "../../models/order";
-import {IItem} from "../../models/item";
-import {IItemQuantuty} from "../../models/item_quantity";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -12,21 +9,19 @@ import {IItemQuantuty} from "../../models/item_quantity";
 })
 export class CartComponent {
   @Input() order: IOrder
-  // protected readonly items = items;
-  // items: IItemQuantuty[];
+  isEmpty: boolean
 
-  // предполагается, что items будет инициализироваться
-  // по соответствующему order
-  // protected readonly items = items;
+  constructor(private router: Router) {
+    window.addEventListener("load", () => {
+      this.isEmpty = this.checkCart() })
+    }
 
-  // constructor() {
-  //   this.items = this.order.items;
-  //   for (let i = 0; i < this.order.items.length; i++)
-  //   {
-  //     this.items[i] = items[this.order.items[0].itemId]
-  //     // находим в бд соответствующий item по его id
-  //     // нужно будет модифицировать для случая,
-  //     // когда порядок item в бд не соответствует его id
-  //   }
-  // }
+  checkCart()
+  {
+    return this.order.items.length == 0;
+  }
+
+  onMain() {
+    this.router.navigate(['/main']);
+  }
 }

@@ -1,8 +1,8 @@
 <div class="card-order">
   <span class="text title">Ваш заказ</span>
-  <div class="text line">
+  <div *ngIf="hasRecipeItems" class="text line">
     <form>
-        <input class="text" type="checkbox" id="checkbox-id">
+        <input class="text" type="checkbox" id="checkbox-id" (click)="changeOrderButtonColor()">
         <label for="checkbox-id">
           У меня есть рецепт
       </label>

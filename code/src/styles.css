@@ -11,7 +11,7 @@ h1 {
 h2 {
   color: black;
   font-size: 36px;
-  font-family: Futura, sans-serif;
+  font-family: Futura-Bold, sans-serif;
   font-weight: 500;
   word-wrap: break-word
 }
@@ -79,6 +79,10 @@ h2 {
   background: #61CAC4;
   color: #FFFFFF;
   cursor: pointer;
+}
+
+.inactive {
+  background: #BBB;
 }
 
 .button-clear:active{

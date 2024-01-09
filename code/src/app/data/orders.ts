@@ -8,7 +8,7 @@ export const orders: IOrder[] = [
     deliverDate: '15.10.23',
     price: '1000',
     orderNumber: '00000001',
-    items: [{itemId: 0, itemQuantity: 1}, {itemId: 1, itemQuantity: 2}]
+    items: [{itemId: 0, itemQuantity: 1, hasRecipe: true}, {itemId: 1, itemQuantity: 2, hasRecipe: true}]
   },
   {
     id: 1,
@@ -17,6 +17,6 @@ export const orders: IOrder[] = [
     deliverDate: '15.10.23',
     price: '1000.50',
     orderNumber: '00000002',
-    items: [{itemId: 1, itemQuantity: 2}]
+    items: [{itemId: 1, itemQuantity: 2, hasRecipe: false}]
   }
 ]

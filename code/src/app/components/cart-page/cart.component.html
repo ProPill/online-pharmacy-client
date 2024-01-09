@@ -1,9 +1,17 @@
-<app-header></app-header>
-<div class="title">Моя корзина</div>
-<div class="content">
-  <div class="card-container">
-    <app-cart-item-card [itemQuantuty]="order.items[0]"></app-cart-item-card>
-    <app-cart-item-card [itemQuantuty]="order.items[1]"></app-cart-item-card>
+<h1 class="title">Моя корзина</h1>
+<div *ngIf="isEmpty; else elseBlock" class="content" >
+  <div class="content list">
+    <div class="card-container" *ngFor="let item of order.items">
+      <app-cart-item-card [itemQuantuty]="item"></app-cart-item-card>
+    </div>
   </div>
   <app-cart-order-card [order]="order"></app-cart-order-card>
 </div>
+<ng-template #elseBlock>
+  <div class="content empty">
+    <img class="empty-cart-img" src="assets/pictures/empty-cart-img.jpeg">
+    <h2>В корзине пока ничего нет</h2>
+    <span class="text-general"> Добавьте интересующие вас товары из каталога или воспользуйтесь поиском</span>
+    <button class="button-color onMain" (click)="onMain()">На главную</button>
+  </div> >
+</ng-template>
