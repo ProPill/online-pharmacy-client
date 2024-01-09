@@ -1,30 +1,34 @@
-<div class="registration-page">
+<app-header></app-header>
 
+<div class="registration-page">
   <h1 class="registration-page-h1">Регистрация</h1>
   <form>
-
-    <div class="input-container input-container-margin">
+    <strong *ngIf="!isValidName" class="textErrorColor">{{ nameErrorMessage }}</strong>
+    <div class="input-container input-container-margin" [ngClass]="{'error-border': !isValidName}">
       <label class="search-text">Фамилия Имя Отчество</label>
-      <input  class="text-general" type="text">
+      <input (click)="refresh_name()" class="text-general" type="text" [(ngModel)]="name">
     </div>
 
-    <div class="input-container">
+    <strong *ngIf="!isValidPhone" class="textErrorColor" >{{ phoneErrorMessage }}</strong>
+    <div class="input-container" [ngClass]="{'error-border': !isValidPhone}">
       <label class="search-text">Мобильный телефон</label>
-      <input  class="text-general" type="text">
+      <input (click)="refresh_phone()" class="text-general" type="text" [(ngModel)]="phone">
     </div>
 
-    <div class="input-container">
+    <strong *ngIf="!isValidPassword" class="textErrorColor" >{{ PasswordErrorMessage }}</strong>
+    <div class="input-container" [ngClass]="{'error-border': !isValidPassword}">
       <label class="search-text">Пароль</label>
-      <input class="text-general" type="text">
+      <input (click)="refresh_password()" class="text-general" type="text" [(ngModel)]="password">
     </div>
 
-    <div class="input-container">
+    <strong *ngIf="!isValidRepeatPassword" class="textErrorColor" >{{ repeatPasswordErrorMessage }}</strong>
+    <div class="input-container" [ngClass]="{'error-border': !isValidRepeatPassword}">
       <label class="search-text">Повторите пароль</label>
-      <input class="text-general" type="text">
+      <input (click)="refresh_repeat_password()" class="text-general" type="text" [(ngModel)]="repeatPassword">
     </div>
 
     <div class="button-padding">
-      <button  class="button-color button-sizes">Зарегистрироваться</button>
+      <button (click)="register()" class="button-color button-sizes">Зарегистрироваться</button>
     </div>
 
   </form>

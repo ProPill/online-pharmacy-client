@@ -17,7 +17,7 @@
 .input-container {
   display: flex;
   flex-direction: column;
-  width: 900px;
+  width: 1000px;
   height: 80px;
   background: white;
   border-radius: 20px;
@@ -55,4 +55,16 @@
 .button-sizes {
   width: 318px;
   height: 63px
+}
+
+.error-border {
+  border-color: #EA455F;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.textErrorColor {
+  color: #EA455F;
+  padding-left: 160px;
+  font-size: 24px;
 }

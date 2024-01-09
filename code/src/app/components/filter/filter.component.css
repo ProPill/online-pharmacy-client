@@ -4,14 +4,15 @@
   display: flex;
   flex-direction: row;
   height: 55px;
-  margin-top: 165px;
-  margin-bottom: 50px;
+  margin-top: 50px;
   background: transparent;
   color: white;
 }
+
 p {
   margin: 0;
 }
+
 .content {
   background: transparent;
   margin-left: 340px;
@@ -23,6 +24,8 @@ p {
   height: 55px;
   width: 187px;
   margin-right: 76px;
+  color: white;
+  font-size: 20px;
 }
 
 .active {

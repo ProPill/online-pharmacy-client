@@ -9,6 +9,11 @@ export class FilterComponent {
   title = 'Filter'
   selectedFilter = '';
   filters = ['Без рецепта', 'По рецепту', 'Специальные'];
+  hasAccess: boolean = false
+
+  constructor() {
+    this.hasAccess = true
+  }
 
   selectFilter(filter: string) {
     this.selectedFilter = filter;

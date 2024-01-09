@@ -5,6 +5,7 @@ import {IHeader} from "./models/header";
 import {IFilter} from "./models/filter";
 import {orders as ordersdata} from './data/orders'
 import {IOrder} from "./models/order";
+import {users} from "./data/users";
 
 @Component({
   selector: 'app-root',
@@ -17,4 +18,5 @@ export class AppComponent {
   header: IHeader
   filter: IFilter
   orders: IOrder[] = ordersdata
+    protected readonly users = users;
 }

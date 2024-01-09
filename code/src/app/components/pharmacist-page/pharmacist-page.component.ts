@@ -10,8 +10,6 @@ export class PharmacistPageComponent {
   isSpecialisationOn = false;
   isReceipt = false;
 
-
-
   isValidName: boolean = true;
   isValidManufacturer: boolean = true;
   isValidPrice: boolean = true;
@@ -56,21 +54,27 @@ export class PharmacistPageComponent {
   onAddReceipt() {
     if (!this.name) {
       this.isValidName = false;
+      // Валидация наименования
     }
     if (!this.manufacturer){
       this.isValidManufacturer = false;
+      // изготовитель: длина не более 100 символов латиницы/кириллицы/цифр/+тире/+процент
     }
     if (!this.price) {
       this.isValidPrice = false;
+      // цена: положительное число
     }
     if (!this.usage) {
       this.isValidUsage = false;
+      // способ применения, дозировка, действующие вещества: не более 500 символов
     }
     if (!this.dosage) {
       this.isValidDosage = false;
+      // способ применения, дозировка, действующие вещества: не более 500 символов
     }
     if (!this.ingredients) {
       this.isValidIngredients = false;
+      // способ применения, дозировка, действующие вещества: не более 500 символов
     }
   }
 

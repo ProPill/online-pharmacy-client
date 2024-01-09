@@ -1,15 +1,29 @@
-.search-wrapper {
-  margin-top: 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+:host {
+  font-family: Futura, sans-serif;
+  font-size: 20px;
 }
 
 p {
   margin: 0;
 }
 
+.content {
+  height: 160px;
+    margin-bottom: 50px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-top: 60px;
+  margin-left: 24px;
+  margin-right: 24px;
+  height: 55px;
+  width: 1873px;
+  background: transparent;
+  color: white;
+  align-items: center
+}
 .main-icon {
   border: none;
   width: 173px;
@@ -19,7 +33,7 @@ p {
   margin-right: 143px;
   display: flex;
   flex-direction: row;
-
+  align-items: center;
 }
 
 .main-icon.logo {
@@ -36,12 +50,10 @@ p {
   line-height: 50px;
   margin-left: 9px;
   font-size: 20px;
-  width: auto;
-  height: auto;
-  margin-right: 2px;
 }
 
 .search-icon {
+  border: none;
   width: 45px;
   height: 45px;
   background: none;
@@ -50,17 +62,17 @@ p {
 
 .search-bar {
   height: 55px;
-  width: 1106px;
+  width: 1000px;
   border-radius: 30px;
   border: 3px solid #61cac4;
   display: flex;
   flex-direction: row;
   background: transparent;
   margin-right: 26px;
+  font-size: 20px;
 }
 
-.spacer
-{
+.spacer {
   background: none;
   width: 98px;
 }
@@ -74,12 +86,12 @@ p {
   margin-right: 21px;
   border: none;
   color: white;
-  font-family: Futura;
 }
 
 .button-color {
   justify-content: center;
   margin-right: 21px;
+  font-size: 20px;
 }
 
 .button-color.search-button {
@@ -99,7 +111,7 @@ p {
   width: 110px;
 }
 
-button.small-button
+.button-color.small-button
 {
   width: 70px;
   line-height: 0;
@@ -117,22 +129,4 @@ button.small-button
   font-size: 20px;
   background: transparent;
   font-family: Futura, sans-serif;
-}
-
-.logo {
-  width: 150px;
-}
-
-.wrapper-logo{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 140px;
-  border-radius: 30px;
-  margin-right: 20px;
-  border: 3px;
-  font-family: Futura, sans-serif;
-  background: #61CAC4;
-  color: #FFFFFF;
 }

@@ -2,7 +2,6 @@ import {Component, Input} from '@angular/core';
 import {IOrder} from "../../../models/order";
 import {IItemQuantuty} from "../../../models/item_quantity";
 import {items} from "../../../data/items";
-import {orders} from "../../../data/orders";
 
 @Component({
   selector: 'app-cart-order-card',
