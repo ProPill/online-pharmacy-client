@@ -5,8 +5,7 @@ export interface IOrder{
   date: string
   address: string
   deliverDate: string
-  price: string
+  price: number
   orderNumber: string
   items: IItemQuantuty[] //массива id:количество товаров в заказе
-
 }

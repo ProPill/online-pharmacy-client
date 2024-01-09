@@ -21,14 +21,15 @@ import { AppRoutingModule } from './routes/routes';
 import { HeaderAuthorizedComponent } from './components/header/header-authorized/header-authorized.component';
 import { HeaderPharmacistComponent } from './components/header/header-pharmacist/header-pharmacist.component';
 import { HeaderUnauthorizedComponent } from './components/header/header-unauthorized/header-unauthorized.component';
+import { OrderPageComponent } from "./components/order-page/order-page.component";
 
 @NgModule({
   declarations: [
     AppComponent, ProductCardComponent, FilterComponent,
     HeaderComponent, CartComponent, AccountComponent,
-    LoginPageComponent, MainPageComponent,
+    LoginPageComponent, MainPageComponent, OrderPageComponent,
     PharmacistPageComponent, ItemComponent, RegistrationPageComponent,
-    ProductCardComponent, CartItemCardComponent, CartOrderCardComponent, AccountOrderCardComponent, 
+    ProductCardComponent, CartItemCardComponent, CartOrderCardComponent, AccountOrderCardComponent,
     HeaderAuthorizedComponent, HeaderPharmacistComponent, HeaderUnauthorizedComponent
   ],
   imports: [
