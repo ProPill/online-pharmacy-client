@@ -17,7 +17,7 @@
 .text.tag {
   width: 150px;
   margin-right: 50px;
-  font-family: Futura-Bold;
+  font-family: Futura-Bold, serif;
 }
 
 .text.price {
@@ -57,7 +57,6 @@ label {
   display: flex;
 }
 
-/* формируем внешний вид чекбокса в псевдоэлементе before */
 label:before {
   content: " ";
   color: #000;

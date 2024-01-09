@@ -3,11 +3,12 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin-top: 50px;
+  margin-left: 250px;
 }
 
 .product-card__main {
   width: 880px;
-  height: 763px;
   background-color: #FFFFFFB3;
   border: 3px solid #D9D9D9;
   border-radius: 25px;
@@ -30,7 +31,6 @@
 .product-card__main__info__image {
   max-width: 493px;
   max-height: 493px;
-  background-color: #F3F2F2;
   border-radius: 1.5em;
   margin-left: 10px;
 }
@@ -70,7 +70,7 @@
 
 .buy-form {
   width: 370px;
-  height: 310px;
+  height: 410px;
   font-family: Futura, sans-serif;
   display: flex;
   flex-direction: column;
@@ -184,4 +184,67 @@
 .list-item--bottom-right {
   grid-area: bottom-right;
   margin-left: 1em;
+}
+
+.card {
+  flex-direction: row;
+  display: flex;
+  padding: 20px;
+  height: 130px;
+  width: 780px;
+  border: 3px solid #D9D9D9;
+  border-radius: 20px;
+  font-size: 20px;
+  font-family: Futura;
+}
+
+.text {
+  font-size: 20px;
+  width: 321px;
+  border: none;
+}
+
+.card.pricearea {
+  padding: 0;
+  border: none;
+  width: 181px;
+  margin-bottom: 0px;
+  margin-left: 0;
+  flex-direction: column;
+}
+
+.card.pricearea.quatity {
+  flex-direction: row;
+  margin-bottom: 2px;
+  align-content: center;
+  height: 50px;
+}
+
+.card.card-small {
+  border-radius: 15px;
+  border: 3px solid #61CAC4;
+  padding: 0;
+  margin: 0 0;
+  height: 50px;
+  width: 50px;
+  justify-content: center;
+  line-height: 45px;
+  font-size: 20px;
+  background: transparent;
+  color: #61CAC4;
+}
+
+.text.quatity {
+  width: 60px;
+  height: 50px;
+  line-height: 50px;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.text.price {
+  width: 100px;
+  height: 24px;
+  text-align: center;
+  margin: 0 40px;
 }

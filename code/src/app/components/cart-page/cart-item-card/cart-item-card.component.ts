@@ -8,6 +8,7 @@ import {items} from "../../../data/items";
   templateUrl: './cart-item-card.component.html',
   styleUrls: ['./cart-item-card.component.css']
 })
+
 export class CartItemCardComponent {
   title: 'cart-item-card'
   @Input() itemQuantuty: IItemQuantuty

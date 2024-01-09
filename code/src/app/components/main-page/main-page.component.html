@@ -1,2 +1,3 @@
-<app-item [item]="items[0]"></app-item>
-<app-item [item]="items[1]"></app-item>
+<div *ngFor="let value of items">
+    <app-item [item]="value"></app-item>
+</div>

@@ -6,7 +6,8 @@
   background-color: rgba(255, 255, 255, 0.7);
   text-align: left;
   position: relative;
-  padding: 50px 60px;
+  margin-left: 340px;
+  margin-top: 150px;
 }
 
 .product-image {
@@ -38,11 +39,13 @@
   margin-left: 160px;
   margin-top: 5px;
   margin-bottom: 30px;
+  justify-content: center;
 }
 
 .input-container input {
-  width: 100%;
-  height: auto;
+  margin-left: 22px;
+  font-size: 24px;
+  color: black;
   border: none;
   outline: none;
   background-color: transparent;
@@ -58,4 +61,15 @@
 .button-sizes {
   width: 152px;
   height: 63px;
+}
+
+.error-border {
+  border-color: #EA455F;
+}
+
+.error-text {
+  color: #EA455F;
+  margin-top: 10px;
+  padding-left: 160px;
+  font-size: 24px;
 }

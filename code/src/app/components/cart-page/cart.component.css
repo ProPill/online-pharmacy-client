@@ -1,6 +1,6 @@
 .host
 {
-  font-family: Futura;
+  font-family: Futura, serif;
   display: flex;
   flex-direction: column;
   margin-top: 270px;
@@ -9,17 +9,16 @@
 }
 
 .title {
-  margin-top: 270px;
+  margin-top: 70px;
   margin-left: 182px;
   font-size: 44px;
   margin-bottom: 54px;
-  font-family: Futura;
+  font-family: Futura, serif;
 }
 
 .content {
   width: 1240px;
   margin-left: 340px;
-  /*margin-top: 375px;*/
   display: flex;
   flex-direction: row;
   background: none;

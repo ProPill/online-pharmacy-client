@@ -1,0 +1,21 @@
+.content {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.button-color.auth-button {
+  width: 110px;
+  margin-right: 0;
+  font-size: 20px;
+}
+
+.button-color.small-button
+{
+  width: 70px;
+  line-height: 0;
+  margin-right: 21px;
+  margin-left: 100px;
+  font-size: 20px;
+}
+
