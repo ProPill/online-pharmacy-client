@@ -15,7 +15,6 @@ export class FilterComponent {
     this.hasAccess = true
   }
 
-
   selectFilter(filter: string) {
     this.selectedFilter = filter;
     this.changeColor()

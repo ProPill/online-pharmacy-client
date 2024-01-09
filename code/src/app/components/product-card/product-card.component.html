@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="product-card">
   <div class="product-card__main">
     <div class="product-card__main__title">
@@ -5,13 +6,13 @@
     </div>
     <div class="product-card__main__info">
       <div class="product-card__main__info__image">
-        <img src="{{item.image}}" alt="Фотография товара">
+        <img src='{{item.image}}' alt="Фотография товара">
       </div>
       <div class="product-card__main__info__text">
         <div class="text-general">Производитель: {{item.manufacturer}}</div>
         <div class="recipe-info">
           <img src="assets/buttons/search-logo.png" [hidden]="!item.recipeOnly">
-          <div  class="text-general" [hidden]="!item.recipeOnly">Рецептурный препарат</div>
+          <div class="text-general" [hidden]="!item.recipeOnly">Рецептурный препарат</div>
         </div>
       </div>
     </div>
@@ -19,7 +20,15 @@
   <div class="product-card__optional">
     <div class="buy-form">
       <h2>Цена: {{item.cost}} Руб</h2>
-      <button class="button-color" (click)="addItemToCart()">Купить</button>
+      <div class="card pricearea">
+        <div class="card pricearea quatity">
+          <button class="card card-small" (click)="decreaseQuantity()">–</button>
+          <span class="text quatity" >{{ quantity }}</span>
+          <button class="card card-small" (click)="increaseQuantity()">+</button>
+        </div>
+        <div class="text price">{{ calculateCost() }}₽</div>
+      </div>
+      <button class="button-color" *ngIf="Chosen" (click)="addItemToCart()">Купить</button>
       <button class="button-clear" (click)="showPharmacies()">Наличие в аптеке</button>
     </div>
     <div class="pharmacies" *ngIf="showPharmaciesFlag">

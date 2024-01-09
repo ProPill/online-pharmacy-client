@@ -1,5 +1,5 @@
 .host {
-  font-family: Futura;
+  font-family: Futura, serif;
   display: flex;
   flex-direction: column;
   margin-top: 270px;
@@ -8,11 +8,11 @@
 }
 
 .title {
-  margin-top: 270px;
+  margin-top: 70px;
   margin-left: 182px;
   font-size: 44px;
   margin-bottom: 33px;
-  font-family: Futura;
+  font-family: Futura, serif;
 }
 
 .title.h2 {

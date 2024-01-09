@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './header-pharmacist.component.html',
   styleUrls: ['./header-pharmacist.component.css']
 })
+
 export class HeaderPharmacistComponent {
   @Input() onFilter: boolean
   @Output() onFilterChange = new EventEmitter<boolean>()

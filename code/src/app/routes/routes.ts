@@ -14,9 +14,9 @@ const routes: Routes = [
   { path: 'main', component: MainPageComponent },
   { path: 'product-page', component: ProductCardComponent },
   { path: 'pharmacist', component: PharmacistPageComponent },
+  { path: 'registration', component: RegistrationPageComponent },
   { path: 'cart', component: CartComponent },
   { path: 'user', component: AccountComponent },
-  { path: 'registration', component: RegistrationPageComponent },
   { path: 'unauthorized', component: HeaderUnauthorizedComponent },
 ];
 

@@ -1,32 +1,34 @@
+<app-header></app-header>
+
 <div class="form-editor">
   <div class="form-editor__left">
-  <div class="input-container">
+  <div class="input-container" [ngClass]="{'error-border': !isValidName}">
     <label class="search-text" for="name">Наименование</label><br>
-    <textarea id="name" placeholder="Введите наименование"></textarea>
+    <textarea id="name" placeholder="Введите наименование" (click)="refresh()" [(ngModel)]="name"></textarea>
   </div>
   <div class="flex-container">
-    <div class="input-container half-width right-margin">
+    <div class="input-container half-width left-margin " [ngClass]="{'error-border': !isValidManufacturer}">
       <label class="search-text" for="manufacturer">Изготовитель</label><br>
-      <textarea id="manufacturer" placeholder="Введите изготовителя"></textarea>
+      <textarea id="manufacturer" placeholder="Введите изготовителя" (click)="refresh()" [(ngModel)]="manufacturer"></textarea>
     </div>
-    <div class="input-container half-width left-margin">
+    <div class="input-container half-width right-margin" [ngClass]="{'error-border': !isValidPrice}">
       <label class="search-text" for="price">Цена</label><br>
-      <textarea id="price" placeholder="Введите цену"></textarea>
+      <textarea id="price" placeholder="Введите цену" (click)="refresh()" [(ngModel)]="price"></textarea>
     </div>
   </div>
-  <div class="input-container tall-container">
+  <div class="input-container tall-container" [ngClass]="{'error-border': !isValidUsage}">
     <label class="search-text" for="usage">Способ применения</label><br>
-    <textarea id="usage" placeholder="Введите способ применения"></textarea>
+    <textarea id="usage" placeholder="Введите способ применения" (click)="refresh()" [(ngModel)]="usage"></textarea>
   </div>
-  <div class="input-container tall-container">
+  <div class="input-container tall-container" [ngClass]="{'error-border': !isValidDosage}">
     <label class="search-text" for="dosage">Дозировка</label><br>
-    <textarea id="dosage" placeholder="Введите дозировку"></textarea>
+    <textarea id="dosage" placeholder="Введите дозировку" (click)="refresh()" [(ngModel)]="dosage"></textarea>
   </div>
-  <div class="input-container tall-container">
+  <div class="input-container tall-container" [ngClass]="{'error-border': !isValidIngredients}">
     <label class="search-text" for="ingredients">Действующие вещества</label><br>
-    <textarea id="ingredients" placeholder="Введите действующие вещества"></textarea>
+    <textarea id="ingredients" placeholder="Введите действующие вещества" (click)="refresh()" [(ngModel)]="ingredients"></textarea>
   </div>
-  <button class="button-color">Добавить товар</button>
+  <button class="button-color" (click)="onAddReceipt()">Добавить товар</button>
   </div>
   <div class="form-editor__right">
     <div class="checkbox-option">
@@ -49,13 +51,14 @@
         </ul>
     </div>
     <div class="wrapper-upload-image">
-      <div class="upload-image">
-        <div class="upload-image__img">
+      <div class="upload-image__img">
+        <label for="image-upload" id="custom-label">
           <img class="input-image" src="assets/pictures/cross.png">
-          <input type="file" id="image-upload">
-        </div>
-        <strong class="search-text upload-image__text" >Размер изображения не превышает 5 Мб</strong>
+        </label>
+        <input type="file" id="image-upload" (change)="handleImageUpload($event)">
       </div>
+      <strong class="search-text upload-image__text" >Размер изображения не превышает 5 Мб</strong>
+      <strong class="search-text upload-image__text" [style.color]="imageErrorColor">{{ imageErrorMessage }}</strong>
     </div>
   </div>
 </div>

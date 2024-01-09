@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 <div class="login-page">
 
   <div class="product-image">
@@ -5,21 +7,23 @@
   </div>
 
   <h1 class="login-page-h1">Авторизация</h1>
-  <form>
+  <form #loginForm="ngForm">
 
     <p class="text-general login-page-text">Введите логин</p>
-    <div class="input-container">
-      <input type="text">
+    <div class="input-container" [ngClass]="{'error-border': !isValid}">
+      <input class="text-general" type="text" name="username" [(ngModel)]="username">
     </div>
 
     <p class="text-general login-page-text">Введите пароль</p>
-    <div class="input-container">
-      <input type="text">
+    <div class="input-container" [ngClass]="{'error-border': !isValid}">
+      <input class="text-general" type="password" name="password" [(ngModel)]="password">
     </div>
 
     <div class="button-padding">
-    <button  class="button-color button-sizes">Вход</button>
+      <button class="button-color button-sizes" (click)="onLogin()">Вход</button>
     </div>
+
+    <div class="error-text" *ngIf="!isValid">Неверно введенные данные</div>
 
   </form>
 

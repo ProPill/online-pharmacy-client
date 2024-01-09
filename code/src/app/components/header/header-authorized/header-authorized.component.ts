@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
   templateUrl: './header-authorized.component.html',
   styleUrls: ['./header-authorized.component.css']
 })
+
 export class HeaderAuthorizedComponent {
   @Input() onFilter: boolean
   constructor(private router: Router) {}
