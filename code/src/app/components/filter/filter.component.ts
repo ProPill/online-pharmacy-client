@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 
 @Component({
   selector: 'app-filter',
@@ -8,8 +8,8 @@ import {Component} from "@angular/core";
 export class FilterComponent {
   title = 'Filter'
   selectedFilter = '';
-  filters = ['Без рецепта', 'По рецепту', 'Специальные'];
-  hasAccess: boolean = false
+  filters = ['recipeButton', 'noRecipeButton', 'specialButton'];
+  @Input() hasAccess: boolean = false
 
   constructor() {
     this.hasAccess = true
@@ -21,6 +21,13 @@ export class FilterComponent {
   }
 
   changeColor() {
-    // Здесь будет код для изменения цвета кнопки по нажатию
+    const buttons = document.querySelectorAll('.button-color');
+    buttons.forEach(button => {
+        button.classList.remove("active")
+      if (this.selectedFilter == button.getAttribute('name')) {
+        button.classList.add("active")
+      }
+    });
   }
+
 }

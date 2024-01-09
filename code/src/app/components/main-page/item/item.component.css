@@ -13,7 +13,7 @@ p {
   border: 3px solid #61cac4;
   border-radius: 20px;
   font-size: 24px;
-  font-family: Futura, serif;
+  font-family: Futura, sans-serif;
 }
 
 .card.textarea {
@@ -89,10 +89,14 @@ p {
   margin: 10px 0;
 }
 
+.card.buy-button:active {
+    transform: scale(0.98,0.98);
+}
+
 .card.pricearea.quatity {
   flex-direction: row;
   margin-bottom: 24px;
-  align-content: center;
+  justify-content: left;
   height: 50px;
 }
 

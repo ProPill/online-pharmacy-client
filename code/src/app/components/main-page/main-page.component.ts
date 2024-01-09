@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Output} from '@angular/core';
 import {items} from "../../data/items";
+import {IItemQuantuty} from "../../models/item_quantity";
 
 @Component({
   selector: 'app-main-page',
@@ -8,4 +9,5 @@ import {items} from "../../data/items";
 
 export class MainPageComponent {
     protected readonly items = items;
+    @Output() itemsToOrder: IItemQuantuty[]
 }

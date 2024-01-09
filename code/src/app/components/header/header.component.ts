@@ -18,7 +18,11 @@ export class HeaderComponent {
 
   showItems() {
     this.onFilter = true;
+    this.router.navigate(['/main']);
     return this.searchRequest;
+  }
+
+  onMain() {
     this.router.navigate(['/main']);
   }
 }
