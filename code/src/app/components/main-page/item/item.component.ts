@@ -37,7 +37,7 @@ export class ItemComponent {
   addToCart()
   {
     this.quantityIsZero = false;
-    this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity}
+    this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly}
   }
 
   onProductCardPage() {
