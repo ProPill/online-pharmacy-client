@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {IItem} from "../../../models/item";
-import {IItemQuantuty} from "../../../models/item_quantity";
+import {IItemQuantity} from "../../../models/item_quantity";
 import {items} from "../../../data/items";
 
 @Component({
@@ -11,7 +11,7 @@ import {items} from "../../../data/items";
 
 export class CartItemCardComponent {
   title: 'cart-item-card'
-  @Input() itemQuantuty: IItemQuantuty
+  @Input() itemQuantuty: IItemQuantity
   item: IItem
   quantity: number = 1
   cost: number = 0
