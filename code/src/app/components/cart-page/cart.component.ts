@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {IOrder} from "../../models/order";
+import { Component, Input } from '@angular/core';
+import { IOrder } from "../../models/order";
 import { Router } from '@angular/router';
 
 @Component({
