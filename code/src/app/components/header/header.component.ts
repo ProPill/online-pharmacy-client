@@ -23,6 +23,11 @@ export class HeaderComponent {
   }
 
   onMain() {
+    this.onFilter = true;
     this.router.navigate(['/main']);
+  }
+
+  changeFilterStatus(status: boolean) {
+    this.onFilter = status;
   }
 }
