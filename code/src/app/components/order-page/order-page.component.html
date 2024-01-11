@@ -38,10 +38,6 @@
           <label class="search-text">Заказ будет готов:</label>
           <div class="text-general">{{dataReadyOrder}}</div>
         </div>
-        <div class="info-block-item">
-          <label class="search-text">Срок хранения:</label>
-          <div class="text-general">{{timeExpire}}</div>
-        </div>
       </div>
     </div>
     <div class="order-page-info">
@@ -56,7 +52,7 @@
 
 <ng-template #addedSuccessfully>
   <div class="picture-on-added">
-    <strong>Заказ успешно оформлен</strong>
+    <strong >Заказ успешно оформлен</strong>
     <img class="image" src="assets/pictures/on-add-picture.png">
     <strong>Информацию о заказе можно посмотреть в личном кабинете</strong>
     <button class="button-color button-margin" name='returnHome' (click)="returnHome()">На главную</button>

@@ -101,8 +101,6 @@ export class OrderPageComponent {
     }
 
     // get time from endpoint
-    let days = 0;
-    this.timeExpire = days + " " + "дней";
     this.dataReadyOrder = this.getFormattedDate();
   }
 
