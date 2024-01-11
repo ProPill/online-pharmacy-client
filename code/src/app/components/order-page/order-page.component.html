@@ -1,0 +1,60 @@
+<app-header></app-header>
+<div class="order-page" *ngIf="!isAdded else addedSuccessfully;">
+  <div class="order-page-title">
+    <h1 class="order-page-h1">Оформление заказа</h1>
+  </div>
+  <div class="order-page-form">
+    <div class="order-page-data">
+      <h2 class="order-page-h2">Контактные данные</h2>
+        <div class="input-container input-container-margin">
+          <label class="search-text">Фамилия Имя Отчество</label>
+          <div class="text-general text-general-marg">{{customerName}}</div>
+        </div>
+        <div class="input-container">
+          <label class="search-text">Мобильный телефон</label>
+          <div class="text-general text-general-marg">{{customerPhone}}</div>
+        </div>
+        <h2 class="order-page-h2">Способ получения</h2>
+      <strong *ngIf="!isChosenPharmacy" class="textErrorColor" >{{ NOT_CHOSEN_PHARMACY }}</strong>
+
+      <div class="input-container" (click)="toggleList()">
+          <label class="search-text">Аптека</label>
+          <div class="text-apothek">{{selectedPharmaName}}</div>
+      </div>
+      <div *ngIf="(myPharmacies.length > 0) && (isListHidden)">
+          <ul class="pharmacies__list--full">
+            <li class="pharmacies__list--full__item" *ngFor="let pharmacy of myPharmacies">
+              <div class="row" (click)="handleApothekeClick(pharmacy.id)">
+                <strong class="list-item list-item--top-left">{{ pharmacy.details.name }} </strong>
+                <strong class="list-item list-item--top-right">{{ pharmacy.details.address }} </strong>
+                <strong class="list-item list-item--bottom-left">{{ pharmacy.details.workingHours }}</strong>
+                <strong class="list-item list-item--bottom-right">{{ pharmacy.details.phone }}</strong>
+              </div>
+            </li>
+          </ul>
+        </div>
+      <div class="info-block">
+        <div class="info-block-item">
+          <label class="search-text">Заказ будет готов:</label>
+          <div class="text-general">{{dataReadyOrder}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="order-page-info">
+      <h1 class="info-h1">Ваш заказ</h1>
+      <h2 class="info-h2">Оплата при получении</h2>
+      <h2 class="info-h2">Доставка: {{deliveryPrice}}</h2>
+      <h2 class="info-h2">Итого: {{totalPrice}}</h2>
+      <button class="button-color" (click)="confirmOrder()">Подтвердить заказ</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #addedSuccessfully>
+  <div class="picture-on-added">
+    <strong >Заказ успешно оформлен</strong>
+    <img class="image" src="assets/pictures/on-add-picture.png">
+    <strong>Информацию о заказе можно посмотреть в личном кабинете</strong>
+    <button class="button-color button-margin" name='returnHome' (click)="returnHome()">На главную</button>
+  </div>
+</ng-template>
