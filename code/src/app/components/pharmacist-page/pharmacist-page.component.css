@@ -218,3 +218,8 @@ button {
 .error-border {
   border-color: #EA455F;
 }
+
+.textErrorColor {
+  color: #EA455F;
+  font-size: 16px;
+}

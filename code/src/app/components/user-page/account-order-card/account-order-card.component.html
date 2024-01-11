@@ -1,17 +1,21 @@
 <div class="card">
-  <div class="textarea-titles">
-    <span class="textarea-titles title">Заказ оформлен:</span>
-    <span class="textarea-titles title">Адрес заказа:</span>
-    <span class="textarea-titles title">Дата доставки:</span>
-    <span class="textarea-titles title">Сумма заказа:</span>
-  </div>
-  <div class="textarea-info">
-    <span class="textarea-info text">{{ order.date }}</span>
-    <span class="textarea-info text">{{ order.address }}</span>
-    <span class="textarea-info text">{{ order.deliverDate }}</span>
-    <span class="textarea-info text">{{ order.price }}₽</span>
-  </div>
   <div class="textarea-ordernumber">
     <span>#{{ order.orderNumber }}</span>
+  </div>
+  <div class="textarea-line">
+    <span class="textarea-titles">Заказ оформлен:</span>
+    <span class="textarea-info">{{ order.date }}</span>
+  </div>
+  <div class="textarea-line">
+    <span class="textarea-titles">Адрес заказа:</span>
+    <span class="textarea-info">{{ order.address }}</span>
+  </div>
+  <div class="textarea-line">
+    <span class="textarea-titles">Дата доставки:</span>
+    <span class="textarea-info">{{ order.deliverDate }}</span>
+  </div>
+  <div class="textarea-line">
+    <span class="textarea-titles">Сумма заказа:</span>
+    <span class="textarea-info">{{ order.price }}₽</span>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -6,23 +6,31 @@ import {Router} from "@angular/router";
   templateUrl: './header-authorized.component.html',
   styleUrls: ['./header-authorized.component.css']
 })
-
 export class HeaderAuthorizedComponent {
   @Input() onFilter: boolean
+  @Output() onFilterChange = new EventEmitter<boolean>()
+
   constructor(private router: Router) {}
 
   onLogOut() {
+    this.onFilter = true;
+    this.changeFilterStatus()
     this.router.navigate(['/main'])
-      this.onFilter = true;
   }
 
   onCartPage() {
-    this.router.navigate(['/cart']);
     this.onFilter = false;
+    this.changeFilterStatus()
+    this.router.navigate(['/cart']);
   }
 
   onUserPage() {
+    this.onFilter = false;
+    this.changeFilterStatus()
     this.router.navigate(['/user'])
-      this.onFilter = false;
+  }
+
+  changeFilterStatus() {
+    this.onFilterChange.emit(this.onFilter);
   }
 }

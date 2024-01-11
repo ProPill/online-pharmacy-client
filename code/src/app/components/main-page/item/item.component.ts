@@ -1,5 +1,7 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {IItem} from "../../../models/item";
+import {IItemQuantity} from "../../../models/item_quantity";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item',
@@ -10,4 +12,35 @@ import {IItem} from "../../../models/item";
 export class ItemComponent {
   @Input() item: IItem
   title = 'ItemComponent'
+  quantityIsZero = true
+  quantity = 0
+  @Output() itemQuantity: IItemQuantity
+
+  constructor(private router: Router) {
+  }
+
+  increaseQuantity() {
+    this.quantity++;
+    this.quantityIsZero = false
+  }
+
+  decreaseQuantity() {
+    if (this.quantity != 0) {
+      this.quantity--;
+    }
+    if (this.quantity == 0)
+    {
+      this.quantityIsZero = true;
+    }
+  }
+
+  addToCart()
+  {
+    this.quantityIsZero = false;
+    this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly}
+  }
+
+  onProductCardPage() {
+    this.router.navigate(["./product-page"])
+  }
 }

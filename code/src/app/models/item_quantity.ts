@@ -1,4 +1,5 @@
-export interface IItemQuantuty{
+export interface IItemQuantity {
   itemId: number
   itemQuantity: number
+  hasRecipe: boolean
 }

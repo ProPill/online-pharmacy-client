@@ -1,4 +1,4 @@
-import {IItemQuantuty} from "./item_quantity";
+import {IItemQuantity} from "./item_quantity";
 
 export interface IOrder{
   id: number
@@ -7,5 +7,4 @@ export interface IOrder{
   deliverDate: string
   price: number
   orderNumber: string
-  items: IItemQuantuty[] //массива id:количество товаров в заказе
-}
+  items: IItemQuantity[] //массива id:количество товаров в заказе

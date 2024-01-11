@@ -6,19 +6,23 @@ import { Router } from '@angular/router';
   templateUrl: './header-pharmacist.component.html',
   styleUrls: ['./header-pharmacist.component.css']
 })
-
 export class HeaderPharmacistComponent {
   @Input() onFilter: boolean
   @Output() onFilterChange = new EventEmitter<boolean>()
   constructor(private router: Router) {}
   onOpenPharmacistPage() {
-    this.router.navigate(['/pharmacist']);
     this.onFilter = false
-    this.onFilterChange.emit(false);
+    this.changeFilterStatus()
+    this.router.navigate(['/pharmacist']);
   }
 
   onLogOut() {
-    this.router.navigate(['/main'])
     this.onFilter = true
-    this.onFilterChange.emit(true);  }
+    this.changeFilterStatus()
+    this.router.navigate(['/main'])
+  }
+
+  changeFilterStatus() {
+    this.onFilterChange.emit(this.onFilter);
+  }
 }

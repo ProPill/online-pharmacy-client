@@ -25,16 +25,34 @@
   border: none;
 }
 
+.content.empty {
+  flex-direction: column;
+  align-items: center;
+}
+
+.content.list {
+  width: 820px;
+  margin-left: 0;
+  margin-right: 35px;
+  flex-direction: column;
+}
+
 .card-container {
   width: 820px;
   display: flex;
   flex-direction: column;
   border: none;
   background: none;
-  margin-right: 35px;
+  /*margin-right: 35px;*/
 }
 
-.spacer {
-  height: 60px;
+.empty-cart-img {
+  width: 455px;
+  height: 441px;
 }
 
+.button-color.onMain
+{
+  width: 200px;
+  margin-top: 40px;
+}

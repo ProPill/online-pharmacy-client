@@ -1,5 +1,5 @@
 <div class="content">
   <button class="button-color" name='recipeButton' (click)="selectFilter(filters[0])">Без рецепта</button>
   <button class="button-color" name='noRecipeButton' (click)="selectFilter(filters[1])">По рецепту</button>
-  <button class="button-color" name='speacialButton' *ngIf="hasAccess" (click)="selectFilter(filters[2])">Специальные</button>
+  <button class="button-color" name='specialButton' *ngIf="hasAccess" (click)="selectFilter(filters[2])">Специальные</button>
 </div>
