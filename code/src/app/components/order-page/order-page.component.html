@@ -6,15 +6,13 @@
   <div class="order-page-form">
     <div class="order-page-data">
       <h2 class="order-page-h2">Контактные данные</h2>
-        <strong *ngIf="!isValidName" class="textErrorColor">{{ NAME_ERROR_MESSAGE }}</strong>
-        <div class="input-container input-container-margin" [ngClass]="{'error-border': !isValidName}">
+        <div class="input-container input-container-margin">
           <label class="search-text">Фамилия Имя Отчество</label>
-          <input (click)="refresh()" class="text-general" type="text" [(ngModel)]="customerName">
+          <div class="text-general text-general-marg">{{customerName}}</div>
         </div>
-        <strong *ngIf="!isValidPhone" class="textErrorColor" >{{ PHONE_ERROR_MESSAGE }}</strong>
-        <div class="input-container" [ngClass]="{'error-border': !isValidPhone}">
+        <div class="input-container">
           <label class="search-text">Мобильный телефон</label>
-          <input (click)="refresh()" class="text-general" type="text" [(ngModel)]="customerPhone">
+          <div class="text-general text-general-marg">{{customerPhone}}</div>
         </div>
         <h2 class="order-page-h2">Способ получения</h2>
       <strong *ngIf="!isChosenPharmacy" class="textErrorColor" >{{ NOT_CHOSEN_PHARMACY }}</strong>
@@ -22,7 +20,7 @@
       <div class="input-container" (click)="toggleList()">
           <label class="search-text">Аптека</label>
           <div class="text-apothek">{{selectedPharmaName}}</div>
-        </div>
+      </div>
       <div *ngIf="(myPharmacies.length > 0) && (isListHidden)">
           <ul class="pharmacies__list--full">
             <li class="pharmacies__list--full__item" *ngFor="let pharmacy of myPharmacies">
@@ -35,7 +33,16 @@
             </li>
           </ul>
         </div>
-<!--     here we need to implement shelf life and data of delivery-->
+      <div class="info-block">
+        <div class="info-block-item">
+          <label class="search-text">Заказ будет готов:</label>
+          <div class="text-general">{{dataReadyOrder}}</div>
+        </div>
+        <div class="info-block-item">
+          <label class="search-text">Срок хранения:</label>
+          <div class="text-general">{{timeExpire}}</div>
+        </div>
+      </div>
     </div>
     <div class="order-page-info">
       <h1 class="info-h1">Ваш заказ</h1>

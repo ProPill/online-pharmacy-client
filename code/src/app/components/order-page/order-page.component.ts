@@ -1,4 +1,4 @@
-import {Component, Input, numberAttribute} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {pharmacies} from "../../data/pharmacies";
 import {IPharmacy} from "../../models/pharmacy";
@@ -20,21 +20,28 @@ export class OrderPageComponent {
   selectedPharmaName: string;
   totalPrice: number = 0.00;
   totalOrder: number = 0.00;
-  deliveryPrice: number = 0.00;
+  deliveryPrice: number = 50.0;
 
-  isValidName: boolean = true;
-  isValidPhone: boolean = true;
   isChosenPharmacy: boolean = true;
   isListHidden: boolean = false;
+  userId: number;
 
-  NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы.";
-  PHONE_ERROR_MESSAGE = "Неверный формат номера тел., пример: +79522795509";
+  timeExpire: string;
+  dataReadyOrder: string;
+
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
   NOT_CHOSEN_PHARMACY = "Нужно выбрать аптеку для заказа";
 
   constructor(private router: Router) {
     this.myPharmacies = pharmacies;
     this.orders = orders;
+
+    // get Fio and Phone by userId
+    this.userId = 0;
+    this.customerName = "Смирнов Евгений Александрович";
+    this.customerPhone = "+79522795509";
+
+    this.calculatePrice();
   }
 
    toggleList() {
@@ -42,43 +49,32 @@ export class OrderPageComponent {
   }
 
   confirmOrder(){
-    if (!this.customerName) {
-      this.isValidName = false;
-      this.NAME_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (!/^[a-zA-Zа-яА-Я]+$/i.test(this.customerName)) {
-      this.isValidName = false;
-    }
-
-    const phoneRegex = /^\+\d{11}$/;
-    if (!this.customerPhone) {
-      this.isValidPhone = false;
-      this.PHONE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (!phoneRegex.test(this.customerPhone)) {
-      this.isValidPhone = false;
-    }
-
     if (!this.pharmacy){
       this.isChosenPharmacy = false;
-    }
-
-    if (!this.isValidName || !this.isValidPhone || !this.isChosenPharmacy){
-      return
-    }
-    else {
-      this.calculatePrice();
+      return;
     }
   }
 
   refresh() {
-    this.isValidName = true;
-    this.isValidPhone = true;
     this.isChosenPharmacy = true;
     this.isListHidden = false;
+  }
 
-    this.NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы.";
-    this.PHONE_ERROR_MESSAGE = "Неверный формат номера тел., пример: +79522795509";
+  getFormattedDate(): string {
+    const today = new Date();
+
+    const day = today.getDate();
+    const month = today.getMonth() + 1; // Months are zero-based
+    const year = today.getFullYear();
+
+    const formattedDay = this.padZero(day);
+    const formattedMonth = this.padZero(month);
+
+    return `${formattedDay}.${formattedMonth}.${year}`;
+  }
+
+  padZero(num: number): string {
+    return num < 10 ? `0${num}` : `${num}`;
   }
 
   calculatePrice() {
@@ -100,6 +96,9 @@ export class OrderPageComponent {
       this.toggleList();
     }
 
-    this.deliveryPrice = 100.00;
+    // get time from endpoint
+    let days = 0;
+    this.timeExpire = days + " " +  "дней";
+    this.dataReadyOrder = this.getFormattedDate();
   }
 }

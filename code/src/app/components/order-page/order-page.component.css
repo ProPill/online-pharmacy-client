@@ -82,9 +82,13 @@
 }
 
 .text-general {
-  color: #7A7A7A;
+  color: black;
   margin-bottom: 2.0em;
   text-align: left;
+}
+
+.text-general-marg {
+  margin-left: 10px;
 }
 
 .text-apothek {
@@ -170,4 +174,15 @@
 
 .button-color {
   margin-bottom: 10px;
+}
+
+.info-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.info-block-item {
+  width: 50%;
+  margin-right: 50px;
 }
