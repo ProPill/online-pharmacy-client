@@ -11,13 +11,18 @@ export class HeaderPharmacistComponent {
   @Output() onFilterChange = new EventEmitter<boolean>()
   constructor(private router: Router) {}
   onOpenPharmacistPage() {
-    this.router.navigate(['/pharmacist']);
     this.onFilter = false
-    this.onFilterChange.emit(false);
+    this.changeFilterStatus()
+    this.router.navigate(['/pharmacist']);
   }
 
   onLogOut() {
-    this.router.navigate(['/main'])
     this.onFilter = true
-    this.onFilterChange.emit(true);  }
+    this.changeFilterStatus()
+    this.router.navigate(['/main'])
+  }
+
+  changeFilterStatus() {
+    this.onFilterChange.emit(this.onFilter);
+  }
 }

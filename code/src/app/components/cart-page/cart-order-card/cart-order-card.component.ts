@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {IOrder} from "../../../models/order";
-import {IItemQuantuty} from "../../../models/item_quantity";
+import {IItemQuantity} from "../../../models/item_quantity";
 import {items} from "../../../data/items";
 
 @Component({
@@ -11,7 +11,7 @@ import {items} from "../../../data/items";
 export class CartOrderCardComponent {
   title: 'cart-order-card'
   @Input() order: IOrder
-  data: IItemQuantuty[]
+  data: IItemQuantity[]
   price: number = 0
   checkboxChecked: boolean
   hasRecipeItems: boolean = false

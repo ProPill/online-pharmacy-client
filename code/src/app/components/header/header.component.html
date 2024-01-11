@@ -15,21 +15,23 @@
       </form>
     </div>
 
-    <button class="button-color search-button" (click)="showItems()" tabindex="0">Искать</button>
+    <button class="button-color search-button" (click)="searchItems()" tabindex="0">Искать</button>
 
     <div *ngIf="user==null else elseBlock;">
-      <app-header-unauthorized></app-header-unauthorized>
+      <app-header-unauthorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-unauthorized>
     </div>
     <ng-template #elseBlock>
       <div *ngIf="user.isAdmin; else elseBlock">
-        <app-header-pharmacist></app-header-pharmacist>
+        <app-header-pharmacist (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-pharmacist>
       </div>
       <ng-template #elseBlock>
         <div>
-          <app-header-authorized [onFilter]="this.onFilter"></app-header-authorized>
+          <app-header-authorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-authorized>
         </div>
       </ng-template>
     </ng-template>
   </div>
-  <app-filter *ngIf="onFilter" [hasAccess]="this.user.isDoctor || this.user.isAdmin"></app-filter>
+  <div *ngIf="onFilter">
+    <app-filter [hasAccess]="this.user.isDoctor || this.user.isAdmin"></app-filter>
+  </div>
 </div>
