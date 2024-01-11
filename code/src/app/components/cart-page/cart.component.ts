@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {IOrder} from "../../models/order";
+import { Component, Input } from '@angular/core';
+import { IOrder } from "../../models/order";
 import { Router } from '@angular/router';
+import {orders} from "../../data/orders";
 
 @Component({
   selector: 'app-cart',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent {
-  @Input() order: IOrder
+  @Input() order: IOrder = orders[0]
   isEmpty: boolean
 
   constructor(private router: Router) {
