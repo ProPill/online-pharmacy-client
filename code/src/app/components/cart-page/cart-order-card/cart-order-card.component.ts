@@ -44,14 +44,16 @@ export class CartOrderCardComponent {
   }
 
   hasRecipeOnlyItems() {
-    this.data.forEach(item => {
+    this.order.items.forEach(item => {
       if (item.hasRecipe) {
         this.hasRecipeItems = true;
         this.checkboxChecked = false;
-        document.querySelectorAll(".button-color")
-            .forEach(button => {
-              button.classList.add('inactive')
-            })
+        document.querySelectorAll(".card-order")
+          .forEach( orderCard=> {
+            orderCard.querySelectorAll(".button-color")
+              .forEach(button => {
+                button.classList.add('inactive')
+            })})
         return }})
   }
 
@@ -67,10 +69,12 @@ export class CartOrderCardComponent {
         })
     }
     else {
-      document.querySelectorAll(".button-color")
-          .forEach(button => {
-            button.classList.add('inactive')
-          })
+      document.querySelectorAll(".card-order")
+        .forEach( orderCard=> {
+          orderCard.querySelectorAll(".button-color")
+            .forEach(button => {
+              button.classList.add('inactive')
+            })})
     }
   }
 }
