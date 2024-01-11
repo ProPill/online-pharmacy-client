@@ -3,6 +3,7 @@ p {
 }
 
 .card {
+  margin-left: 340px;
   margin-bottom: 39px;
   flex-direction: row;
   display: flex;
@@ -12,10 +13,10 @@ p {
   border: 3px solid #61cac4;
   border-radius: 20px;
   font-size: 24px;
+  font-family: Futura, sans-serif;
 }
 
-.card.textarea
-{
+.card.textarea {
   border: none;
   padding: 0;
   flex-direction: column;
@@ -24,27 +25,26 @@ p {
   width: 680px;
 }
 
-.card.title
-{
+.card.title {
   padding: 0;
   border: none;
   height: auto;
   width: 680px;
   margin-bottom: 50px;
+  margin-left: 0;
 }
 
-.card.info
-{
+.card.info {
   padding: 0;
   border: none;
   height: 28px;
   width: 680px;
   margin-bottom: 50px;
+  margin-left: 0;
   font-size: 20px;
 }
 
-.card.img
-{
+.card.img {
   height: 230px;
   width: 230px;
   border: none;
@@ -52,38 +52,72 @@ p {
   background: #f3f2f2;
   border-radius: 15px;
   margin-bottom: 0;
+  margin-left: 0;
 }
 
-.card.recipeTag
-{
+.card.recipeTag {
   padding: 0;
   border: none;
   height: 28px;
   width: 680px;
   margin-bottom: 0;
+  margin-left: 0;
   font-size: 20px;
 }
 
-.card.pricearea
-{
+.card.pricearea {
   padding: 0;
   border: none;
   width: 240px;
   justify-content: center;
   margin-bottom: 0;
+  margin-left: 0;
   flex-direction: column;
 }
 
-.card.card-small {
+.card.buy-button {
   border-radius: 30px;
   border: none;
   height: 55px;
   width: 110px;
   justify-content: center;
-  line-height: 20px;
+  line-height: 50px;
   font-size: 20px;
   align-items: center;
   background: #61cac4;
+  color: white;
   margin: 10px 0;
 }
 
+.card.buy-button:active {
+    transform: scale(0.98,0.98);
+}
+
+.card.pricearea.quatity {
+  flex-direction: row;
+  margin-bottom: 24px;
+  justify-content: left;
+  height: 50px;
+}
+
+.card.card-small {
+  border-radius: 15px;
+  border: 3px solid #61CAC4;
+  padding: 0;
+  margin: 0 0;
+  height: 50px;
+  width: 50px;
+  justify-content: center;
+  line-height: 50px;
+  font-size: 20px;
+  background: transparent;
+  color: #61CAC4;
+}
+
+.text.quatity {
+  width: 60px;
+  height: 50px;
+  line-height: 50px;
+  margin: 0 10px;
+  text-align: center;
+}

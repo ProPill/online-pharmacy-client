@@ -1,1 +1,13 @@
-<p>main-page works!</p>
+<h1 style="margin-left: 180px">Результаты поиска</h1>
+<div *ngIf="!listIsEmpty(); else elseBlock">
+  <div *ngFor="let value of items">
+    <app-item [item]="value"></app-item>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <div class="not-found-content">
+    <img class="image" src="assets/pictures/not-found-img.png">
+    <h2>Такого товара не найдено!</h2>
+  </div>
+</ng-template>
+

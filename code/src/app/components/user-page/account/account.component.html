@@ -1,0 +1,9 @@
+<div class="title">Личный кабинет</div>
+<div class="title h2">Мои данные</div>
+<div class="text">Иванова Мария Владимировна</div>
+<div class="text">+79379585734</div>
+<div class="spacer"></div>
+<div class="title h2">История заказов</div>
+<div *ngFor="let value of orders">
+  <app-account-order-card [order]="value"></app-account-order-card>
+</div>

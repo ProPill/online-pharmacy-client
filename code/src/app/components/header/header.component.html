@@ -1,21 +1,37 @@
-<div class="search-wrapper">
+<div class="content">
+  <div class="header">
+    <div class="main-icon" (click)="onMain()">
+      <img
+        class="main-icon logo"
+        src="../assets/buttons/pill-logo.png">
+      <span class="main-icon title">ProPill</span>
+    </div>
+    <div class="search-bar">
+      <img class="search-icon" alt="search-icon" src="../assets/buttons/search-logo.png"/>
+      <form action="/search">
+        <input placeholder="Поиск по названию препарата, например Витамин D"
+               type="text" name="searchRequest" [(ngModel)]="searchRequest" autocapitalize="off" autocomplete="off"
+               autocorrect="off" spellcheck="false" maxlength="255" class="textarea">
+      </form>
+    </div>
 
-  <div class="wrapper-logo">
-    <img class="main-icon" alt="ProPill Logo" src="../../../assets/buttons/pill-logo.png"/>
-    <p style="color: #f3f2f2; font-size: 18px;">ProPill</p>
+    <button class="button-color search-button" (click)="searchItems()" tabindex="0">Искать</button>
+
+    <div *ngIf="user==null else elseBlock;">
+      <app-header-unauthorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-unauthorized>
+    </div>
+    <ng-template #elseBlock>
+      <div *ngIf="user.isAdmin; else elseBlock">
+        <app-header-pharmacist (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-pharmacist>
+      </div>
+      <ng-template #elseBlock>
+        <div>
+          <app-header-authorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-authorized>
+        </div>
+      </ng-template>
+    </ng-template>
   </div>
-
-  <div class="search-bar">
-    <img class="search-icon" alt="search-icon" src="../../../assets/buttons/search-logo.png"/>
-    <form action="/search">
-      <input placeholder="Поиск по названию препарата, например Витамин D"
-             type="text" name="text" autocapitalize="off" autocomplete="off"
-             autocorrect="off" spellcheck="false" maxlength="255" class="textarea">
-    </form>
+  <div *ngIf="onFilter">
+    <app-filter [hasAccess]="this.user.isDoctor || this.user.isAdmin"></app-filter>
   </div>
-
-  <button class="button-color search-button" (click)="null" tabindex="0">Искать</button>
-  <button class="button-color registration-button" (click)="null" tabindex="0">Регистрация</button>
-  <button class="button-color auth-button" (click)="null" tabindex="0">Войти</button>
-
 </div>

@@ -1,0 +1,15 @@
+<div class="card">
+  <img src="assets/pictures/instead-of-photo-img.png">
+  <div class="card textarea">
+    <div class="text info">{{ getTitle() }}</div>
+    <div class="text delete">Удалить</div>
+  </div>
+  <div class="card pricearea">
+    <div class="card pricearea quatity">
+      <button class="card card-small" (click)="decreaseQuantity()">–</button>
+      <span class="text quatity" >{{ quantity }}</span>
+      <button class="card card-small" (click)="increaseQuantity()">+</button>
+    </div>
+    <div class="text price">{{ calculateCost() }}₽</div>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+.card {
+  margin-bottom: 27px;
+  flex-direction: row;
+  display: flex;
+  padding: 20px;
+  height: 230px;
+  width: 780px;
+  border: 3px solid #D9D9D9;
+  border-radius: 20px;
+  font-size: 20px;
+  font-family: Futura, sans-serif;
+}
+
+.card.textarea {
+  border: none;
+  padding: 0;
+  flex-direction: column;
+  margin-left: 48px;
+  width: 321px;
+  height: 230px;
+}
+
+.text {
+  font-size: 20px;
+  width: 321px;
+  border: none;
+}
+
+.text.info {
+  height: 200px;
+  margin-bottom: 6px;
+}
+
+.text.delete {
+  height: 24px;
+}
+
+.card.img {
+  height: 230px;
+  width: 230px;
+  border: none;
+  padding: 0;
+  background: #f3f2f2;
+  border-radius: 15px;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+.card.pricearea {
+  padding: 0;
+  border: none;
+  width: 181px;
+  margin-bottom: 0px;
+  margin-left: 0;
+  flex-direction: column;
+}
+
+.card.pricearea.quatity {
+  flex-direction: row;
+  margin-bottom: 24px;
+  align-content: center;
+  height: 50px;
+}
+
+.card.card-small {
+  border-radius: 15px;
+  border: 3px solid #61CAC4;
+  padding: 0;
+  margin: 0 0;
+  height: 50px;
+  width: 50px;
+  justify-content: center;
+  line-height: 45px;
+  font-size: 20px;
+  background: transparent;
+  color: #61CAC4;
+}
+
+.text.quatity {
+  width: 60px;
+  height: 50px;
+  line-height: 50px;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.text.price {
+  width: 100px;
+  height: 24px;
+  text-align: center;
+  margin: 0 40px;
+}

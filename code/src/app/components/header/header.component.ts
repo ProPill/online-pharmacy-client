@@ -1,4 +1,8 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {IUser} from "../../models/user";
+import { Router } from '@angular/router';
+import {MainPageComponent} from "../main-page/main-page.component";
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -6,5 +10,28 @@ import {Component, Input} from "@angular/core";
 })
 
 export class HeaderComponent {
+  @Input() user: IUser
+  @Output() reloadList = new EventEmitter<boolean>
   title = 'Header'
+  searchRequest: string = ''
+  onFilter: boolean = true
+
+  constructor(private router: Router) {}
+
+  searchItems() {
+    this.onFilter = true;
+    this.router.navigate(['/main'], { queryParams: {"list": {}}});
+    this.reloadList.emit(true)
+    new MainPageComponent(this.router)
+    return this.searchRequest;
+  }
+
+  onMain() {
+    this.onFilter = true;
+    this.router.navigate(['/main']);
+  }
+
+  changeFilterStatus(status: boolean) {
+    this.onFilter = status;
+  }
 }

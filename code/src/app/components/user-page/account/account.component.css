@@ -1,0 +1,33 @@
+.host {
+  display: flex;
+  flex-direction: column;
+  margin-top: 270px;
+  background: transparent;
+  color: white;
+}
+
+.title {
+  font-family: Futura-Bold, sans-serif;
+  margin-top: 70px;
+  margin-left: 182px;
+  font-size: 44px;
+  margin-bottom: 33px;
+}
+
+.title.h2 {
+  margin-top: 0;
+  margin-left: 340px;
+  font-size: 36px;
+  margin-bottom: 23px;
+}
+
+.text {
+  font-family: Futura, sans-serif;
+  font-size: 24px;
+  margin-bottom: 12px;
+  margin-left: 370px;
+}
+
+.spacer {
+  height: 60px;
+}

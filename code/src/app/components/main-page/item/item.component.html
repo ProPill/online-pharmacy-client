@@ -1,16 +1,17 @@
 <div class="card">
-  <img class="card img" src="favicon.ico">
-  <div class="card textarea">
+  <img class="card img" src="/assets/pictures/instead-of-photo-img.png" (click)="onProductCardPage()">
+  <div class="card textarea" (click)="onProductCardPage()">
       <span class="card title">{{ item.title }}</span>
-      <span class="card info">Производитель: {{item.manufacturer}}</span>
-    <p *ngIf="item.recipeOnly" class="card recipeTag">🛈 Рецептурный препарат</p>
+      <span class="card info">Производитель: {{ item.manufacturer }}</span>
+    <p *ngIf="item.recipeOnly" class="card recipeTag">ⓘ Рецептурный препарат</p>
   </div>
   <div class="card pricearea">
     <span type="text">Цена: {{ item.cost }}₽</span>
-    <button class="card card-small" (click)="null" tabindex="0">
-    Купить
-  </button>
+    <button class="card buy-button" (click)="addToCart()">Купить</button>
+    <div class="card pricearea quatity">
+      <button class="card card-small" (click)="decreaseQuantity()">–</button>
+      <span class="text quatity" >{{ quantity }}</span>
+      <button class="card card-small" (click)="increaseQuantity()">+</button>
+    </div>
   </div>
-
 </div>
-
