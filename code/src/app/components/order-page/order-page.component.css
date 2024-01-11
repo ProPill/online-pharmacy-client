@@ -186,3 +186,27 @@
   width: 50%;
   margin-right: 50px;
 }
+
+.picture-on-added {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  position: relative;
+  padding: 50px 60px;
+  margin-left: 100px;
+}
+
+.image {
+  width: 473px;
+  height: 473px;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button-margin {
+  margin-top: 25px;
+}

@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="order-page">
+<div class="order-page" *ngIf="!isAdded else addedSuccessfully;">
   <div class="order-page-title">
     <h1 class="order-page-h1">Оформление заказа</h1>
   </div>
@@ -53,3 +53,12 @@
     </div>
   </div>
 </div>
+
+<ng-template #addedSuccessfully>
+  <div class="picture-on-added">
+    <strong>Заказ успешно оформлен</strong>
+    <img class="image" src="assets/pictures/on-add-picture.png">
+    <strong>Информацию о заказе можно посмотреть в личном кабинете</strong>
+    <button class="button-color button-margin" name='returnHome' (click)="returnHome()">На главную</button>
+  </div>
+</ng-template>

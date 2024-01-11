@@ -24,6 +24,7 @@ export class OrderPageComponent {
 
   isChosenPharmacy: boolean = true;
   isListHidden: boolean = false;
+  isAdded: boolean = false;
   userId: number;
 
   timeExpire: string;
@@ -35,6 +36,7 @@ export class OrderPageComponent {
   constructor(private router: Router) {
     this.myPharmacies = pharmacies;
     this.orders = orders;
+    this.isAdded = false;
 
     // get Fio and Phone by userId
     this.userId = 0;
@@ -44,15 +46,17 @@ export class OrderPageComponent {
     this.calculatePrice();
   }
 
-   toggleList() {
+  toggleList() {
     this.isListHidden = !this.isListHidden;
   }
 
-  confirmOrder(){
-    if (!this.pharmacy){
+  confirmOrder() {
+    if (!this.pharmacy) {
       this.isChosenPharmacy = false;
       return;
     }
+
+    this.isAdded = true;
   }
 
   refresh() {
@@ -98,7 +102,12 @@ export class OrderPageComponent {
 
     // get time from endpoint
     let days = 0;
-    this.timeExpire = days + " " +  "дней";
+    this.timeExpire = days + " " + "дней";
     this.dataReadyOrder = this.getFormattedDate();
+  }
+
+  returnHome() {
+    this.isAdded = false;
+    this.router.navigate(['/main']);
   }
 }
