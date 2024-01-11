@@ -4,8 +4,6 @@
 <div class="text">+79379585734</div>
 <div class="spacer"></div>
 <div class="title h2">История заказов</div>
-<app-account-order-card [order]="orders[0]"></app-account-order-card>
-<app-account-order-card [order]="orders[1]"></app-account-order-card>
-<app-account-order-card [order]="orders[1]"></app-account-order-card>
-<app-account-order-card [order]="orders[1]"></app-account-order-card>
-<app-account-order-card [order]="orders[1]"></app-account-order-card>
+<div *ngFor="let value of orders">
+  <app-account-order-card [order]="value"></app-account-order-card>
+</div>
