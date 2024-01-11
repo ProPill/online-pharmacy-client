@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-pharmacist-page',
@@ -42,7 +43,7 @@ export class PharmacistPageComponent {
   INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым"
 
-  constructor() {
+  constructor(private router: Router) {
     this.selectedSpecialization = this.specializations[0];
   }
 
@@ -116,6 +117,16 @@ export class PharmacistPageComponent {
     else if (this.ingredients.length > 500) {
       this.isStringLengthValidIngredients = false;
     }
+
+    if (!this.isValidName || !this.isValidManufacturer || !this.isValidPrice ||
+      !this.isValidUsage || !this.isValidDosage || !this.isValidIngredients ||
+      !this.isStringLengthValidUsage || !this.isStringLengthValidDosage ||
+      !this.isStringLengthValidIngredients || !this.isValidType) {
+      return;
+    }
+
+    // adding endpoint
+    this.router.navigate(['/main']);
   }
 
   refresh() {
