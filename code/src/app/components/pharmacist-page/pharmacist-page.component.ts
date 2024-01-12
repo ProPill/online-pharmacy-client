@@ -48,11 +48,8 @@ export class PharmacistPageComponent {
   private userId: number = -1;
 
   constructor(private userService: UserService, private router: Router) {
-    this.selectedSpecialization = this.specializations[0];
-  }
-
-  ngOnInit() {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.selectedSpecialization = this.specializations[0];
   }
 
   toggleList() {

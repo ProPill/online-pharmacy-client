@@ -16,9 +16,7 @@ export class AccountOrderCardComponent {
 
   private userId: number = -1;
 
-  constructor(private userService: UserService, private router: Router) {}
-
-  ngOnInit() {
+  constructor(private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 }

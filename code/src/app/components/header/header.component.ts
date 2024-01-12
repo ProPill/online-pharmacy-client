@@ -16,12 +16,15 @@ export class HeaderComponent {
   title = 'Header';
   searchRequest: string = '';
   onFilter: boolean = true;
+  private userId: number = -1;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+  }
 
   searchItems() {
     this.onFilter = true;
-    this.router.navigate(['/main'], { queryParams: {"list": {}}});
+    this.router.navigate(['/main'], {queryParams: {"list": {}}});
     this.reloadList.emit(true);
     new MainPageComponent(this.userService, this.router);
     return this.searchRequest;

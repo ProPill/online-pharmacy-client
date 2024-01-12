@@ -21,9 +21,6 @@ export class CartItemCardComponent {
   private userId: number = -1;
 
   constructor(private userService: UserService, private router: Router) {
-  }
-
-  ngOnInit() {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 

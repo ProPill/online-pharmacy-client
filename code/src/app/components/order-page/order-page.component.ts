@@ -36,6 +36,8 @@ export class OrderPageComponent {
   private userId: number = -1;
 
   constructor(private userService: UserService, private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+
     this.myPharmacies = pharmacies;
     this.orders = orders;
     this.isAdded = false;
@@ -45,10 +47,6 @@ export class OrderPageComponent {
     this.customerPhone = "+79522795509";
 
     this.calculatePrice();
-  }
-
-  ngOnInit() {
-    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 
   toggleList() {
