@@ -4,6 +4,7 @@ import {pharmacies} from "../../data/pharmacies";
 import {IPharmacy} from "../../models/pharmacy";
 import {orders} from "../../data/orders";
 import {IOrder} from "../../models/order";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-order-page',
@@ -25,7 +26,6 @@ export class OrderPageComponent {
   isChosenPharmacy: boolean = true;
   isListHidden: boolean = false;
   isAdded: boolean = false;
-  userId: number;
 
   timeExpire: string;
   dataReadyOrder: string;
@@ -33,17 +33,22 @@ export class OrderPageComponent {
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
   NOT_CHOSEN_PHARMACY = "Нужно выбрать аптеку для заказа";
 
-  constructor(private router: Router) {
+  private userId: number = -1;
+
+  constructor(private userService: UserService, private router: Router) {
     this.myPharmacies = pharmacies;
     this.orders = orders;
     this.isAdded = false;
 
-    // get Fio and Phone by userId
-    this.userId = 0;
+    // openApi [get Fio and Phone by userId]
     this.customerName = "Смирнов Евгений Александрович";
     this.customerPhone = "+79522795509";
 
     this.calculatePrice();
+  }
+
+  ngOnInit() {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 
   toggleList() {

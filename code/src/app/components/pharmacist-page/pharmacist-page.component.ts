@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
+import {UserService} from "../../services/user.service";
+import {pharmacies} from "../../data/pharmacies";
 
 @Component({
   selector: 'app-pharmacist-page',
@@ -43,8 +45,14 @@ export class PharmacistPageComponent {
   INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым"
 
-  constructor(private router: Router) {
+  private userId: number = -1;
+
+  constructor(private userService: UserService, private router: Router) {
     this.selectedSpecialization = this.specializations[0];
+  }
+
+  ngOnInit() {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 
   toggleList() {
@@ -68,24 +76,21 @@ export class PharmacistPageComponent {
     if (!this.name) {
       this.isValidName = false;
       this.NAME_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.name) || this.name.length > 100) {
+    } else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.name) || this.name.length > 100) {
       this.isValidName = false;
     }
 
     if (!this.manufacturer) {
       this.isValidManufacturer = false;
       this.MANUFACTURER_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.manufacturer)){
+    } else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.manufacturer)) {
       this.isValidManufacturer = false;
     }
 
     if (!this.price) {
       this.isValidPrice = false;
       this.PRICE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else {
+    } else {
       const priceAsFloat = parseFloat(this.price);
       if (isNaN(priceAsFloat)) {
         this.isValidType = false;
@@ -97,24 +102,21 @@ export class PharmacistPageComponent {
     if (!this.usage) {
       this.isStringLengthValidUsage = false;
       this.USAGE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (this.usage.length > 500) {
+    } else if (this.usage.length > 500) {
       this.isStringLengthValidUsage = false;
     }
 
     if (!this.dosage) {
       this.isStringLengthValidDosage = false;
       this.DOSAGE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (this.dosage.length > 500) {
+    } else if (this.dosage.length > 500) {
       this.isStringLengthValidDosage = false;
     }
 
     if (!this.ingredients) {
       this.isStringLengthValidIngredients = false;
       this.INGREDIENTS_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    }
-    else if (this.ingredients.length > 500) {
+    } else if (this.ingredients.length > 500) {
       this.isStringLengthValidIngredients = false;
     }
 
