@@ -11,8 +11,11 @@ import {IItemQuantity} from "../models/item_quantity";
 })
 export class BackendService {
   private baseUrl = 'http://localhost:8080/api';
+  items: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.items = [];
+  }
 
   logout(userId: number) {
     return this.http.get(this.baseUrl + '/logout', {params: {["user_id"]: userId}});
@@ -30,8 +33,18 @@ export class BackendService {
     return this.transformList(this.http.get(this.baseUrl + '/item/type'));
   }
 
+  // TODO
   getRecipeItemsList() {
-    return this.transformList(this.http.get(this.baseUrl + '/item/type'));
+    this.http.get<IItem[]>(this.baseUrl + '/item/type?name=-1').subscribe(
+      data => {
+        console.log(data);
+        this.items = this.transformList(data);
+      },
+      error => {
+        console.error('Error fetching items:', error);
+      }
+    );
+    return this.items;
   }
 
   getItemsByType(typeId: number) {
@@ -48,26 +61,36 @@ export class BackendService {
   }
 
   transformList(data: any) {
-    return data.pipe(
-      map((itemList: any[]) => {
-        return itemList.map( item => {
-          return {
-            id: item.itemId,
-            title: item.name,
-            manufacturer: item.manufacturer,
-            recipeOnly: item.type.id == -2,
-            special: item.speciality != null,
-            cost: item.price,
-            image: item.picture_url
-          } as IItem
-        });
-      })
-    ) as IItem[]
+    const transformedItems: IItem[] = [];
 
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
+
+      transformedItems.push({
+        id: item.itemId,
+        title: item.name,
+        manufacturer: item.manufacturer,
+        recipeOnly: item.type.id == -2,
+        special: item.speciality != null,
+        cost: item.price,
+        image: item.picture_url
+      } as IItem);
+    }
+
+    return transformedItems;
   }
 
   getNormalUserItemsList() {
-    return this.transformList(this.http.get(this.baseUrl + '/item/normal/all'));
+    this.http.get<IItem[]>(this.baseUrl + '/item/normal/all').subscribe(
+      data => {
+        console.log(data);
+        this.items = this.transformList(data);
+      },
+      error => {
+        console.error('Error fetching items:', error);
+      }
+    );
+    return this.items;
   }
 
   getDoctorItemsList() {

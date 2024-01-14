@@ -1,5 +1,4 @@
 import {Component, Input, Output} from '@angular/core';
-import {items} from "../../data/items";
 import {IItemQuantity} from "../../models/item_quantity";
 import {IItem} from "../../models/item";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -12,7 +11,7 @@ import {BackendService} from "../../services/backend.service";
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent {
-  @Input() items: IItem[];
+  items: IItem[];
   @Output() itemsToOrder: IItemQuantity[];
   private userId: number = -1;
   private searchRequest: string | null;
@@ -22,15 +21,26 @@ export class MainPageComponent {
               private userService: UserService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
+    this.items = [];
+    this.items = this.backendService.getNormalUserItemsList();
+    let tmp = this.activatedRoute.snapshot.paramMap.get('typeId')
+    if (tmp != null) {
+      this.typeId = parseInt(tmp);
+      this.items = this.backendService.getItemsByType(this.typeId);
+    }
+
     window.addEventListener('load', () => {
       this.searchRequest = this.activatedRoute.snapshot.paramMap.get('searchRequest');
       let tmp = this.activatedRoute.snapshot.paramMap.get('typeId')
       if (tmp != null) {
         this.typeId = parseInt(tmp)
       }
-      this.loadList(this.searchRequest, this.typeId)});
+      this.loadList(this.searchRequest, this.typeId)
+    });
+  }
+
+  ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    console.log(this.userId)
   }
 
   listIsEmpty() {
