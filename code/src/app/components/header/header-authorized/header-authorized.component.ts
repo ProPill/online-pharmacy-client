@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
+import {BackendService} from "../../../services/backend.service";
 
 @Component({
   selector: 'app-header-authorized',
@@ -13,7 +14,7 @@ export class HeaderAuthorizedComponent {
 
   private userId: number = -1;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 
@@ -21,6 +22,8 @@ export class HeaderAuthorizedComponent {
     this.onFilter = true;
     this.changeFilterStatus();
     this.router.navigate(['/main']);
+    this.backendService.logout(this.userId);
+    this.userService.changeUserId(0)
   }
 
   onCartPage() {
