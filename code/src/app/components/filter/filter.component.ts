@@ -1,4 +1,5 @@
 import {Component, Input} from "@angular/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-filter',
@@ -8,16 +9,28 @@ import {Component, Input} from "@angular/core";
 export class FilterComponent {
   title = 'Filter'
   selectedFilter = '';
-  filters = ['recipeButton', 'noRecipeButton', 'specialButton'];
+  selectedFilterId: number;
+  filters = ['noRecipeButton', 'recipeButton', 'specialButton'];
   @Input() hasAccess: boolean = false
 
-  constructor() {
+  constructor(private router: Router) {
     this.hasAccess = true
+    this.selectedFilterId = 0
+    this.selectedFilter = ''
   }
 
   selectFilter(filter: string) {
     this.selectedFilter = filter;
+    if (filter == this.filters[0])
+    {
+      this.selectedFilterId = -1;
+    }
+    if (filter == this.filters[1]) {
+      this.selectedFilterId = -2;
+    }
+    else { this.selectedFilterId = -3 }
     this.changeColor()
+    this.router.navigate(['/main'], {state: { typeId: this.selectedFilterId } })
   }
 
   changeColor() {
