@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {IItem} from "../../../models/item";
 import {IItemQuantity} from "../../../models/item_quantity";
 import { Router } from '@angular/router';
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-item',
@@ -10,18 +11,20 @@ import { Router } from '@angular/router';
 })
 
 export class ItemComponent {
-  @Input() item: IItem
-  title = 'ItemComponent'
-  quantityIsZero = true
-  quantity = 0
-  @Output() itemQuantity: IItemQuantity
+  @Input() item: IItem;
+  title = 'ItemComponent';
+  quantityIsZero = true;
+  quantity = 0;
+  @Output() itemQuantity: IItemQuantity;
+  private userId: number = -1;
 
-  constructor(private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
   }
 
   increaseQuantity() {
     this.quantity++;
-    this.quantityIsZero = false
+    this.quantityIsZero = false;
   }
 
   decreaseQuantity() {
@@ -34,13 +37,12 @@ export class ItemComponent {
     }
   }
 
-  addToCart()
-  {
+  addToCart() {
     this.quantityIsZero = false;
     this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly}
   }
 
   onProductCardPage() {
-    this.router.navigate(["./product-page"])
+    this.router.navigate(["/product-page"]);
   }
 }

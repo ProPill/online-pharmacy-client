@@ -2,6 +2,8 @@ import {Component, Input} from '@angular/core';
 import {IItem} from "../../../models/item";
 import {IItemQuantity} from "../../../models/item_quantity";
 import {items} from "../../../data/items";
+import {UserService} from "../../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-cart-item-card',
@@ -10,31 +12,33 @@ import {items} from "../../../data/items";
 })
 
 export class CartItemCardComponent {
-  title: 'cart-item-card'
-  @Input() itemQuantuty: IItemQuantity
-  item: IItem
-  quantity: number = 1
-  cost: number = 0
+  title: 'cart-item-card';
+  @Input() itemQuantuty: IItemQuantity;
+  item: IItem;
+  quantity: number = 1;
+  cost: number = 0;
 
-  // constructor() {
-  //   // представим, что в items все по-порядку
-  //   this.item = items[this.itemQuantuty.itemId]
-  // }
+  private userId: number = -1;
+
+  constructor(private userService: UserService, private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+  }
+
   getTitle() {
-    this.quantity = this.itemQuantuty.itemQuantity
+    this.quantity = this.itemQuantuty.itemQuantity;
     this.item = items[this.itemQuantuty.itemId];
-    return this.item.title
+    return this.item.title;
   }
 
   increaseQuantity() {
     this.quantity++;
-    this.itemQuantuty.itemQuantity = this.quantity
+    this.itemQuantuty.itemQuantity = this.quantity;
   }
 
   decreaseQuantity() {
     if (this.quantity != 1) {
       this.quantity--;
-      this.itemQuantuty.itemQuantity = this.quantity
+      this.itemQuantuty.itemQuantity = this.quantity;
     }
   }
 

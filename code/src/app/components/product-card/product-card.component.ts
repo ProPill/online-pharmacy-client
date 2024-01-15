@@ -4,6 +4,7 @@ import {items} from "../../data/items";
 import {pharmacies} from "../../data/pharmacies";
 import {IPharmacy} from "../../models/pharmacy";
 import { Router } from '@angular/router';
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-product-card',
@@ -15,10 +16,13 @@ export class ProductCardComponent {
   @Input() myPharmacies: IPharmacy[];
   Chosen: boolean = true;
   showPharmaciesFlag: boolean = false;
-  quantity: number = 1
-  cost: number = 0
+  quantity: number = 1;
+  cost: number = 0;
 
-  constructor(private router: Router) {
+  private userId: number = -1;
+
+  constructor(private userService: UserService, private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.item = items[0];
     this.myPharmacies = pharmacies;
   }
@@ -29,7 +33,7 @@ export class ProductCardComponent {
 
   addItemToCart() {
     this.router.navigate(['/main']);
-    return this.item
+    return this.item;
   }
 
   increaseQuantity() {

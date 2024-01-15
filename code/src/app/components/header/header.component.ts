@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {IUser} from "../../models/user";
 import { Router } from '@angular/router';
 import {MainPageComponent} from "../main-page/main-page.component";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-header',
@@ -10,19 +11,22 @@ import {MainPageComponent} from "../main-page/main-page.component";
 })
 
 export class HeaderComponent {
-  @Input() user: IUser
-  @Output() reloadList = new EventEmitter<boolean>
-  title = 'Header'
-  searchRequest: string = ''
-  onFilter: boolean = true
+  @Input() user: IUser;
+  @Output() reloadList = new EventEmitter<boolean>;
+  title = 'Header';
+  searchRequest: string = '';
+  onFilter: boolean = true;
+  private userId: number = -1;
 
-  constructor(private router: Router) {}
+  constructor(private userService: UserService, private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+  }
 
   searchItems() {
     this.onFilter = true;
-    this.router.navigate(['/main'], { queryParams: {"list": {}}});
-    this.reloadList.emit(true)
-    new MainPageComponent(this.router)
+    this.router.navigate(['/main'], {queryParams: {"list": {}}});
+    this.reloadList.emit(true);
+    new MainPageComponent(this.userService, this.router);
     return this.searchRequest;
   }
 

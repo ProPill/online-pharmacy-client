@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
+import {UserService} from "../../services/user.service";
+import {items} from "../../data/items";
+import {pharmacies} from "../../data/pharmacies";
 
 @Component({
   selector: 'app-registration-page',
@@ -20,7 +23,8 @@ export class RegistrationPageComponent {
   phoneErrorMessage: string;
   repeatPasswordErrorMessage: string;
   PasswordErrorMessage: string;
-  constructor(private router: Router) {}
+
+  constructor(private userService: UserService, private router: Router) {}
 
   register() {
     if (!this.name) {
@@ -35,11 +39,17 @@ export class RegistrationPageComponent {
       this.isValidPassword = false;
       this.PasswordErrorMessage = 'Пароль должен быть от 6 до 16 символов! Можно использовать латиницу и цифры от 0 до 9!';
     }
-    if (this.password != this.repeatPassword){
+    if (this.password != this.repeatPassword) {
       this.isValidRepeatPassword = false;
       this.repeatPasswordErrorMessage = 'Пароли не совпадают! Проверьте введенные данные!';
     }
-    if (this.isValidName && this.isValidPhone && this.isValidPassword &&  this.isValidRepeatPassword ) {
+    if (this.isValidName && this.isValidPhone &&
+      this.isValidPassword && this.isValidRepeatPassword) {
+
+      // openAPi [register user]:
+      const userId = Math.floor(Math.random() * 100) + 1;
+      this.userService.changeUserId(userId);
+
       this.router.navigate(['/main']);
     }
   }
