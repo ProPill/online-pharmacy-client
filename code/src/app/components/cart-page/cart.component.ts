@@ -14,12 +14,14 @@ export class CartComponent {
   @Input() order: IOrder;
   isEmpty: boolean;
 
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     window.addEventListener("load", () => {
-      this.order = this.backendService.getCartPageData(this.userId)
+      if (this.userId != null) {
+        this.order = this.backendService.getCartPageData(this.userId)
+      }
       this.isEmpty = this.checkCart() })
   }
 

@@ -14,7 +14,7 @@ export class AccountOrderCardComponent {
   @Input() order: IOrder;
   title = 'account order card';
 
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));

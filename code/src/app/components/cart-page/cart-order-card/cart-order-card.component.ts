@@ -18,7 +18,7 @@ export class CartOrderCardComponent {
   price: number = 0;
   checkboxChecked: boolean = true;
   hasRecipeItems: boolean = false;
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));

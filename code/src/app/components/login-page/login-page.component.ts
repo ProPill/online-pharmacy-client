@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from "../../services/user.service";
 import { LoginService } from "../../services/login.service";
+import {BackendService} from "../../services/backend.service";
 
 @Component({
   selector: 'app-login-page',
@@ -13,7 +14,8 @@ export class LoginPageComponent {
   password: string = '';
   isValid: boolean = true;
 
-  constructor(private userService: UserService,
+  constructor(private backendService: BackendService,
+              private userService: UserService,
               private router: Router,
               private loginService: LoginService) {}
 
@@ -26,6 +28,7 @@ export class LoginPageComponent {
       if (myMap.get(200) != null) {
         const userId = myMap.get(200);
         this.userService.changeUserId(userId!);
+        this.backendService.getUserInfo(userId!)
         await this.router.navigate(['main']);
       }
       else {
