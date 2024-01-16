@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {pharmacies} from "../../data/pharmacies";
@@ -23,16 +23,18 @@ export class PharmacistPageComponent {
   isStringLengthValidUsage: boolean = true;
   isStringLengthValidDosage: boolean = true;
   isStringLengthValidIngredients: boolean = true;
+  isValidSpecialisation: boolean = true;
+  isValidImageUrl: boolean = true;
   isValidType: boolean = true;
   selectedSpecialization: string = "";
 
   specializations: Map<number, string>;
-  manufacturer: string;
-  name: string ;
-  price: string;
-  usage: string;
-  dosage: string;
-  ingredients: string;
+  manufacturer: string = "ru"
+  name: string = "привет как дела"
+  price: string = "123.05"
+  usage: string = "никак"
+  dosage: string = "никак"
+  ingredients: string = "никак"
   selectedImage: File;
 
   imageErrorMessage: string = '';
@@ -49,11 +51,12 @@ export class PharmacistPageComponent {
   private userId: number = -1;
   private info: string;
 
+  @ViewChild('checkBoxSpecialisation', { static: true }) checkBoxSpecialisation: ElementRef;
+  @ViewChild('checkBoxReceipt', { static: true }) checkBoxReceipt: ElementRef;
+  private typeId: number;
+
   constructor(private userService: UserService, private router: Router, private pharmacistService: PharmacistService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-  }
-
-  ngOnInit(){
     this.specializations = this.pharmacistService.getAllSpecializations();
   }
 
@@ -63,14 +66,31 @@ export class PharmacistPageComponent {
 
   setSpecialisation() {
     this.isSpecialisationOn = !this.isSpecialisationOn;
+    this.isReceipt = false;
+
+    const checkSpecialisation: HTMLInputElement = this.checkBoxSpecialisation.nativeElement;
+    const checkReceipt: HTMLInputElement = this.checkBoxReceipt.nativeElement;
+    checkReceipt.checked = this.isReceipt
+    checkSpecialisation.checked = this.isSpecialisationOn;
+
+    if (!this.isSpecialisationOn) {
+      this.isValidSpecialisation = true;
+    }
   }
 
   setReceipt() {
     this.isReceipt = !this.isReceipt;
+    this.isSpecialisationOn = false;
+
+    const checkSpecialisation: HTMLInputElement = this.checkBoxSpecialisation.nativeElement;
+    const checkReceipt: HTMLInputElement = this.checkBoxReceipt.nativeElement;
+    checkReceipt.checked = this.isReceipt
+    checkSpecialisation.checked = this.isSpecialisationOn;
   }
 
   handleSpecializationClick(specialization: string) {
     this.selectedSpecialization = specialization;
+    this.isValidSpecialisation = true;
     this.toggleList();
   }
 
@@ -78,17 +98,15 @@ export class PharmacistPageComponent {
     if (!this.name) {
       this.isValidName = false;
       this.NAME_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    } else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.name) || this.name.length > 100) {
+    } else if (!/^[a-zA-Zа-яА-Я0-9% \-]+$/i.test(this.name) || this.name.length > 100) {
       this.isValidName = false;
     }
-
     if (!this.manufacturer) {
       this.isValidManufacturer = false;
       this.MANUFACTURER_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
-    } else if (!/^[a-zA-Zа-яА-Я0-9%\-]+$/i.test(this.manufacturer)) {
+    } else if (!/^[a-zA-Zа-яА-Я0-9% \-]+$/i.test(this.manufacturer)) {
       this.isValidManufacturer = false;
     }
-
     if (!this.price) {
       this.isValidPrice = false;
       this.PRICE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
@@ -100,35 +118,60 @@ export class PharmacistPageComponent {
         this.isValidPrice = false;
       }
     }
-
     if (!this.usage) {
       this.isStringLengthValidUsage = false;
       this.USAGE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     } else if (this.usage.length > 500) {
       this.isStringLengthValidUsage = false;
     }
-
     if (!this.dosage) {
       this.isStringLengthValidDosage = false;
       this.DOSAGE_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     } else if (this.dosage.length > 500) {
       this.isStringLengthValidDosage = false;
     }
-
     if (!this.ingredients) {
       this.isStringLengthValidIngredients = false;
       this.INGREDIENTS_ERROR_MESSAGE = this.EMPTY_FIELD_ERROR;
     } else if (this.ingredients.length > 500) {
       this.isStringLengthValidIngredients = false;
     }
-
+    if (!this.selectedImage) {
+      this.imageErrorMessage = "Загрузить изображение - обязательно";
+      this.isValidImageUrl = false;
+    }
     if (!this.isValidName || !this.isValidManufacturer || !this.isValidPrice ||
       !this.isValidUsage || !this.isValidDosage || !this.isValidIngredients ||
       !this.isStringLengthValidUsage || !this.isStringLengthValidDosage ||
-      !this.isStringLengthValidIngredients || !this.isValidType) {
+      !this.isStringLengthValidIngredients || !this.isValidType || !this.isValidImageUrl) {
       return;
     }
 
+    // preparation for endpoint
+    this.info = this.usage + this.dosage + this.ingredients;
+
+    let speciality_id = null;
+    if (this.isSpecialisationOn){
+      this.typeId = this.pharmacistService.SPECIAL_TYPE;
+      speciality_id = this.getSpecialityByName();
+      if (speciality_id == null){
+        this.isValidSpecialisation = false;
+        return;
+      }
+    }
+    else if (this.isReceipt) {
+      this.typeId = this.pharmacistService.RECEIPT_TYPE;
+    }
+    else {
+      this.typeId = this.pharmacistService.COMMON_TYPE;
+    }
+
+    if (this.pharmacistService.addNewProduct(this.name, this.price, this.info, this.manufacturer, this.selectedImage, this.typeId, speciality_id)){
+      this.router.navigate(['/main']);
+    }
+  }
+
+  private getSpecialityByName() {
     let speciality_id = null;
     for (let [key, value] of this.specializations.entries()) {
       if (this.selectedSpecialization === value) {
@@ -136,14 +179,7 @@ export class PharmacistPageComponent {
         break;
       }
     }
-
-    this.info = this.usage + this.dosage + this.ingredients;
-
-    this.pharmacistService.addNewProduct(this.name, this.price, this.info, this.manufacturer, this.selectedImage, -3, speciality_id);
-
-    // adding endpoint
-    this.router.navigate(['/main']);
-
+    return speciality_id;
   }
 
   refresh() {
@@ -154,6 +190,8 @@ export class PharmacistPageComponent {
     this.isStringLengthValidUsage = true;
     this.isStringLengthValidDosage = true;
     this.isStringLengthValidIngredients = true;
+    this.isValidImageUrl = true;
+    this.isValidSpecialisation = true;
 
     this.NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -. Максимальное количество символов: 100."
     this.MANUFACTURER_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -, "
@@ -172,16 +210,19 @@ export class PharmacistPageComponent {
       if (!allowedTypes.includes(file.type)) {
         this.imageErrorMessage = 'Неподдерживаемый тип изображения';
         event.target.value = null;
+        this.isValidImageUrl = false;
         return;
       }
 
       if (file.size > maxSizeInBytes) {
-        event.target.value = null;
         this.imageErrorMessage = 'Размер данного изображения больше 5 Мб';
+        event.target.value = null;
+        this.isValidImageUrl = false;
         return;
       }
 
       this.selectedImage = event.target.files[0];
+      this.isValidImageUrl = true;
 
     }
   }

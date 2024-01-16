@@ -35,12 +35,13 @@
   <button class="button-color" (click)="onAddReceipt()">Добавить товар</button>
   </div>
   <div class="form-editor__right">
+    <strong *ngIf="!isValidSpecialisation" class="textErrorColor">Нужно выбрать специальность!</strong>
     <div class="checkbox-option">
-      <input type="checkbox" class="custom-checkbox" id="checkbox-receipt" (click)="setReceipt()"/>
+      <input #checkBoxReceipt type="checkbox" class="custom-checkbox" id="checkbox-receipt" (click)="setReceipt()"/>
       <label for="checkbox-receipt" class="text-general">По рецепту</label>
     </div>
     <div class="checkbox-option">
-      <input type="checkbox" class="custom-checkbox" id="checkbox-spec" (click)="setSpecialisation()">
+      <input #checkBoxSpecialisation type="checkbox" class="custom-checkbox" id="checkbox-spec" (click)="setSpecialisation()">
       <label for="checkbox-spec" class="text-general">Специальный</label>
     </div>
     <div class="specialisation" *ngIf="isSpecialisationOn">
@@ -62,7 +63,7 @@
         <input type="file" id="image-upload" (change)="handleImageUpload($event)">
       </div>
       <strong class="search-text upload-image__text"> Размер изображения не превышает 5 Мб</strong>
-      <strong class="search-text upload-image__text" [style.color]="imageErrorColor">{{ imageErrorMessage }}</strong>
+      <strong class="search-text upload-image__text" *ngIf="!isValidImageUrl" [style.color]="imageErrorColor">{{ imageErrorMessage }}</strong>
     </div>
   </div>
 </div>
