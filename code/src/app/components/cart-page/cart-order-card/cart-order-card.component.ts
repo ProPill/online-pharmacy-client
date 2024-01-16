@@ -4,6 +4,7 @@ import {IItemQuantity} from "../../../models/item_quantity";
 import {items} from "../../../data/items";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
+import {BackendService} from "../../../services/backend.service";
 
 @Component({
   selector: 'app-cart-order-card',
@@ -19,7 +20,7 @@ export class CartOrderCardComponent {
   hasRecipeItems: boolean = false;
   private userId: number = -1;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     window.addEventListener('load', () => {
       this.hasRecipeOnlyItems();

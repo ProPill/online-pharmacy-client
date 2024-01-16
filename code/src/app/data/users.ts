@@ -5,21 +5,18 @@ export const users: IUser[] = [
     id: 0,
     name: 'Ivanova Maria Vladimirovna',
     phone: 89338492342,
-    isDoctor: true,
-    isAdmin: false
+    roleId: -2
   },
   {
     id: 1,
     name: 'Ivanova Maria Vladimirovna',
     phone: 89338492342,
-    isDoctor: false,
-    isAdmin: false
+    roleId: -1
   },
   {
     id: 2,
     name: 'Ivanova Maria Vladimirovna',
     phone: 89338492342,
-    isDoctor: false,
-    isAdmin: true
+    roleId: -3
   },
 ]
