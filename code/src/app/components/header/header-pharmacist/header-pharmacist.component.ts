@@ -11,23 +11,22 @@ import {BackendService} from "../../../services/backend.service";
 export class HeaderPharmacistComponent {
   @Input() onFilter: boolean;
   @Output() onFilterChange = new EventEmitter<boolean>();
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value)
   }
 
   onOpenPharmacistPage() {
-    this.onFilter = false;
-    this.changeFilterStatus();
+    this.backendService.hideFilter()
     this.router.navigate(['/pharmacist']);
   }
 
   onLogOut() {
-    this.onFilter = true;
-    this.changeFilterStatus();
+    this.backendService.showFilter()
     this.router.navigate(['/main']);
-    this.backendService.logout(this.userId);
+    this.backendService.logout();
     this.userService.changeUserId(0)
   }
 

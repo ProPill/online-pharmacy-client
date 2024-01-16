@@ -11,24 +11,28 @@ import {BackendService} from "../../services/backend.service";
 })
 
 export class HeaderComponent {
-  @Input() user: IUser;
+  @Input() user: IUser | null;
   title = 'Header';
   searchRequest: string = '';
   onFilter: boolean = true;
-  private userId: number = -1;
+  private userId: number | null;
   searchStatus: boolean
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
+    if (this.userId != null) {
+      this.backendService.getUserInfo(this.userId)
+    }
   }
 
   ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentUser.subscribe((value) => this.user = value);
     this.backendService.currentSearchStatus.subscribe((value) => this.searchStatus = value)
+    this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value)
   }
 
   searchItems() {
-    this.changeFilterStatus(true)
+    this.backendService.showFilter()
     document.querySelectorAll("[name='searchRequest']").forEach(element => {
       let tmp = element.getAttribute("ng-reflect-model");
       if (tmp != null) {
@@ -36,38 +40,46 @@ export class HeaderComponent {
       }
     });
     this.backendService.searchItem(this.searchRequest)
-    console.log(this.searchStatus)
-    // if (this.searchStatus) {
-    //   this.router.navigate(['/main'], {state: { searchRequest: this.searchRequest } });}
-    // else {
-    //   this.router.navigate(['/item-not-found'])
-    // }
+    this.router.navigate(['/main'])
   }
 
   onMain() {
-    this.changeFilterStatus(true)
+    this.backendService.showFilter()
     this.router.navigate(['/main']);
     this.reloadList(true)
   }
 
   changeFilterStatus(status: boolean) {
-    this.onFilter = status;
+    if (status)
+    {
+      this.backendService.showFilter()
+    }
+    else this.backendService.hideFilter()
   }
 
   isAdmin() {
-    return this.user.roleId == -3;
+    if (this.user != null) {
+      return this.user.roleId == -3;
+    }
+    else return false
   }
 
   isDoctor() {
-    return this.user.roleId == -2;
+    if (this.user != null) {
+      return this.user.roleId == -2;
+    }
+    else return false
   }
 
   isNormal() {
-    return this.user.roleId == -1;
+    if (this.user != null) {
+      return this.user.roleId == -1;
+    }
+    else return false
   }
 
-  notNull() {
-    return this.user.id != 0
+  userNotNull() {
+    return this.userId != null && this.user != null
   }
 
   reloadList(val: boolean) {

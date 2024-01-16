@@ -14,8 +14,8 @@ import {IUser} from "../../models/user";
 export class MainPageComponent {
   items: IItem[];
   @Output() itemsToOrder: IItemQuantity[];
-  private userId: number = -1;
-  user: IUser
+  private userId: number | null;
+  user: IUser | null
   private searchRequest: string | null;
   private typeId: number | null
   firstLoad: boolean = true
@@ -29,6 +29,7 @@ export class MainPageComponent {
     if (tmp != null) {
       this.typeId = parseInt(tmp)
     }
+    this.backendService.showFilter()
     this.loadList(this.searchRequest, this.typeId)
   }
 
@@ -36,27 +37,43 @@ export class MainPageComponent {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentItems.subscribe((list) => (this.items = list))
     this.backendService.currentUser.subscribe((value) => this.user = value)
-    this.firstLoad = false
   }
 
   listIsEmpty() {
-    return this.items.length == 0;
+    if (this.firstLoad) {
+      // console.log('first load')
+      this.firstLoad = !this.firstLoad
+      return false;
+    }
+    else {
+      // console.log('else')
+      return this.items.length == 0
+    }
   }
 
   isAdmin() {
-    return this.user.roleId == -3;
+    if (this.user != null) {
+      return this.user.roleId == -3;
+    }
+    else return false
   }
 
   isDoctor() {
-    return this.user.roleId == -2;
+    if (this.user != null) {
+      return this.user.roleId == -2;
+    }
+    else return false
   }
 
   isNormal() {
-    return this.user.roleId == -1;
+    if (this.user != null) {
+      return this.user.roleId == -1;
+    }
+    else return false
   }
 
   notNull() {
-    return (this.user != undefined) && this.user.id != 0
+    return (this.user != null)
   }
 
   loadList(searchRequest: string | null, typeId: number | null) {

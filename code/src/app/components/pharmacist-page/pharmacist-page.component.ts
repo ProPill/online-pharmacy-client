@@ -45,7 +45,7 @@ export class PharmacistPageComponent {
   INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым"
 
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));

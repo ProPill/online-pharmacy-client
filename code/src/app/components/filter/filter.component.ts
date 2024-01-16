@@ -9,7 +9,7 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {
-  private userId: number = -1;
+  private userId: number | null;
   title = 'Filter'
   selectedFilter = '';
   selectedFilterId: number = 0;

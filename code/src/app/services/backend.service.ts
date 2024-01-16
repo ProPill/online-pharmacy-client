@@ -7,6 +7,7 @@ import {IOrder} from "../models/order";
 import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {items} from "../data/items";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +19,29 @@ export class BackendService {
   currentItems = this.itemsSource.asObservable()
   defaultItems = this.defaultItemsSource
 
-  private userSource = new BehaviorSubject<IUser>({id: 0, name: "", phone: 0, roleId: 0});
+  private userSource = new BehaviorSubject<IUser | null>({id: 0, name: "", phone: 0, roleId: 0});
   currentUser = this.userSource.asObservable()
+  currentUserId: number | null
 
   private searchStatusSource = new BehaviorSubject<boolean>(false);
   currentSearchStatus = this.searchStatusSource.asObservable()
 
+  private filterSource = new BehaviorSubject<boolean>(true);
+  currentFilterStatus = this.filterSource.asObservable()
+
   items: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserService) {
+    this.userService.currentUserId.subscribe((userId) => (this.currentUserId = userId));
+
+  }
+
+  showFilter() {
+    this.filterSource.next(true)
+  }
+
+  hideFilter() {
+    this.filterSource.next(false)
   }
 
   setSearchStatus(status: boolean) {
@@ -41,12 +56,18 @@ export class BackendService {
     this.itemsSource.next(list);
   }
 
-  changeUser(user: IUser) {
+  changeUser(user: IUser | null) {
     this.userSource.next(user);
   }
 
-  logout(userId: number) {
-    return this.http.get(this.baseUrl + '/logout', {params: {["user_id"]: userId}});
+  logout() {
+    if (this.currentUserId != null) {
+      this.http.get(this.baseUrl + '/logout', {params: {["user_id"]: this.currentUserId}})
+    }
+    this.changeUser(null)
+    this.userService.clearUserId()
+    this.getNormalUserItemsList()
+    return true;
   }
 
   getSpecialItemsList() {
@@ -98,11 +119,11 @@ export class BackendService {
       const item = data[i];
 
       transformedItems.push({
-        id: item.itemId,
+        id: item.id,
         title: item.name,
         manufacturer: item.manufacturer,
         recipeOnly: item.type.id == -2,
-        special: item.speciality != null,
+        special: item.speciality_id != null,
         cost: item.price,
         image: item.picture_url
       } as IItem);
@@ -135,7 +156,6 @@ export class BackendService {
         this.searchStatusSource.next(value.length != 0);
         console.log("val", value)
       })
-    console.log(this.searchStatusSource.getValue())
     return this.searchStatusSource.getValue()
   }
 
