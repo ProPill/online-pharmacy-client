@@ -22,6 +22,7 @@ import { HeaderAuthorizedComponent } from './components/header/header-authorized
 import { HeaderPharmacistComponent } from './components/header/header-pharmacist/header-pharmacist.component';
 import { HeaderUnauthorizedComponent } from './components/header/header-unauthorized/header-unauthorized.component';
 import { OrderPageComponent } from "./components/order-page/order-page.component";
+import { ItemNotFoundComponent } from './components/main-page/item-not-found/item-not-found.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { OrderPageComponent } from "./components/order-page/order-page.component
     LoginPageComponent, MainPageComponent, OrderPageComponent,
     PharmacistPageComponent, ItemComponent, RegistrationPageComponent,
     ProductCardComponent, CartItemCardComponent, CartOrderCardComponent, AccountOrderCardComponent,
-    HeaderAuthorizedComponent, HeaderPharmacistComponent, HeaderUnauthorizedComponent
+    HeaderAuthorizedComponent, HeaderPharmacistComponent, HeaderUnauthorizedComponent, ItemNotFoundComponent
   ],
   imports: [
     BrowserModule,
