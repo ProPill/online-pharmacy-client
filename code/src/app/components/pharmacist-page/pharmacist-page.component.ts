@@ -48,8 +48,8 @@ export class PharmacistPageComponent {
   INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500";
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
 
-  private userId: number = -1;
   private info: string;
+  private userId: number | null;
 
   @ViewChild('checkBoxSpecialisation', { static: true }) checkBoxSpecialisation: ElementRef;
   @ViewChild('checkBoxReceipt', { static: true }) checkBoxReceipt: ElementRef;

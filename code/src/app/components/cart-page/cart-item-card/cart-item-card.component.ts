@@ -4,6 +4,7 @@ import {IItemQuantity} from "../../../models/item_quantity";
 import {items} from "../../../data/items";
 import {UserService} from "../../../services/user.service";
 import {Router} from "@angular/router";
+import {BackendService} from "../../../services/backend.service";
 
 @Component({
   selector: 'app-cart-item-card',
@@ -18,10 +19,12 @@ export class CartItemCardComponent {
   quantity: number = 1;
   cost: number = 0;
 
-  private userId: number = -1;
+  private userId: number | null;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    // this.item = this.backendService.getItemData(this.item.id); ждет своего часа
+    this.quantity = this.itemQuantuty.itemQuantity;
   }
 
   getTitle() {
