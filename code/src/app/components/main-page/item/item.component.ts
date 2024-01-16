@@ -3,6 +3,7 @@ import {IItem} from "../../../models/item";
 import {IItemQuantity} from "../../../models/item_quantity";
 import { Router } from '@angular/router';
 import {UserService} from "../../../services/user.service";
+import {BackendService} from "../../../services/backend.service";
 
 @Component({
   selector: 'app-item',
@@ -20,7 +21,7 @@ export class ItemComponent {
 
   itemsSafe: Map<number, number>;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private backendService: BackendService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.userService.itemsObservable.subscribe((itemsSafe) => (this.itemsSafe = itemsSafe));
     this.userService.itemIdObservable.subscribe((itemId) => (this.itemId = itemId));
@@ -45,7 +46,10 @@ export class ItemComponent {
 
   addToCart() {
     this.quantityIsZero = false;
-    this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly}
+    this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly};
+    if (this.quantity > 0) {
+      this.backendService.addToCartItem(this.userId, this.itemId, this.quantity);
+    }
   }
 
   onProductCardPage() {

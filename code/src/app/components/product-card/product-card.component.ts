@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {IItem} from "../../models/item";
-import {pharmacies} from "../../data/pharmacies";
 import {IPharmacy} from "../../models/pharmacy";
 import { Router } from '@angular/router';
 import {UserService} from "../../services/user.service";
@@ -13,7 +12,7 @@ import {BackendService} from "../../services/backend.service";
 })
 export class ProductCardComponent {
   @Input() item: IItem;
-  @Input() myPharmacies: IPharmacy[];
+  pharmacies: IPharmacy[];
   Chosen: boolean = true;
   showPharmaciesFlag: boolean = false;
   quantity: number = 1;
@@ -42,7 +41,8 @@ export class ProductCardComponent {
 
     this.quantity = <number>this.itemsSafe.get(this.itemId);
     if (this.quantity == null) this.quantity=1;
-    this.myPharmacies = pharmacies;
+    this.pharmacies = this.backendService.getAllPharmaciesById(this.itemId);
+    console.log(this.pharmacies);
   }
 
   showPharmacies() {
@@ -50,8 +50,10 @@ export class ProductCardComponent {
   }
 
   addItemToCart() {
-    this.router.navigate(['/main']);
-    return this.item;
+    if (this.quantity > 0) {
+      this.backendService.addToCartItem(this.userId, this.itemId, this.quantity);
+      this.router.navigate(['/main']);
+    }
   }
 
   increaseQuantity() {

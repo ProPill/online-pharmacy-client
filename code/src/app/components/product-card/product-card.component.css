@@ -184,11 +184,13 @@
 .list-item--bottom-left {
   grid-area: bottom-left;
   margin-left: 1em;
+  font-size: 22px;
 }
 
 .list-item--bottom-right {
   grid-area: bottom-right;
   margin-left: 1em;
+  font-size: 22px;
 }
 
 .card {
