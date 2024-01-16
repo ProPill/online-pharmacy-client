@@ -9,7 +9,6 @@ import {UserService} from "../../../services/user.service";
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css']
 })
-
 export class ItemComponent {
   @Input() item: IItem;
   title = 'ItemComponent';
@@ -17,14 +16,20 @@ export class ItemComponent {
   quantity = 0;
   @Output() itemQuantity: IItemQuantity;
   private userId: number = -1;
+  private itemId: number = -1;
+
+  itemsSafe: Map<number, number>;
 
   constructor(private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.userService.itemsObservable.subscribe((itemsSafe) => (this.itemsSafe = itemsSafe));
+    this.userService.itemIdObservable.subscribe((itemId) => (this.itemId = itemId));
   }
 
   increaseQuantity() {
     this.quantity++;
     this.quantityIsZero = false;
+    this.userService.changeItem(this.item.id, this.quantity);
   }
 
   decreaseQuantity() {
@@ -35,6 +40,7 @@ export class ItemComponent {
     {
       this.quantityIsZero = true;
     }
+    this.userService.changeItem(this.item.id, this.quantity);
   }
 
   addToCart() {
@@ -43,6 +49,8 @@ export class ItemComponent {
   }
 
   onProductCardPage() {
+    this.itemId = this.item.id;
+    this.userService.changeItemId(this.itemId);
     this.router.navigate(["/product-page"]);
   }
 }

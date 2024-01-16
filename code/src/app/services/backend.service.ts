@@ -98,7 +98,7 @@ export class BackendService {
       const item = data[i];
 
       transformedItems.push({
-        id: item.itemId,
+        id: item.id,
         title: item.name,
         manufacturer: item.manufacturer,
         recipeOnly: item.type.id == -2,
