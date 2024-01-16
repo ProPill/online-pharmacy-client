@@ -38,6 +38,10 @@ export class BackendService {
 
   showFilter() {
     this.filterSource.next(true)
+    const buttons = document.querySelectorAll('.button-color');
+    buttons.forEach(button => {
+      button.classList.remove("active")
+    });
   }
 
   hideFilter() {
