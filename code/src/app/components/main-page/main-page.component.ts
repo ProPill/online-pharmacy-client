@@ -4,6 +4,7 @@ import {IItem} from "../../models/item";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {BackendService} from "../../services/backend.service";
+import {IUser} from "../../models/user";
 
 @Component({
   selector: 'app-main-page',
@@ -14,6 +15,7 @@ export class MainPageComponent {
   items: IItem[];
   @Output() itemsToOrder: IItemQuantity[];
   private userId: number = -1;
+  user: IUser
   private searchRequest: string | null;
   private typeId: number | null
 
@@ -21,26 +23,19 @@ export class MainPageComponent {
               private userService: UserService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
-    this.items = [];
-    this.items = this.backendService.getNormalUserItemsList();
+    console.log("constructor")
+    this.searchRequest = this.activatedRoute.snapshot.paramMap.get('searchRequest');
     let tmp = this.activatedRoute.snapshot.paramMap.get('typeId')
     if (tmp != null) {
-      this.typeId = parseInt(tmp);
-      this.items = this.backendService.getItemsByType(this.typeId);
+      this.typeId = parseInt(tmp)
     }
-
-    window.addEventListener('load', () => {
-      this.searchRequest = this.activatedRoute.snapshot.paramMap.get('searchRequest');
-      let tmp = this.activatedRoute.snapshot.paramMap.get('typeId')
-      if (tmp != null) {
-        this.typeId = parseInt(tmp)
-      }
-      this.loadList(this.searchRequest, this.typeId)
-    });
+    this.loadList(this.searchRequest, this.typeId)
   }
 
   ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentItems.subscribe((list) => (this.items = list))
+    this.backendService.currentUser.subscribe((value) => this.user = value)
   }
 
   listIsEmpty() {
@@ -48,34 +43,43 @@ export class MainPageComponent {
   }
 
   isAdmin() {
-    return this.backendService.getUserInfo(this.userId).roleId == -3;
+    return this.user.roleId == -3;
   }
 
   isDoctor() {
-    return this.backendService.getUserInfo(this.userId).roleId == -2;
+    return this.user.roleId == -2;
   }
 
   isNormal() {
-    return this.backendService.getUserInfo(this.userId).roleId == -1;
+    return this.user.roleId == -1;
+  }
+
+  notNull() {
+    return (this.user != undefined) && this.user.id != 0
   }
 
   loadList(searchRequest: string | null, typeId: number | null) {
     if (searchRequest != null) {
-      this.items = this.backendService.searchItem(searchRequest);
+      this.backendService.searchItem(searchRequest)
     }
     else if (typeId != null) {
-      this.items = this.backendService.getItemsByType(typeId);
+      this.backendService.getItemsByType(typeId)
     }
     else {
-      if (this.isAdmin()) {
-        this.items = this.backendService.getAllItemsList()
-      }
-      else if (this.isDoctor()) {
-        this.items = this.backendService.getDoctorItemsList()
+      if (this.notNull()) {
+        if (this.isAdmin()) {
+          this.backendService.getAllItemsList(true)
+        }
+        else if (this.isDoctor()) {
+          this.backendService.getDoctorItemsList(true)
+        }
+        else {
+          this.backendService.getNormalUserItemsList(true)
+        }
       }
       else {
-        this.items = this.backendService.getNormalUserItemsList()
-      }
+        this.backendService.getNormalUserItemsList(true)
       }
     }
+  }
 }

@@ -17,21 +17,29 @@
 
     <button class="button-color search-button" (click)="searchItems()" tabindex="0">Искать</button>
 
-    <div *ngIf="this.isNormal() || this.isDoctor() else elseBlock;">
+    <div *ngIf="this.notNull(); else elseBlock">
+      <div *ngIf="this.isNormal() || this.isDoctor() else elseBlock;">
       <app-header-authorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-authorized>
     </div>
-    <ng-template #elseBlock>
-      <div *ngIf="this.isAdmin(); else elseBlock">
-        <app-header-pharmacist (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-pharmacist>
-      </div>
+      <ng-template #elseBlock>
+        <div *ngIf="this.isAdmin(); else elseBlock">
+          <app-header-pharmacist (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-pharmacist>
+        </div>
+      </ng-template>
       <ng-template #elseBlock>
         <div>
           <app-header-unauthorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-unauthorized>
         </div>
       </ng-template>
+    </div>
+    <ng-template #elseBlock>
+      <div>
+        <app-header-unauthorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-unauthorized>
+      </div>
     </ng-template>
+
   </div>
   <div *ngIf="onFilter">
-    <app-filter [hasAccess]="this.isDoctor() || this.isAdmin()"></app-filter>
+    <app-filter (onReloadList)="reloadList($event)" [hasAccess]="this.isDoctor() || this.isAdmin()"></app-filter>
   </div>
 </div>

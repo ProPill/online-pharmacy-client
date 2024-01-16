@@ -12,15 +12,17 @@ import {BackendService} from "../../services/backend.service";
 
 export class HeaderComponent {
   @Input() user: IUser;
-  @Output() reloadList = new EventEmitter<boolean>;
   title = 'Header';
   searchRequest: string = '';
   onFilter: boolean = true;
   private userId: number = -1;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
+  }
+
+  ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.user = this.backendService.getUserInfo(this.userId)
+    this.backendService.currentUser.subscribe((value) => this.user = value)
   }
 
   searchItems() {
@@ -31,6 +33,7 @@ export class HeaderComponent {
   onMain() {
     this.changeFilterStatus(true)
     this.router.navigate(['/main']);
+    this.reloadList(true)
   }
 
   changeFilterStatus(status: boolean) {
@@ -48,6 +51,14 @@ export class HeaderComponent {
   isNormal() {
     return this.user.roleId == -1;
   }
+
+  notNull() {
+    return this.user.id != 0
+  }
+
+  reloadList(val: boolean) {
+    this.backendService.defaultItems
+      .subscribe((items) =>
+      this.backendService.changeItems(items))
+  }
 }
-
-

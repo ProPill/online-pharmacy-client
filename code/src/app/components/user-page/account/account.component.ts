@@ -19,8 +19,11 @@ export class AccountComponent {
   private userId: number = -1;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
-    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.user = this.backendService.getUserInfo(this.userId)
     // эндпоинт по выдаче всех заказов юзера
+  }
+
+  ngOnInit(): void {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentUser.subscribe((value) => this.user = value)
   }
 }
