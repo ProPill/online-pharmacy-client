@@ -29,12 +29,12 @@ export class PharmacistPageComponent {
   selectedSpecialization: string = "";
 
   specializations: Map<number, string>;
-  manufacturer: string = "ru"
-  name: string = "привет как дела"
-  price: string = "123.05"
-  usage: string = "никак"
-  dosage: string = "никак"
-  ingredients: string = "никак"
+  manufacturer: string;
+  name: string;
+  price: string;
+  usage: string;
+  dosage: string;
+  ingredients: string;
   selectedImage: File;
 
   imageErrorMessage: string = '';
