@@ -49,7 +49,7 @@
         <img class="img-arrow" src="assets/pictures/arrow-up.png" (click)="toggleList()">
       </div>
       <ul class="specialization__list" *ngIf="isListHidden">
-          <li class="specialization__list__item" *ngFor="let specialization of specializations" >
+          <li class="specialization__list__item" *ngFor="let specialization of specializations.values()" >
             <div class="list-item" (click)="handleSpecializationClick(specialization)" >{{ specialization }}</div>
           </li>
         </ul>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {pharmacies} from "../../data/pharmacies";
+import {PharmacistService} from "../../services/pharmacist.service";
 
 @Component({
   selector: 'app-pharmacist-page',
@@ -23,9 +24,9 @@ export class PharmacistPageComponent {
   isStringLengthValidDosage: boolean = true;
   isStringLengthValidIngredients: boolean = true;
   isValidType: boolean = true;
-  selectedSpecialization = "";
+  selectedSpecialization: string = "";
 
-  specializations = ['Специализация 1', 'Специализация 2', 'Специализация 3'];
+  specializations: Map<number, string> = new Map<number, string>();
   manufacturer: string;
   name: string;
   price: string;
@@ -37,19 +38,18 @@ export class PharmacistPageComponent {
   imageErrorMessage: string = '';
   imageErrorColor: string = '#ff0000';
 
-  NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -. Максимальное количество символов: 100."
-  MANUFACTURER_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -, "
-  PRICE_ERROR_MESSAGE = "Цена: положительное число"
-  USAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
-  DOSAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
-  INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500"
-  EMPTY_FIELD_ERROR = "Поле не должно быть пустым"
+  NAME_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -. Максимальное количество символов: 100.";
+  MANUFACTURER_ERROR_MESSAGE = "Недопустимы все символы, кроме кириллицы, латиницы, а также цифр и %, -, ";
+  PRICE_ERROR_MESSAGE = "Цена: положительное число";
+  USAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500";
+  DOSAGE_ERROR_MESSAGE = "Превышено максимальное число символов: 500";
+  INGREDIENTS_ERROR_MESSAGE = "Превышено максимальное число символов: 500";
+  EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
 
   private userId: number = -1;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private pharmacistService: PharmacistService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.selectedSpecialization = this.specializations[0];
   }
 
   toggleList() {
@@ -58,6 +58,12 @@ export class PharmacistPageComponent {
 
   setSpecialisation() {
     this.isSpecialisationOn = !this.isSpecialisationOn;
+    if (this.isSpecialisationOn) {
+      this.specializations = this.pharmacistService.getAllSpecializations();
+    }
+    else {
+      this.specializations = new Map<number, string>();
+    }
   }
 
   setReceipt() {
