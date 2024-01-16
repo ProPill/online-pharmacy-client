@@ -19,7 +19,7 @@ export class BackendService {
   currentItems = this.itemsSource.asObservable()
   defaultItems = this.defaultItemsSource
 
-  private userSource = new BehaviorSubject<IUser | null>({id: 0, name: "", phone: 0, roleId: 0});
+  private userSource = new BehaviorSubject<IUser | null>(null);
   currentUser = this.userSource.asObservable()
   currentUserId: number | null
 
@@ -76,8 +76,8 @@ export class BackendService {
       .subscribe((value) => this.changeItems(value))
   }
 
-  getSpecialCategoryItemsList() {
-    return this.http.get<IItem[]>(this.baseUrl + '/item/type/category')
+  getSpecialCategoryItemsList(specialityId: number) {
+    return this.http.get<IItem[]>(this.baseUrl + '/item/type/category', {params: {["speciality_id"]: specialityId}})
       .pipe(map((value) => (this.transformList(value))))
       .subscribe((value) => this.changeItems(value))
   }
@@ -199,10 +199,11 @@ export class BackendService {
 
   getUser(data: any) {
     return {
-          id: data.id,
-          name: data.full_name,
-          phone: data.phone,
-          roleId: data.role.id
+      id: data.id,
+      name: data.full_name,
+      phone: data.phone,
+      roleId: data.role.id,
+      specialityId: data.speciality_id
         } as IUser
   }
 

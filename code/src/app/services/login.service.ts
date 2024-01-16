@@ -15,7 +15,8 @@ export class LoginService {
       id: data.id,
       name: data.full_name,
       phone: data.phone,
-      roleId: data.role.id
+      roleId: data.role.id,
+      specialityId: data.speciality_id
     };
     return user;
   }

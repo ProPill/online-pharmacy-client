@@ -77,13 +77,7 @@ export class MainPageComponent {
   }
 
   loadList(searchRequest: string | null, typeId: number | null) {
-    if (searchRequest != null) {
-      this.backendService.searchItem(searchRequest);
-      // if (this.items.length == 0) {
-      //   this.router.navigate(['/item-not-found'])
-      // }
-    }
-    else if (typeId != null) {
+    if (typeId != null) {
       this.backendService.getItemsByType(typeId)
     }
     else {
