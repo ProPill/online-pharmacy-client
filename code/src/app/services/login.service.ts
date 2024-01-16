@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {IItem} from "../models/item";
 import { HttpClient } from '@angular/common/http';
-import {IUser} from "../models/user";
+import { IUser } from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -11,33 +10,29 @@ export class LoginService {
   constructor(private http: HttpClient) {
   }
 
-  // transformList(data: any) {
-  //   transformedItems.push({
-  //     id: item.itemId,
-  //     title: item.name,
-  //     manufacturer: item.manufacturer,
-  //     recipeOnly: item.type.id == -2,
-  //     special: item.speciality != null,
-  //     cost: item.price,
-  //     image: item.picture_url
-  //   } as IItem);
-  //   return transformedItems;
-  // }
+  transformUser(data: any) {
+    const user: IUser = {
+      id: data.id,
+      name: data.full_name,
+      phone: data.phone,
+      roleId: data.role.id
+    };
+    return user;
+  }
 
-  login(username: string, password: string): Map <number, number> {
-    let map = new Map <number, number> ();
-    // @ts-ignore
-    this.http.post<IUser>(this.baseUrl + '/accounts/login?phone=' + username + '&password=' + password).subscribe(
-      data => {
-        console.log(data);
-        // this.user = this.transformUser(data);
-      },
-      error => {
-        map.set(1,400);
-        console.error('Error fetching items:', error);
-      }
-    );
-    map.set(1,200);
+  async login(username: string, password: string): Promise<Map<number, number>> {
+    const map = new Map<number, number>();
+    try {
+      // @ts-ignore
+      const data = await this.http.post<IUser>(this.baseUrl + '/accounts/login?phone=' +
+        '%2B' + username.substring(1) + '&password=' + password).toPromise();
+      const user = this.transformUser(data);
+      map.set(200, user.id);
+    } catch (error) {
+      map.set(400, 0);
+      console.error('Error fetching items:', error);
+    }
+    console.log(map);
     return map;
   }
 }

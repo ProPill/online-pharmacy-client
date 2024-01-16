@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {UserService} from "../../services/user.service";
-import {LoginService} from "../../services/login.service";
+import { UserService } from "../../services/user.service";
+import { LoginService } from "../../services/login.service";
 
 @Component({
   selector: 'app-login-page',
@@ -17,30 +17,20 @@ export class LoginPageComponent {
               private router: Router,
               private loginService: LoginService) {}
 
-  fixUsername() {
+  async onLogin() {
     if (this.username[0] != '+') {
       this.isValid = false;
     }
     else {
-      this.username = '%2B' + this.username.substring(1);
-      this.isValid = true;
-    }
-  }
-
-  onLogin() {
-    this.fixUsername();
-    if (this.isValid) {
-      let myMap = this.loginService.login(this.username, this.password);
-      if (myMap.get(1) == 200) {
-        const userId = myMap.get(2);
-        // this.userService.changeUserId(userId);
-        // this.router.navigate(['main']);
-        console.log(myMap)
+      const myMap = await this.loginService.login(this.username, this.password);
+      if (myMap.get(200) != null) {
+        const userId = myMap.get(200);
+        this.userService.changeUserId(userId!);
+        await this.router.navigate(['main']);
       }
-      else if (myMap.get(1) == 400) {
+      else {
         this.isValid = false;
       }
     }
   }
-
 }
