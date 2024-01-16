@@ -7,6 +7,7 @@ import {IOrder} from "../models/order";
 import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {items} from "../data/items";
+import {IPharmacy} from "../models/pharmacy";
 import {UserService} from "./user.service";
 
 @Injectable({
@@ -100,11 +101,15 @@ export class BackendService {
 
   getItemsByType(typeId: number) {
     switch (typeId) {
-      case -1: return this.getNoRecipeItemsList();
-      case -2: return this.getRecipeItemsList();
-      case -3: return this.getSpecialItemsList();
-      default: return new Observable<IItem[]>()
-        .subscribe((value) => this.changeItems(value));
+      case -1:
+        return this.getNoRecipeItemsList();
+      case -2:
+        return this.getRecipeItemsList();
+      case -3:
+        return this.getSpecialItemsList();
+      default:
+        return new Observable<IItem[]>()
+          .subscribe((value) => this.changeItems(value));
     }
   }
 
@@ -113,8 +118,11 @@ export class BackendService {
       .pipe(map((value) => (this.transformList(value))))
       .subscribe((value) => {
         this.changeItems(value);
-        if (isDefault) { this.setDefaultList(value) }
-      })  }
+        if (isDefault) {
+          this.setDefaultList(value)
+        }
+      })
+  }
 
   transformList(data: any) {
     const transformedItems: IItem[] = [];
@@ -140,7 +148,9 @@ export class BackendService {
       .pipe(map((value) => (this.transformList(value))))
       .subscribe((value) => {
         this.changeItems(value);
-        if (isDefault) { this.setDefaultList(value) }
+        if (isDefault) {
+          this.setDefaultList(value)
+        }
       })
   }
 
@@ -149,8 +159,11 @@ export class BackendService {
       .pipe(map((value) => (this.transformList(value))))
       .subscribe((value) => {
         this.changeItems(value);
-        if (isDefault) { this.setDefaultList(value) }
-      })  }
+        if (isDefault) {
+          this.setDefaultList(value)
+        }
+      })
+  }
 
   searchItem(query: string) {
     this.http.get<IItem[]>(this.baseUrl + '/item/search_result', {params: {["search"]: query}})
@@ -167,6 +180,7 @@ export class BackendService {
     return this.transformOrder(this.http.get(this.baseUrl + 'cart/quantity_info',
       {params: {["item_id"]: itemId, ["user_id"]: userId}}));
   }
+
   getCartPageData(userId: number) {
     return this.transformOrder(this.http.get(this.baseUrl + '/cart/',
       {params: {["user_id"]: userId}}));
@@ -175,7 +189,7 @@ export class BackendService {
   transformOrder(data: any) {
     return data.pipe(
       map((orderList: any) => {
-        const items: IItemQuantity[] = orderList.items.map( (item: any) => {
+        const items: IItemQuantity[] = orderList.items.map((item: any) => {
           return {
             itemId: item.item.itemId,
             itemQuantity: item.quantity,
@@ -215,4 +229,39 @@ export class BackendService {
     this.getUserInfo(userId);
     return this.currentUser
   }
+
+  getAllPharmaciesById(itemId: number): IPharmacy[] {
+    let pharmacies: IPharmacy[] = []
+    this.http.get<any[]>(this.baseUrl + '/pharmacy/item?item_id=' + itemId.toString()).subscribe(
+      data => {
+        for (let i = 0; i < data.length; i++) {
+          let pharmacy = data[i];
+          pharmacies.push({
+            id: pharmacy.id,
+            details: {
+              name: pharmacy.name,
+              address: pharmacy.address,
+              workingHours: pharmacy.work_time,
+              phone: pharmacy.phone
+            }
+          } as IPharmacy);
+        }
+      });
+
+    return pharmacies;
+  }
+
+  addToCartItem(userId: number, itemId: number, quantity: number) {
+    let url = this.baseUrl + '/cart/add?user_id=' + userId.toString() +
+      '&item_id=' + itemId.toString() + '&count=' + quantity.toString();
+    this.http.post<any>(url, {}).subscribe(
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 }
+
