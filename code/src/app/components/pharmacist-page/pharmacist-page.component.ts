@@ -148,7 +148,7 @@ export class PharmacistPageComponent {
     }
 
     // preparation for endpoint
-    this.info = this.usage + this.dosage + this.ingredients;
+    this.info = this.usage +" "+ this.dosage +" "+ this.ingredients;
 
     let speciality_id = null;
     if (this.isSpecialisationOn){

@@ -28,15 +28,6 @@ export class PharmacistService {
   }
 
   addNewProduct(name: string, price: string, info:string, manufacturer: string, picture_url: File, type_id: number, speciality_id: number | null) {
-    // let url = 'http://localhost:8080/api/item/add?';
-    // url += "name=" + name + "&";
-    // url += "price=" + price + "&";
-    // url += "info=" + info + "&";
-    // url += "manufacturer=" + manufacturer + "&";
-    // url += "type_id=" + type_id.toString() + "&";
-    // if (speciality_id !== null) {
-    //   url += "speciality_id=" + speciality_id.toString();
-    // }
     const url = 'http://localhost:8080/api/item/add';
     const params = new URLSearchParams();
     params.set('name', name);
@@ -55,7 +46,8 @@ export class PharmacistService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    const fullUrl = `${url}?${params.toString()}`;
+    let fullUrl = `${url}?${params.toString()}`;
+    fullUrl.replaceAll('+', '%2B')
 
     console.log(url)
     let success = false;
