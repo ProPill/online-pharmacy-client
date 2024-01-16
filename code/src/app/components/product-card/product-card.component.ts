@@ -48,7 +48,7 @@ export class ProductCardComponent {
   }
 
   addItemToCart() {
-    if (this.quantity > 0) {
+    if (this.quantity > 0 && this.userId != null) {
       this.backendService.addToCartItem(this.userId, this.itemId, this.quantity);
       this.router.navigate(['/main']);
     }

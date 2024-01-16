@@ -19,7 +19,7 @@ export class ItemComponent {
   private userId: number | null;
   private itemId: number = -1;
   itemsSafe: Map<number, number>;
-  
+
   constructor(private userService: UserService, private router: Router, private backendService: BackendService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.userService.itemsObservable.subscribe((itemsSafe) => (this.itemsSafe = itemsSafe));
@@ -46,7 +46,7 @@ export class ItemComponent {
   addToCart() {
     this.quantityIsZero = false;
     this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly};
-    if (this.quantity > 0) {
+    if (this.quantity > 0 && this.userId != null) {
       this.backendService.addToCartItem(this.userId, this.itemId, this.quantity);
     }
   }
