@@ -16,18 +16,32 @@ export class HeaderComponent {
   searchRequest: string = '';
   onFilter: boolean = true;
   private userId: number = -1;
+  searchStatus: boolean
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.backendService.currentUser.subscribe((value) => this.user = value)
+    this.backendService.currentUser.subscribe((value) => this.user = value);
+    this.backendService.currentSearchStatus.subscribe((value) => this.searchStatus = value)
   }
 
   searchItems() {
     this.changeFilterStatus(true)
-    this.router.navigate(['/main'], {state: { searchRequest: this.searchRequest } });
+    document.querySelectorAll("[name='searchRequest']").forEach(element => {
+      let tmp = element.getAttribute("ng-reflect-model");
+      if (tmp != null) {
+        this.searchRequest = tmp
+      }
+    });
+    this.backendService.searchItem(this.searchRequest)
+    console.log(this.searchStatus)
+    // if (this.searchStatus) {
+    //   this.router.navigate(['/main'], {state: { searchRequest: this.searchRequest } });}
+    // else {
+    //   this.router.navigate(['/item-not-found'])
+    // }
   }
 
   onMain() {
@@ -60,5 +74,15 @@ export class HeaderComponent {
     this.backendService.defaultItems
       .subscribe((items) =>
       this.backendService.changeItems(items))
+  }
+
+  onSearchInput($event: Event) {
+    document.querySelectorAll("[name='searchRequest']").forEach(element => {
+      let tmp = element.getAttribute("ng-reflect-model");
+      if (tmp == null || tmp == '') {
+        this.searchRequest = ''
+      }
+    });
+    this.reloadList(true)
   }
 }

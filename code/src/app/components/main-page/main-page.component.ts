@@ -18,12 +18,12 @@ export class MainPageComponent {
   user: IUser
   private searchRequest: string | null;
   private typeId: number | null
+  firstLoad: boolean = true
 
   constructor(private backendService: BackendService,
               private userService: UserService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
-    console.log("constructor")
     this.searchRequest = this.activatedRoute.snapshot.paramMap.get('searchRequest');
     let tmp = this.activatedRoute.snapshot.paramMap.get('typeId')
     if (tmp != null) {
@@ -36,6 +36,7 @@ export class MainPageComponent {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentItems.subscribe((list) => (this.items = list))
     this.backendService.currentUser.subscribe((value) => this.user = value)
+    this.firstLoad = false
   }
 
   listIsEmpty() {
@@ -60,7 +61,10 @@ export class MainPageComponent {
 
   loadList(searchRequest: string | null, typeId: number | null) {
     if (searchRequest != null) {
-      this.backendService.searchItem(searchRequest)
+      this.backendService.searchItem(searchRequest);
+      // if (this.items.length == 0) {
+      //   this.router.navigate(['/item-not-found'])
+      // }
     }
     else if (typeId != null) {
       this.backendService.getItemsByType(typeId)

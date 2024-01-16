@@ -1,4 +1,9 @@
 <h1 style="margin-left: 180px">Результаты поиска</h1>
-<div *ngFor="let value of items">
-  <app-item [item]="value"></app-item>
+<div *ngIf="this.firstLoad || this.listIsEmpty(); else elseBlock">
+  <app-item-not-found></app-item-not-found>
 </div>
+<ng-template #elseBlock>
+  <div *ngFor="let value of items">
+    <app-item [item]="value"></app-item>
+  </div>
+</ng-template>

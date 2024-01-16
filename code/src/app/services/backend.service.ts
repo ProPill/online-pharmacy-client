@@ -6,6 +6,7 @@ import {IUser} from "../models/user";
 import {IOrder} from "../models/order";
 import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
+import {items} from "../data/items";
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,16 @@ export class BackendService {
   private userSource = new BehaviorSubject<IUser>({id: 0, name: "", phone: 0, roleId: 0});
   currentUser = this.userSource.asObservable()
 
+  private searchStatusSource = new BehaviorSubject<boolean>(false);
+  currentSearchStatus = this.searchStatusSource.asObservable()
+
   items: any;
 
   constructor(private http: HttpClient) {
+  }
+
+  setSearchStatus(status: boolean) {
+    this.searchStatusSource.next(status)
   }
 
   setDefaultList(list: IItem[]) {
@@ -120,9 +128,15 @@ export class BackendService {
       })  }
 
   searchItem(query: string) {
-    return this.http.get<IItem[]>(this.baseUrl + '/item/search_result', {params: {["search"]: query}})
+    this.http.get<IItem[]>(this.baseUrl + '/item/search_result', {params: {["search"]: query}})
       .pipe(map((value) => (this.transformList(value))))
-      .subscribe((value) => this.changeItems(value))
+      .subscribe((value) => {
+        this.changeItems(value);
+        this.searchStatusSource.next(value.length != 0);
+        console.log("val", value)
+      })
+    console.log(this.searchStatusSource.getValue())
+    return this.searchStatusSource.getValue()
   }
 
   getItemQuantityData(userId: number, itemId: number) {
