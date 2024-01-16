@@ -26,9 +26,9 @@ export class PharmacistPageComponent {
   isValidType: boolean = true;
   selectedSpecialization: string = "";
 
-  specializations: Map<number, string> = new Map<number, string>();
+  specializations: Map<number, string>;
   manufacturer: string;
-  name: string;
+  name: string ;
   price: string;
   usage: string;
   dosage: string;
@@ -47,9 +47,14 @@ export class PharmacistPageComponent {
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
 
   private userId: number = -1;
+  private info: string;
 
   constructor(private userService: UserService, private router: Router, private pharmacistService: PharmacistService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+  }
+
+  ngOnInit(){
+    this.specializations = this.pharmacistService.getAllSpecializations();
   }
 
   toggleList() {
@@ -58,12 +63,6 @@ export class PharmacistPageComponent {
 
   setSpecialisation() {
     this.isSpecialisationOn = !this.isSpecialisationOn;
-    if (this.isSpecialisationOn) {
-      this.specializations = this.pharmacistService.getAllSpecializations();
-    }
-    else {
-      this.specializations = new Map<number, string>();
-    }
   }
 
   setReceipt() {
@@ -130,8 +129,21 @@ export class PharmacistPageComponent {
       return;
     }
 
+    let speciality_id = null;
+    for (let [key, value] of this.specializations.entries()) {
+      if (this.selectedSpecialization === value) {
+        speciality_id = key;
+        break;
+      }
+    }
+
+    this.info = this.usage + this.dosage + this.ingredients;
+
+    this.pharmacistService.addNewProduct(this.name, this.price, this.info, this.manufacturer, this.selectedImage, -3, speciality_id);
+
     // adding endpoint
     this.router.navigate(['/main']);
+
   }
 
   refresh() {
@@ -170,6 +182,7 @@ export class PharmacistPageComponent {
       }
 
       this.selectedImage = event.target.files[0];
+
     }
   }
 }
