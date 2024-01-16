@@ -7,10 +7,9 @@ import {IItem} from "../models/item";
   providedIn: 'root'
 })
 export class UserService {
-  private userIdSource = new BehaviorSubject<number>(-1);
+  private userIdSource = new BehaviorSubject<number | null>(null);
   private itemsSource = new BehaviorSubject<Map<number, number>>(new Map<number, number>());
   private itemIdSource = new BehaviorSubject<number>(-1);
-
   items: Map<number, number> = new Map<number, number>();
   currentUserId = this.userIdSource.asObservable();
   itemsObservable = this.itemsSource.asObservable();
@@ -29,5 +28,8 @@ export class UserService {
   changeItem(id: number, quantity: number) {
     this.items.set(id, quantity);
     this.itemsSource.next(this.items);
+
+  clearUserId() {
+    this.userIdSource.next(null)
   }
 }

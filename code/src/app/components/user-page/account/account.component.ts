@@ -16,7 +16,7 @@ export class AccountComponent {
   orders: IOrder[] = ordersdata;
   user: IUser
 
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     // эндпоинт по выдаче всех заказов юзера
@@ -24,6 +24,9 @@ export class AccountComponent {
 
   ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.backendService.currentUser.subscribe((value) => this.user = value)
+    this.backendService.currentUser.subscribe((value) => {
+      if (value != null) {
+        this.user = value
+      }})
   }
 }

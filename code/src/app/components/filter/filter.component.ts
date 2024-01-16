@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {BackendService} from "../../services/backend.service";
 import {UserService} from "../../services/user.service";
+import {IUser} from "../../models/user";
 
 @Component({
   selector: 'app-filter',
@@ -9,7 +10,8 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent {
-  private userId: number = -1;
+  private userId: number | null;
+  user: IUser | null
   title = 'Filter'
   selectedFilter = '';
   selectedFilterId: number = 0;
@@ -19,7 +21,11 @@ export class FilterComponent {
 
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
+  }
+
+  ngOnInit() {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentUser.subscribe((value) => this.user = value)
   }
 
   selectFilter(filter: string) {
@@ -27,7 +33,6 @@ export class FilterComponent {
     {
       this.selectedFilter = ''
       this.deactivateFilterButtonColor()
-      console.log(this.userId)
     }
     else {
       this.selectedFilter = filter;
@@ -38,7 +43,14 @@ export class FilterComponent {
       else if (filter == this.filters[1]) {
         this.selectedFilterId = -2;
       }
-      else { this.selectedFilterId = -3 }
+      else if  (filter == this.filters[2]) {
+        this.selectedFilterId = -3
+      }
+      if (this.user != null) {
+        if (this.user.roleId == -2 && this.user.specialityId != null) {
+          this.backendService.getSpecialCategoryItemsList(this.user.specialityId)
+        }
+      }
       this.activateFilterButtonColor()
       this.backendService.getItemsByType(this.selectedFilterId)
     }

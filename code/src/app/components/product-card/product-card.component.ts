@@ -18,10 +18,8 @@ export class ProductCardComponent {
   quantity: number = 1;
   cost: number = 0;
   itemsSafe: Map<number, number>;
-
-  private userId: number = -1;
+  private userId: number | null;
   private itemId: number;
-
   items: IItem[];
 
   constructor(private userService: UserService, private router: Router, private backendService: BackendService) {

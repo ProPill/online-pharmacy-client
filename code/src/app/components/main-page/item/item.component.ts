@@ -16,11 +16,10 @@ export class ItemComponent {
   quantityIsZero = true;
   quantity = 0;
   @Output() itemQuantity: IItemQuantity;
-  private userId: number = -1;
+  private userId: number | null;
   private itemId: number = -1;
-
   itemsSafe: Map<number, number>;
-
+  
   constructor(private userService: UserService, private router: Router, private backendService: BackendService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.userService.itemsObservable.subscribe((itemsSafe) => (this.itemsSafe = itemsSafe));

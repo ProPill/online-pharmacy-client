@@ -3,4 +3,5 @@ export interface IUser{
   name: string
   phone: number
   roleId: number
+  specialityId: number | null
 }

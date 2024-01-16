@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./item-not-found.component.css']
 })
 export class ItemNotFoundComponent {
+  private userId: number | null;
+
 
   constructor() {
   }

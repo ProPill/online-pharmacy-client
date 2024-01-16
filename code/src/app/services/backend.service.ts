@@ -8,6 +8,7 @@ import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {items} from "../data/items";
 import {IPharmacy} from "../models/pharmacy";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +20,33 @@ export class BackendService {
   currentItems = this.itemsSource.asObservable()
   defaultItems = this.defaultItemsSource
 
-  private userSource = new BehaviorSubject<IUser>({id: 0, name: "", phone: 0, roleId: 0});
+  private userSource = new BehaviorSubject<IUser | null>(null);
   currentUser = this.userSource.asObservable()
+  currentUserId: number | null
 
   private searchStatusSource = new BehaviorSubject<boolean>(false);
   currentSearchStatus = this.searchStatusSource.asObservable()
 
+  private filterSource = new BehaviorSubject<boolean>(true);
+  currentFilterStatus = this.filterSource.asObservable()
+
   items: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserService) {
+    this.userService.currentUserId.subscribe((userId) => (this.currentUserId = userId));
+
+  }
+
+  showFilter() {
+    this.filterSource.next(true)
+    const buttons = document.querySelectorAll('.button-color');
+    buttons.forEach(button => {
+      button.classList.remove("active")
+    });
+  }
+
+  hideFilter() {
+    this.filterSource.next(false)
   }
 
   setSearchStatus(status: boolean) {
@@ -42,12 +61,18 @@ export class BackendService {
     this.itemsSource.next(list);
   }
 
-  changeUser(user: IUser) {
+  changeUser(user: IUser | null) {
     this.userSource.next(user);
   }
 
-  logout(userId: number) {
-    return this.http.get(this.baseUrl + '/logout', {params: {["user_id"]: userId}});
+  logout() {
+    if (this.currentUserId != null) {
+      this.http.get(this.baseUrl + '/logout', {params: {["user_id"]: this.currentUserId}})
+    }
+    this.changeUser(null)
+    this.userService.clearUserId()
+    this.getNormalUserItemsList()
+    return true;
   }
 
   getSpecialItemsList() {
@@ -56,8 +81,8 @@ export class BackendService {
       .subscribe((value) => this.changeItems(value))
   }
 
-  getSpecialCategoryItemsList() {
-    return this.http.get<IItem[]>(this.baseUrl + '/item/type/category')
+  getSpecialCategoryItemsList(specialityId: number) {
+    return this.http.get<IItem[]>(this.baseUrl + '/item/type/category', {params: {["speciality_id"]: specialityId}})
       .pipe(map((value) => (this.transformList(value))))
       .subscribe((value) => this.changeItems(value))
   }
@@ -110,7 +135,7 @@ export class BackendService {
         title: item.name,
         manufacturer: item.manufacturer,
         recipeOnly: item.type.id == -2,
-        special: item.speciality != null,
+        special: item.speciality_id != null,
         cost: item.price,
         image: item.picture_url
       } as IItem);
@@ -148,7 +173,6 @@ export class BackendService {
         this.searchStatusSource.next(value.length != 0);
         console.log("val", value)
       })
-    console.log(this.searchStatusSource.getValue())
     return this.searchStatusSource.getValue()
   }
 
@@ -196,8 +220,9 @@ export class BackendService {
       id: data.id,
       name: data.full_name,
       phone: data.phone,
-      roleId: data.role.id
-    } as IUser
+      roleId: data.role.id,
+      specialityId: data.speciality_id
+        } as IUser
   }
 
   getUserRole(userId: number) {

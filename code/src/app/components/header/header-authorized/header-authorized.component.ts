@@ -12,29 +12,26 @@ export class HeaderAuthorizedComponent {
   @Input() onFilter: boolean;
   @Output() onFilterChange = new EventEmitter<boolean>();
 
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value)
   }
 
   onLogOut() {
-    this.onFilter = true;
-    this.changeFilterStatus();
+    this.backendService.showFilter()
+    this.backendService.logout()
     this.router.navigate(['/main']);
-    this.backendService.logout(this.userId);
-    this.userService.changeUserId(0)
   }
 
   onCartPage() {
-    this.onFilter = false;
-    this.changeFilterStatus();
+    this.backendService.hideFilter()
     this.router.navigate(['/cart']);
   }
 
   onUserPage() {
-    this.onFilter = false;
-    this.changeFilterStatus();
+    this.backendService.hideFilter()
     this.router.navigate(['/user'])
   }
 
