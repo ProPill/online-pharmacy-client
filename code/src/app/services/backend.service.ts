@@ -6,7 +6,6 @@ import {IUser} from "../models/user";
 import {IOrder} from "../models/order";
 import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
-import {items} from "../data/items";
 import {IPharmacy} from "../models/pharmacy";
 import {UserService} from "./user.service";
 
@@ -30,8 +29,24 @@ export class BackendService {
   private filterSource = new BehaviorSubject<boolean>(true);
   currentFilterStatus = this.filterSource.asObservable()
 
+  private cartSource = new BehaviorSubject<IItem[]>([]);
+  currentCart = this.cartSource.asObservable()
+  
   private ordersListSource = new BehaviorSubject<IOrder[]>([]);
   currentOrdersList = this.ordersListSource.asObservable()
+
+  private orderSource = new BehaviorSubject<IOrder>({
+    address: "",
+    date: "",
+    deliverDate: "",
+    id: 0,
+    items: [],
+    orderNumber: "",
+    price: 0
+  });
+  currentOrder = this.orderSource.asObservable()
+
+  quantities: number[]
 
   items: any;
 
@@ -40,6 +55,15 @@ export class BackendService {
 
   }
 
+
+  updateOrder(order: IOrder) {
+    this.orderSource.next(order)
+  }
+
+  updateCart(list: IItem[]) {
+    this.cartSource.next(list)
+  }
+  
   updateOrders(list: IOrder[]) {
     this.ordersListSource.next(list)
   }
@@ -178,42 +202,8 @@ export class BackendService {
       .subscribe((value) => {
         this.changeItems(value);
         this.searchStatusSource.next(value.length != 0);
-        console.log("val", value)
       })
     return this.searchStatusSource.getValue()
-  }
-
-  getItemQuantityData(userId: number, itemId: number) {
-    return this.transformOrder(this.http.get(this.baseUrl + 'cart/quantity_info',
-      {params: {["item_id"]: itemId, ["user_id"]: userId}}));
-  }
-
-  getCartPageData(userId: number) {
-    return this.transformOrder(this.http.get(this.baseUrl + '/cart/',
-      {params: {["user_id"]: userId}}));
-  }
-
-  transformOrder(data: any) {
-    return data.pipe(
-      map((orderList: any) => {
-        const items: IItemQuantity[] = orderList.items.map((item: any) => {
-          return {
-            itemId: item.item.itemId,
-            itemQuantity: item.quantity,
-            hasRecipe: item.item.type.id == -2
-          } as IItemQuantity
-        });
-        return {
-          id: orderList.id,
-          date: "",
-          address: "",
-          deliverDate: "",
-          price: 0,
-          orderNumber: "",
-          items: items
-        }
-      })
-    ) as IOrder
   }
 
   getUserInfo(userId: number) {
@@ -288,3 +278,64 @@ export class BackendService {
   }
 }
 
+  deleteItemFromOrder(itemId: number) {
+    this.deleteItem(itemId).subscribe((value) => console.log('deleted', value));
+    this.getCartPageData(<number>this.currentUserId)
+  }
+
+  deleteItem(itemId: number) {
+    return this.http.delete<IItem>(this.baseUrl + '/cart/delete',
+      {params: {["user_id"]: <number>this.currentUserId, ["item_id"]: itemId}})
+  }
+
+  getCartPageDataAfterDelete() {
+    let data = this.http.get<any>(this.baseUrl + '/cart/' + this.currentUserId)
+    data.pipe(map((value) => {
+      this.updateOrder(this.transformOrder(value, <number>this.currentUserId))
+      this.updateCart(value.items)
+    }))
+  }
+
+  getCartPageData(userId: number) {
+    return this.http.get<IOrder>(this.baseUrl + '/cart/' + userId)
+      .pipe(map((value) => (this.transformOrder(value, userId))))
+      .subscribe((value) => {
+        this.updateOrder(value)
+      })
+  }
+
+  getItemQuantityData(userId: number, itemId: number) {
+    const num: number[] = []
+    this.http.get<number>(this.baseUrl + 'cart/quantity_info', {params: {["item_id"]: itemId, ["user_id"]: userId}})
+      .subscribe((value) => num.push(value))
+    return <number>num.pop()
+  }
+
+
+  transformOrder(data: any, userId: number) {
+    const list: IItemQuantity[] = []
+    const tmp: IItem[] = []
+
+    for (let i = 0; i < data.items.length; i++) {
+      let item = data.items[i]
+
+      list.push({
+        itemId: item.item.id,
+        itemQuantity: item.quantity,
+        hasRecipe: item.item.type.id == -2
+      } as IItemQuantity )
+
+      tmp.push(item.item)
+    }
+    this.updateCart(this.transformList(tmp))
+    return {
+      id: data.id,
+      date: "",
+      address: "",
+      deliverDate: "",
+      price: 0,
+      orderNumber: "",
+      items: list
+    } as IOrder
+  }
+}

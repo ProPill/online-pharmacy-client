@@ -20,6 +20,7 @@
   height: 230px;
 }
 
+
 .text {
   font-size: 20px;
   width: 321px;
@@ -33,6 +34,10 @@
 
 .text.delete {
   height: 24px;
+}
+
+.text.delete:hover {
+  cursor: pointer;
 }
 
 .card.img {
