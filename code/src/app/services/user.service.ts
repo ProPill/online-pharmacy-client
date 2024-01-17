@@ -29,8 +29,7 @@ export class UserService {
     this.items.set(id, quantity);
     this.itemsSource.next(this.items);
   }
-
-  clearUserId() {
-    this.userIdSource.next(null)
-  }
+    clearUserId() {
+      this.userIdSource.next(null)
+    }
 }
