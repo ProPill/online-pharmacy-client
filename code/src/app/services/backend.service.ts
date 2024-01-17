@@ -272,7 +272,7 @@ export class BackendService {
 
     for (let i = 0; i < data.length; i++) {
       let order = data[i];
-      transformedOrders.push(this.transformOrder(order, <number>this.currentUserId))
+      transformedOrders.push(this.transformOrderToCard(order, <number>this.currentUserId))
     }
     return transformedOrders
   }
@@ -319,7 +319,7 @@ export class BackendService {
       let item = data.items[i]
 
       list.push({
-        itemId: item.item.id,
+        itemId: item.id,
         itemQuantity: item.quantity,
         hasRecipe: item.item.type.id == -2
       } as IItemQuantity )
@@ -336,5 +336,24 @@ export class BackendService {
       orderNumber: "",
       items: list
     } as IOrder
+  }
+
+  transformOrderToCard(data: any, userId: number) {
+    return {
+      id: data.id,
+      date: data.creation_date.substring(0, 10),
+      address: data.pharmacy.address,
+      deliverDate: data.delivery_date.substring(0, 10),
+      price: data.sum_price,
+      orderNumber: this.parseIdToNumber(data.id),
+      items: []
+    } as IOrder
+  }
+
+  parseIdToNumber(id: number) {
+    let def = '00000000';
+    let tmp = id.toString()
+    tmp = tmp.substring(1, tmp.length)
+    return def.substring(0, def.length - tmp.length) + tmp
   }
 }
