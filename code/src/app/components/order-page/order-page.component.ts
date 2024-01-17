@@ -5,6 +5,7 @@ import {orders} from "../../data/orders";
 import {IOrder} from "../../models/order";
 import {UserService} from "../../services/user.service";
 import {BackendService} from "../../services/backend.service";
+import {IUser} from "../../models/user";
 
 @Component({
   selector: 'app-order-page',
@@ -32,7 +33,7 @@ export class OrderPageComponent {
 
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
   NOT_CHOSEN_PHARMACY = "Нужно выбрать аптеку для заказа";
-
+  user: IUser
   private userId: number | null;
 
   constructor(private backendService: BackendService,
@@ -44,9 +45,12 @@ export class OrderPageComponent {
     this.orders = orders;
     this.isAdded = false;
 
-    // openApi [get Fio and Phone by userId]
-    this.customerName = "Смирнов Евгений Александрович";
-    this.customerPhone = "+79522795509";
+    this.backendService.currentUser.subscribe((value) => {
+      if (value != null) {
+        this.user = value
+      }})
+    this.customerName = this.user.name;
+    this.customerPhone = this.user.phone.toString();
 
     this.calculatePrice();
   }
