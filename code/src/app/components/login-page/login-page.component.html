@@ -8,20 +8,20 @@
   <form #loginForm="ngForm">
 
     <p class="text-general login-page-text">Введите логин</p>
-    <div class="input-container" [ngClass]="{'error-border': !isValid}">
-      <input class="text-general" type="text" name="username" [(ngModel)]="username">
+    <div class="input-container" [ngClass]="{'error-border': !isValidUsername}">
+      <input (click)="refresh_username()" class="text-general" type="text" name="username" [(ngModel)]="username">
     </div>
 
     <p class="text-general login-page-text">Введите пароль</p>
-    <div class="input-container" [ngClass]="{'error-border': !isValid}">
-      <input class="text-general" type="password" name="password" [(ngModel)]="password">
+    <div class="input-container" [ngClass]="{'error-border': !isValidPassword}">
+      <input (click)="refresh_password()" class="text-general" type="password" name="password" [(ngModel)]="password">
     </div>
 
     <div class="button-padding">
       <button class="button-color button-sizes" (click)="onLogin()">Вход</button>
     </div>
 
-    <div class="error-text" *ngIf="!isValid">Неверно введенные данные</div>
+    <div class="error-text" *ngIf="!isValidUsername || !isValidPassword">Неверно введенные данные</div>
 
   </form>
 

@@ -12,7 +12,9 @@ import {BackendService} from "../../services/backend.service";
 export class LoginPageComponent {
   username: string = '';
   password: string = '';
-  isValid: boolean = true;
+
+  isValidUsername: boolean = true;
+  isValidPassword: boolean = true;
 
   constructor(private backendService: BackendService,
               private userService: UserService,
@@ -21,7 +23,8 @@ export class LoginPageComponent {
 
   async onLogin() {
     if (this.username[0] != '+') {
-      this.isValid = false;
+      this.isValidUsername = false;
+      this.isValidPassword = false;
     }
     else {
       const myMap = await this.loginService.login(this.username, this.password);
@@ -32,8 +35,17 @@ export class LoginPageComponent {
         await this.router.navigate(['main']);
       }
       else {
-        this.isValid = false;
+        this.isValidUsername = false;
+        this.isValidPassword = false;
       }
     }
+  }
+
+  refresh_username() {
+    this.isValidUsername = true;
+  }
+
+  refresh_password() {
+    this.isValidPassword = true;
   }
 }
