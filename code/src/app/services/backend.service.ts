@@ -55,7 +55,6 @@ export class BackendService {
 
   }
 
-
   updateOrder(order: IOrder) {
     this.orderSource.next(order)
   }
@@ -355,5 +354,44 @@ export class BackendService {
     let tmp = id.toString()
     tmp = tmp.substring(1, tmp.length)
     return def.substring(0, def.length - tmp.length) + tmp
+  }
+
+  getAllPharmacies(): IPharmacy[] {
+    let pharmacies: IPharmacy[] = []
+    this.http.get<any[]>(this.baseUrl + '/pharmacy/all').subscribe(
+      data => {
+        for (let i = 0; i < data.length; i++) {
+          let pharmacy = data[i];
+          pharmacies.push({
+            id: pharmacy.id,
+            details: {
+              name: pharmacy.name,
+              address: pharmacy.address,
+              workingHours: pharmacy.work_time,
+              phone: pharmacy.phone
+            }
+          } as IPharmacy);
+        }
+      });
+
+    return pharmacies;
+  }
+
+  placeOrder(user_id: number, creation_date: string, delivery_date: string,
+             sum_price: number, pharmacy_id: number, order: IOrder): number  {
+    let url = this.baseUrl + '/order?user_id=' + user_id +
+      '&creation_date=' + creation_date + '&delivery_date=' + delivery_date + '&sum_price=' + sum_price +
+      '&pharmacy_id=' + pharmacy_id;
+    for (let i = 0; i < order.items.length; i++) {
+      for (let j = 0; j < order.items[i].itemQuantity; j++){
+        url += '&items=' + order.items[i].itemId;
+      }
+    }
+    this.http.post<IOrder>(url, {}).subscribe(
+      data => {console.log(data)},
+  error => {
+      console.error(error);
+    });
+    return 200;
   }
 }

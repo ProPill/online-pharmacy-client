@@ -20,9 +20,9 @@
           <label class="search-text">Аптека</label>
           <div class="text-apothek">{{selectedPharmaName}}</div>
       </div>
-      <div *ngIf="(myPharmacies.length > 0) && (isListHidden)">
+      <div *ngIf="(pharmacies.length > 0) && (isListHidden)">
           <ul class="pharmacies__list--full">
-            <li class="pharmacies__list--full__item" *ngFor="let pharmacy of myPharmacies">
+            <li class="pharmacies__list--full__item" *ngFor="let pharmacy of pharmacies">
               <div class="row" (click)="handleApothekeClick(pharmacy.id)">
                 <strong class="list-item list-item--top-left">{{ pharmacy.details.name }} </strong>
                 <strong class="list-item list-item--top-right">{{ pharmacy.details.address }} </strong>
@@ -35,7 +35,7 @@
       <div class="info-block">
         <div class="info-block-item">
           <label class="search-text">Заказ будет готов:</label>
-          <div class="text-general">{{dataReadyOrder}}</div>
+          <div class="text-general">{{deliveryDate}}</div>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
       <h1 class="info-h1">Ваш заказ</h1>
       <h2 class="info-h2">Оплата при получении</h2>
       <h2 class="info-h2">Доставка: {{deliveryPrice}}</h2>
-      <h2 class="info-h2">Итого: {{totalPrice}}</h2>
+      <h2 class="info-h2">Итого: {{calculatePrice()}}</h2>
       <button class="button-color" (click)="confirmOrder()">Подтвердить заказ</button>
     </div>
   </div>
