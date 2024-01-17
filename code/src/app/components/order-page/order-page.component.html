@@ -35,7 +35,7 @@
       <div class="info-block">
         <div class="info-block-item">
           <label class="search-text">Заказ будет готов:</label>
-          <div class="text-general">{{dataReadyOrder}}</div>
+          <div class="text-general">{{deliveryDate}}</div>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
       <h1 class="info-h1">Ваш заказ</h1>
       <h2 class="info-h2">Оплата при получении</h2>
       <h2 class="info-h2">Доставка: {{deliveryPrice}}</h2>
-      <h2 class="info-h2">Итого: {{totalPrice}}</h2>
+      <h2 class="info-h2">Итого: {{calculatePrice()}}</h2>
       <button class="button-color" (click)="confirmOrder()">Подтвердить заказ</button>
     </div>
   </div>

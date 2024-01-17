@@ -55,7 +55,6 @@ export class BackendService {
 
   }
 
-
   updateOrder(order: IOrder) {
     this.orderSource.next(order)
   }
@@ -357,5 +356,23 @@ export class BackendService {
       });
 
     return pharmacies;
+  }
+
+  placeOrder(user_id: number, creation_date: string, delivery_date: string,
+             sum_price: number, pharmacy_id: number, order: IOrder): number  {
+    let url = this.baseUrl + '/order?user_id=' + user_id +
+      '&creation_date=' + creation_date + '&delivery_date=' + delivery_date + '&sum_price=' + sum_price +
+      '&pharmacy_id=' + pharmacy_id;
+    for (let i = 0; i < order.items.length; i++) {
+      for (let j = 0; j < order.items[i].itemQuantity; j++){
+        url += '&items=' + order.items[i].itemId;
+      }
+    }
+    this.http.post<IOrder>(url, {}).subscribe(
+      data => {console.log(data)},
+  error => {
+      console.error(error);
+    });
+    return 200;
   }
 }
