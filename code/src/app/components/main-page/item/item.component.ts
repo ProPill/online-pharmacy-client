@@ -47,7 +47,7 @@ export class ItemComponent {
     this.quantityIsZero = false;
     this.itemQuantity = {itemId: this.item.id, itemQuantity: this.quantity, hasRecipe: this.item.recipeOnly};
     if (this.quantity > 0 && this.userId != null) {
-      this.backendService.addToCartItem(this.userId, this.itemId, this.quantity);
+      this.backendService.addToCartItem(this.userId, this.item.id, this.quantity);
     }
   }
 

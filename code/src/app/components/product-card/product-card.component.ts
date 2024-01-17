@@ -28,8 +28,6 @@ export class ProductCardComponent {
     this.backendService.currentItems.subscribe((list) => (this.items = list));
     this.userService.itemIdObservable.subscribe((itemId) => (this.itemId = itemId));
 
-    console.log(this.itemId)
-    console.log(this.items)
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].id == this.itemId){
         this.item = this.items[i];
