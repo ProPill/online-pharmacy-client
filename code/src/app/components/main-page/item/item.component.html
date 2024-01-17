@@ -1,5 +1,5 @@
 <div class="card">
-  <img class="card img" src="{{item.image}}" (click)="onProductCardPage()">
+  <img class="card img"  (click)="onProductCardPage()">
   <div class="card textarea" (click)="onProductCardPage()">
       <span class="card title">{{ item.title }}</span>
       <span class="card info">Производитель: {{ item.manufacturer }}</span>
@@ -7,10 +7,10 @@
   </div>
   <div class="card pricearea">
     <span type="text">Цена: {{ item.cost }}₽</span>
-    <button class="card buy-button" (click)="addToCart()">Купить</button>
+<!--    <button class="card buy-button" (click)="addToCart()">Купить</button>-->
     <div class="card pricearea quatity">
       <button class="card card-small" (click)="decreaseQuantity()">–</button>
-      <span class="text quatity" >{{ quantity }}</span>
+      <span class="text quatity" >{{ getQuantity() }}</span>
       <button class="card card-small" (click)="increaseQuantity()">+</button>
     </div>
   </div>

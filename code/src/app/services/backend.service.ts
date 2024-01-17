@@ -304,10 +304,10 @@ export class BackendService {
   }
 
   getItemQuantityData(userId: number, itemId: number) {
-    const num: number[] = []
-    this.http.get<number>(this.baseUrl + 'cart/quantity_info', {params: {["item_id"]: itemId, ["user_id"]: userId}})
-      .subscribe((value) => num.push(value))
-    return <number>num.pop()
+    return this.http.get<number>(this.baseUrl + 'cart/quantity_info', {params: {["item_id"]: itemId, ["user_id"]: userId}})
+        .pipe(map((val) => {
+          return val
+        }))
   }
 
 
@@ -319,7 +319,7 @@ export class BackendService {
       let item = data.items[i]
 
       list.push({
-        itemId: item.id,
+        itemId: item.item.id,
         itemQuantity: item.quantity,
         hasRecipe: item.item.type.id == -2
       } as IItemQuantity )
