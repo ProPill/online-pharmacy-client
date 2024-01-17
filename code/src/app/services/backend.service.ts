@@ -337,4 +337,25 @@ export class BackendService {
       items: list
     } as IOrder
   }
+
+  getAllPharmacies(): IPharmacy[] {
+    let pharmacies: IPharmacy[] = []
+    this.http.get<any[]>(this.baseUrl + '/pharmacy/all').subscribe(
+      data => {
+        for (let i = 0; i < data.length; i++) {
+          let pharmacy = data[i];
+          pharmacies.push({
+            id: pharmacy.id,
+            details: {
+              name: pharmacy.name,
+              address: pharmacy.address,
+              workingHours: pharmacy.work_time,
+              phone: pharmacy.phone
+            }
+          } as IPharmacy);
+        }
+      });
+
+    return pharmacies;
+  }
 }

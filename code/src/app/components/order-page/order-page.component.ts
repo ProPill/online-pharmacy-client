@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
-import {pharmacies} from "../../data/pharmacies";
 import {IPharmacy} from "../../models/pharmacy";
 import {orders} from "../../data/orders";
 import {IOrder} from "../../models/order";
 import {UserService} from "../../services/user.service";
+import {BackendService} from "../../services/backend.service";
 
 @Component({
   selector: 'app-order-page',
@@ -12,7 +12,7 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./order-page.component.css']
 })
 export class OrderPageComponent {
-  @Input() myPharmacies: IPharmacy[];
+  pharmacies: IPharmacy[];
   @Input() orders: IOrder[];
 
   customerName: string;
@@ -35,10 +35,12 @@ export class OrderPageComponent {
 
   private userId: number | null;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private backendService: BackendService,
+              private userService: UserService,
+              private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
 
-    this.myPharmacies = pharmacies;
+    this.pharmacies = this.backendService.getAllPharmacies();
     this.orders = orders;
     this.isAdded = false;
 
@@ -93,7 +95,7 @@ export class OrderPageComponent {
   }
 
   handleApothekeClick(pharmacyId: number) {
-    const foundPharmacy = this.myPharmacies.find(
+    const foundPharmacy = this.pharmacies.find(
       (pharmacy) => pharmacy.id === pharmacyId
     );
 
