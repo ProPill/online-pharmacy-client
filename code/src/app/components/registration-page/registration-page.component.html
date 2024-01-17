@@ -4,29 +4,29 @@
     <strong *ngIf="!isValidName" class="textErrorColor">{{ nameErrorMessage }}</strong>
     <div class="input-container input-container-margin" [ngClass]="{'error-border': !isValidName}">
       <label class="search-text">Фамилия Имя Отчество</label>
-      <input (click)="refresh_name()" class="text-general" type="text" [(ngModel)]="name">
+      <input (click)="refresh_name()" class="text-general" type="text" name="name" [(ngModel)]="name">
     </div>
 
     <strong *ngIf="!isValidPhone" class="textErrorColor" >{{ phoneErrorMessage }}</strong>
     <div class="input-container" [ngClass]="{'error-border': !isValidPhone}">
       <label class="search-text">Мобильный телефон</label>
-      <input (click)="refresh_phone()" class="text-general" type="text" [(ngModel)]="phone">
+      <input (click)="refresh_phone()" class="text-general" type="text" name="phone" [(ngModel)]="phone">
     </div>
 
     <strong *ngIf="!isValidPassword" class="textErrorColor" >{{ PasswordErrorMessage }}</strong>
     <div class="input-container" [ngClass]="{'error-border': !isValidPassword}">
       <label class="search-text">Пароль</label>
-      <input (click)="refresh_password()" class="text-general" type="text" [(ngModel)]="password">
+      <input (click)="refresh_password()" class="text-general" type="text" name="password" [(ngModel)]="password">
     </div>
 
     <strong *ngIf="!isValidRepeatPassword" class="textErrorColor" >{{ repeatPasswordErrorMessage }}</strong>
     <div class="input-container" [ngClass]="{'error-border': !isValidRepeatPassword}">
       <label class="search-text">Повторите пароль</label>
-      <input (click)="refresh_repeat_password()" class="text-general" type="text" [(ngModel)]="repeatPassword">
+      <input (click)="refresh_repeat_password()" class="text-general" type="text" name="repeatPassword" [(ngModel)]="repeatPassword">
     </div>
 
     <div class="button-padding">
-      <button (click)="register()" class="button-color button-sizes">Зарегистрироваться</button>
+      <button (click)="onRegistration()" class="button-color button-sizes">Зарегистрироваться</button>
     </div>
 
   </form>

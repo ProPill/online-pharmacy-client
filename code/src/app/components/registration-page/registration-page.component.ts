@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
-import {items} from "../../data/items";
-import {pharmacies} from "../../data/pharmacies";
+import {RegistrationService} from "../../services/registration.service";
+import {BackendService} from "../../services/backend.service";
 
 @Component({
   selector: 'app-registration-page',
@@ -24,33 +24,39 @@ export class RegistrationPageComponent {
   repeatPasswordErrorMessage: string;
   PasswordErrorMessage: string;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private backendService: BackendService,
+              private userService: UserService,
+              private router: Router,
+              private registrationService: RegistrationService) {}
 
-  register() {
-    if (!this.name) {
-      this.isValidName = false;
-      this.nameErrorMessage = 'Допустимы толкько символы кириллицы!';
-    }
-    if (!this.phone) {
-      this.isValidPhone = false;
-      this.phoneErrorMessage = 'Неверный формат номера! Например: +79522795509';
-    }
-    if (!this.password) {
-      this.isValidPassword = false;
-      this.PasswordErrorMessage = 'Пароль должен быть от 6 до 16 символов! Можно использовать латиницу и цифры от 0 до 9!';
-    }
+  async onRegistration() {
     if (this.password != this.repeatPassword) {
       this.isValidRepeatPassword = false;
       this.repeatPasswordErrorMessage = 'Пароли не совпадают! Проверьте введенные данные!';
-    }
-    if (this.isValidName && this.isValidPhone &&
-      this.isValidPassword && this.isValidRepeatPassword) {
-
-      // openAPi [register user]:
-      const userId = Math.floor(Math.random() * 100) + 1;
-      this.userService.changeUserId(userId);
-
-      this.router.navigate(['/main']);
+    } else {
+      const myMap = await this.registrationService.registration(this.name, this.phone, this.password);
+      if (myMap.get(409) != null) {
+        this.isValidPhone = false;
+        this.phoneErrorMessage = 'Пользователь с данным номером уже зарегистрирован!';
+      }
+      else if (myMap.get(1) != null) {
+        this.isValidName = false;
+        this.nameErrorMessage = 'Неверный формат ФИО! Допустимы толкько символы кириллицы!';
+      }
+      else if (myMap.get(2) != null) {
+        this.isValidPhone = false;
+        this.phoneErrorMessage = 'Неверный формат номера! Пример: +79522795509';
+      }
+      else if (myMap.get(3) != null) {
+        this.isValidPassword = false;
+        this.PasswordErrorMessage = 'Пароль должен быть от 6 до 16 символов! Можно использовать латиницу и цифры от 0 до 9!';
+      }
+      else if (this.isValidName && this.isValidPhone &&
+        this.isValidPassword && this.isValidRepeatPassword) {
+        this.userService.changeUserId(myMap.get(200)!);
+        this.backendService.getUserInfo(myMap.get(200)!)
+        await this.router.navigate(['/main']);
+      }
     }
   }
 
