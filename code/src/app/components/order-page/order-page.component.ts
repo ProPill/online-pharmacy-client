@@ -1,9 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
-import {pharmacies} from "../../data/pharmacies";
 import {IPharmacy} from "../../models/pharmacy";
-import {orders} from "../../data/orders";
 import {IOrder} from "../../models/order";
+import {UserService} from "../../services/user.service";
+import {BackendService} from "../../services/backend.service";
+import {IUser} from "../../models/user";
 
 @Component({
   selector: 'app-order-page',
@@ -11,37 +12,43 @@ import {IOrder} from "../../models/order";
   styleUrls: ['./order-page.component.css']
 })
 export class OrderPageComponent {
-  @Input() myPharmacies: IPharmacy[];
+  pharmacies: IPharmacy[];
   @Input() orders: IOrder[];
 
   customerName: string;
   customerPhone: string;
   pharmacy: IPharmacy;
   selectedPharmaName: string;
-  totalPrice: number = 0.00;
-  totalOrder: number = 0.00;
   deliveryPrice: number = 50.0;
 
   isChosenPharmacy: boolean = true;
   isListHidden: boolean = false;
   isAdded: boolean = false;
-  userId: number;
 
+  deliveryDate: string;
   timeExpire: string;
-  dataReadyOrder: string;
 
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
   NOT_CHOSEN_PHARMACY = "Нужно выбрать аптеку для заказа";
+  user: IUser
+  order: IOrder;
+  private userId: number | null;
 
-  constructor(private router: Router) {
-    this.myPharmacies = pharmacies;
-    this.orders = orders;
+  constructor(private backendService: BackendService,
+              private userService: UserService,
+              private router: Router) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+
+    this.backendService.currentOrder.subscribe((value) => this.order = value);
+    this.pharmacies = this.backendService.getAllPharmacies();
     this.isAdded = false;
 
-    // get Fio and Phone by userId
-    this.userId = 0;
-    this.customerName = "Смирнов Евгений Александрович";
-    this.customerPhone = "+79522795509";
+    this.backendService.currentUser.subscribe((value) => {
+      if (value != null) {
+        this.user = value
+      }})
+    this.customerName = this.user.name;
+    this.customerPhone = this.user.phone.toString();
 
     this.calculatePrice();
   }
@@ -55,8 +62,9 @@ export class OrderPageComponent {
       this.isChosenPharmacy = false;
       return;
     }
-
-    this.isAdded = true;
+    const num = this.backendService.placeOrder(this.user.id, this.getCreateDate(), this.deliveryDate,
+    this.calculatePrice(), this.pharmacy.id, this.order);
+    this.isAdded = num == 200;
   }
 
   refresh() {
@@ -64,17 +72,31 @@ export class OrderPageComponent {
     this.isListHidden = false;
   }
 
-  getFormattedDate(): string {
+  getCreateDate(): string {
     const today = new Date();
 
     const day = today.getDate();
-    const month = today.getMonth() + 1; // Months are zero-based
+    const month = today.getMonth() + 1;
     const year = today.getFullYear();
 
     const formattedDay = this.padZero(day);
     const formattedMonth = this.padZero(month);
 
-    return `${formattedDay}.${formattedMonth}.${year}`;
+    return `${year}-${formattedMonth}-${formattedDay}`;
+  }
+
+  getDeliveryDate(): string {
+    const today = new Date();
+    today.setDate(today.getDate() + 5); // Добавляем 5 дней
+
+    const day = today.getDate();
+    const month = today.getMonth() + 1; // Месяцы начинаются с нуля
+    const year = today.getFullYear();
+
+    const formattedDay = this.padZero(day);
+    const formattedMonth = this.padZero(month);
+
+    return `${year}-${formattedMonth}-${formattedDay}`;
   }
 
   padZero(num: number): string {
@@ -82,15 +104,11 @@ export class OrderPageComponent {
   }
 
   calculatePrice() {
-    this.totalOrder = 0.00;
-    for (let i = 0; i < orders.length; i++) {
-      this.totalOrder += orders[i].price;
-    }
-    this.totalPrice = this.deliveryPrice + this.totalOrder;
+    return this.deliveryPrice + this.order.price;
   }
 
   handleApothekeClick(pharmacyId: number) {
-    const foundPharmacy = this.myPharmacies.find(
+    const foundPharmacy = this.pharmacies.find(
       (pharmacy) => pharmacy.id === pharmacyId
     );
 
@@ -98,10 +116,9 @@ export class OrderPageComponent {
       this.pharmacy = foundPharmacy;
       this.selectedPharmaName = foundPharmacy.details.name + " " + foundPharmacy.details.address;
       this.toggleList();
-    }
 
-    // get time from endpoint
-    this.dataReadyOrder = this.getFormattedDate();
+      this.deliveryDate = this.getDeliveryDate();
+    }
   }
 
   returnHome() {

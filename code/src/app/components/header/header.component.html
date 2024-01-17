@@ -17,21 +17,30 @@
 
     <button class="button-color search-button" (click)="searchItems()" tabindex="0">Искать</button>
 
-    <div *ngIf="user==null else elseBlock;">
-      <app-header-unauthorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-unauthorized>
-    </div>
-    <ng-template #elseBlock>
-      <div *ngIf="user.isAdmin; else elseBlock">
-        <app-header-pharmacist (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-pharmacist>
+    <div *ngIf="this.userNotNull(); else elseBlock1">
+      <div *ngIf="this.isAdmin(); else elseBlock">
+          <app-header-pharmacist (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-pharmacist>
       </div>
       <ng-template #elseBlock>
         <div>
           <app-header-authorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-authorized>
         </div>
       </ng-template>
+    </div>
+    <ng-template #elseBlock1>
+      <div>
+        <app-header-unauthorized (onFilterChange)="changeFilterStatus($event)" [onFilter]="this.onFilter"></app-header-unauthorized>
+      </div>
     </ng-template>
   </div>
-  <div *ngIf="onFilter">
-    <app-filter [hasAccess]="this.user.isDoctor || this.user.isAdmin"></app-filter>
+  <div *ngIf="this.userNotNull(); else elseBlock2">
+    <div *ngIf="onFilter">
+      <app-filter (onReloadList)="reloadList($event)" [hasAccess]="this.isDoctor() || this.isAdmin()"></app-filter>
+    </div>
   </div>
+  <ng-template #elseBlock2>
+    <div *ngIf="onFilter">
+      <app-filter (onReloadList)="reloadList($event)" [hasAccess]="false"></app-filter>
+    </div>
+  </ng-template>
 </div>

@@ -9,17 +9,24 @@ import {HeaderUnauthorizedComponent} from "../components/header/header-unauthori
 import {RegistrationPageComponent} from "../components/registration-page/registration-page.component";
 import {AccountComponent} from "../components/user-page/account/account.component";
 import {OrderPageComponent} from "../components/order-page/order-page.component";
+import {ItemNotFoundComponent} from "../components/main-page/item-not-found/item-not-found.component";
+import { pharmacistGuard } from '../guards/pharmacist-guard.service';
+import {cartGuard} from "../guards/cart-guard.service";
+import {orderGuard} from "../guards/order.guard";
+import {authGuard} from "../guards/auth.guard";
 
 const routes: Routes = [
-  { path: 'login', component: LoginPageComponent },
   { path: 'main', component: MainPageComponent },
-  { path: 'product-page', component: ProductCardComponent },
-  { path: 'pharmacist', component: PharmacistPageComponent },
+  { path: 'login', component: LoginPageComponent },
   { path: 'registration', component: RegistrationPageComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'user', component: AccountComponent },
+  { path: 'product-page', component: ProductCardComponent },
+  { path: 'item-not-found', component: ItemNotFoundComponent},
   { path: 'unauthorized', component: HeaderUnauthorizedComponent },
-  { path: 'order-page', component: OrderPageComponent },
+
+  { path: 'pharmacist', component: PharmacistPageComponent , canActivate: [pharmacistGuard]},
+  { path: 'cart', component: CartComponent , canActivate: [cartGuard]},
+  { path: 'user', component: AccountComponent, canActivate: [authGuard] },
+  { path: 'order-page', component: OrderPageComponent , canActivate: [orderGuard]}
 ];
 
 @NgModule({

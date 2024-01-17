@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
+import {BackendService} from "../../../services/backend.service";
 
 @Component({
   selector: 'app-header-unauthorized',
@@ -7,20 +8,21 @@ import {Router} from "@angular/router";
   styleUrls: ['./header-unauthorized.component.css']
 })
 export class HeaderUnauthorizedComponent {
-  @Input() onFilter: boolean
-  @Output() onFilterChange = new EventEmitter<boolean>()
+  @Input() onFilter: boolean;
+  @Output() onFilterChange = new EventEmitter<boolean>();
 
-  constructor(private router: Router) {}
+  constructor(private backendService: BackendService,
+              private router: Router) {
+    this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value)
+  }
 
   onLoginPage() {
-    this.onFilter = false;
-    this.changeFilterStatus()
+    this.backendService.hideFilter()
     this.router.navigate(['/login']);
   }
 
   onRegistrationPage() {
-    this.onFilter = false;
-    this.changeFilterStatus()
+    this.backendService.hideFilter()
     this.router.navigate(['/registration']);
   }
 

@@ -157,7 +157,7 @@ button {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 50px;
 }
 
 .specialization__list__item {
@@ -202,7 +202,7 @@ button {
 }
 
 .specialisation-selected {
-  margin-left: 8px;
+  margin-left: 15px;
 }
 
 .upload-image__text {
