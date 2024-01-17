@@ -30,11 +30,18 @@ export class BackendService {
   private filterSource = new BehaviorSubject<boolean>(true);
   currentFilterStatus = this.filterSource.asObservable()
 
+  private ordersListSource = new BehaviorSubject<IOrder[]>([]);
+  currentOrdersList = this.ordersListSource.asObservable()
+
   items: any;
 
   constructor(private http: HttpClient, private userService: UserService) {
     this.userService.currentUserId.subscribe((userId) => (this.currentUserId = userId));
 
+  }
+
+  updateOrders(list: IOrder[]) {
+    this.ordersListSource.next(list)
   }
 
   showFilter() {
@@ -262,6 +269,22 @@ export class BackendService {
         console.error(error);
       }
     );
+  }
+
+  getUserOrders(userId: number) {
+    return this.http.get<IOrder[]>(this.baseUrl + '/orders', {params: {["user_id"]: userId}})
+        .pipe(map((value) => (this.transformOrdersList(value))))
+        .subscribe((value) => this.updateOrders(value))
+  }
+
+  transformOrdersList(data: any) {
+    const transformedOrders: IOrder[] = [];
+
+    for (let i = 0; i < data.length; i++) {
+      let order = data[i]
+      transformedOrders.push(this.transformOrder(order))
+    }
+    return transformedOrders
   }
 }
 
