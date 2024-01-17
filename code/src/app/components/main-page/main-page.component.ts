@@ -24,6 +24,9 @@ export class MainPageComponent {
               private userService: UserService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
+    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentItems.subscribe((list) => (this.items = list))
+    this.backendService.currentUser.subscribe((value) => this.user = value)
     this.searchRequest = this.activatedRoute.snapshot.paramMap.get('searchRequest');
     let tmp = this.activatedRoute.snapshot.paramMap.get('typeId')
     if (tmp != null) {
@@ -34,19 +37,18 @@ export class MainPageComponent {
   }
 
   ngOnInit(): void {
-    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.backendService.currentItems.subscribe((list) => (this.items = list))
-    this.backendService.currentUser.subscribe((value) => this.user = value)
+    if (this.userId != null)
+    {
+      this.backendService.getCartPageData(<number>this.userId)
+    }
   }
 
   listIsEmpty() {
     if (this.firstLoad) {
-      // console.log('first load')
       this.firstLoad = !this.firstLoad
       return false;
     }
     else {
-      // console.log('else')
       return this.items.length == 0
     }
   }

@@ -27,7 +27,6 @@ export class HeaderAuthorizedComponent {
 
   onCartPage() {
     this.backendService.hideFilter()
-    console.log("before cart", this.userId)
     this.backendService.getCartPageData(<number>this.userId)
     this.router.navigate(['/cart']);
   }
@@ -35,9 +34,5 @@ export class HeaderAuthorizedComponent {
   onUserPage() {
     this.backendService.hideFilter()
     this.router.navigate(['/user'])
-  }
-
-  changeFilterStatus() {
-    this.onFilterChange.emit(this.onFilter);
   }
 }

@@ -271,7 +271,7 @@ export class BackendService {
 
     for (let i = 0; i < data.length; i++) {
       let order = data[i];
-      transformedOrders.push(this.transformOrder(order, <number>this.currentUserId))
+      transformedOrders.push(this.transformOrderToCard(order, <number>this.currentUserId))
     }
     return transformedOrders
   }
@@ -303,10 +303,10 @@ export class BackendService {
   }
 
   getItemQuantityData(userId: number, itemId: number) {
-    const num: number[] = []
-    this.http.get<number>(this.baseUrl + 'cart/quantity_info', {params: {["item_id"]: itemId, ["user_id"]: userId}})
-      .subscribe((value) => num.push(value))
-    return <number>num.pop()
+    return this.http.get<number>(this.baseUrl + 'cart/quantity_info', {params: {["item_id"]: itemId, ["user_id"]: userId}})
+        .pipe(map((val) => {
+          return val
+        }))
   }
 
 
@@ -335,6 +335,25 @@ export class BackendService {
       orderNumber: "",
       items: list
     } as IOrder
+  }
+
+  transformOrderToCard(data: any, userId: number) {
+    return {
+      id: data.id,
+      date: data.creation_date.substring(0, 10),
+      address: data.pharmacy.address,
+      deliverDate: data.delivery_date.substring(0, 10),
+      price: data.sum_price,
+      orderNumber: this.parseIdToNumber(data.id),
+      items: []
+    } as IOrder
+  }
+
+  parseIdToNumber(id: number) {
+    let def = '00000000';
+    let tmp = id.toString()
+    tmp = tmp.substring(1, tmp.length)
+    return def.substring(0, def.length - tmp.length) + tmp
   }
 
   getAllPharmacies(): IPharmacy[] {
