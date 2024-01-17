@@ -31,7 +31,9 @@ export class BackendService {
 
   private cartSource = new BehaviorSubject<IItem[]>([]);
   currentCart = this.cartSource.asObservable()
-
+  
+  private ordersListSource = new BehaviorSubject<IOrder[]>([]);
+  currentOrdersList = this.ordersListSource.asObservable()
 
   private orderSource = new BehaviorSubject<IOrder>({
     address: "",
@@ -45,6 +47,7 @@ export class BackendService {
   currentOrder = this.orderSource.asObservable()
 
   quantities: number[]
+
   items: any;
 
   constructor(private http: HttpClient, private userService: UserService) {
@@ -52,12 +55,17 @@ export class BackendService {
 
   }
 
+
   updateOrder(order: IOrder) {
     this.orderSource.next(order)
   }
 
   updateCart(list: IItem[]) {
     this.cartSource.next(list)
+  }
+  
+  updateOrders(list: IOrder[]) {
+    this.ordersListSource.next(list)
   }
 
   showFilter() {
@@ -252,6 +260,23 @@ export class BackendService {
       }
     );
   }
+
+  getUserOrders(userId: number) {
+    return this.http.get<IOrder[]>(this.baseUrl + '/orders', {params: {["user_id"]: userId}})
+        .pipe(map((value) => (this.transformOrdersList(value))))
+        .subscribe((value) => this.updateOrders(value))
+  }
+
+  transformOrdersList(data: any) {
+    const transformedOrders: IOrder[] = [];
+
+    for (let i = 0; i < data.length; i++) {
+      let order = data[i]
+      transformedOrders.push(this.transformOrder(order))
+    }
+    return transformedOrders
+  }
+}
 
   deleteItemFromOrder(itemId: number) {
     this.deleteItem(itemId).subscribe((value) => console.log('deleted', value));

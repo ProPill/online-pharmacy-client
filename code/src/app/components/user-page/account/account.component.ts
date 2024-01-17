@@ -13,20 +13,26 @@ import {IUser} from "../../../models/user";
 })
 export class AccountComponent {
   title = 'Account';
-  orders: IOrder[] = ordersdata;
+  orders: IOrder[]
   user: IUser
 
   private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
-    // эндпоинт по выдаче всех заказов юзера
-  }
-
-  ngOnInit(): void {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.backendService.currentOrdersList.subscribe((list) => (this.orders = list));
     this.backendService.currentUser.subscribe((value) => {
       if (value != null) {
         this.user = value
       }})
+    this.loadOrders()
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  loadOrders() {
+    this.backendService.getUserOrders(<number>this.userId)
   }
 }
