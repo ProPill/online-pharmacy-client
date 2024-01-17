@@ -5,6 +5,7 @@ import {items} from "../../../data/items";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {BackendService} from "../../../services/backend.service";
+import {IItem} from "../../../models/item";
 
 @Component({
   selector: 'app-cart-order-card',
@@ -14,24 +15,25 @@ import {BackendService} from "../../../services/backend.service";
 export class CartOrderCardComponent {
   title: 'cart-order-card';
   @Input() order: IOrder;
-  data: IItemQuantity[];
-  price: number = 0;
+  @Input() items: IItem[];
+  price: number = 50;
   checkboxChecked: boolean = true;
   hasRecipeItems: boolean = false;
   private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    window.addEventListener('load', () => {
-      this.hasRecipeOnlyItems();
-    })
+  }
+
+  ngOnInit() {
+    this.hasRecipeOnlyItems();
   }
 
   calculatePrice() {
-    this.data = this.order.items;
-    this.price = 0;
-    for (let i = 0; i < this.data.length; i++) {
-      this.price += items[this.data[i].itemId].cost * this.data[i].itemQuantity;
+    let data = this.order.items;
+    this.price = 50;
+    for (let i = 0; i < data.length; i++) {
+      this.price += this.items[i].cost * data[i].itemQuantity;
     }
     return this.price.toString();
   }

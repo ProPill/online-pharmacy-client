@@ -9,6 +9,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {items} from "../data/items";
 import {IPharmacy} from "../models/pharmacy";
 import {UserService} from "./user.service";
+import {orders} from "../data/orders";
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +31,35 @@ export class BackendService {
   private filterSource = new BehaviorSubject<boolean>(true);
   currentFilterStatus = this.filterSource.asObservable()
 
+  private cartSource = new BehaviorSubject<IItem[]>([]);
+  currentCart = this.cartSource.asObservable()
+
+
+  private orderSource = new BehaviorSubject<IOrder>({
+    address: "",
+    date: "",
+    deliverDate: "",
+    id: 0,
+    items: [],
+    orderNumber: "",
+    price: 0
+  });
+  currentOrder = this.orderSource.asObservable()
+
+  quantities: number[]
   items: any;
 
   constructor(private http: HttpClient, private userService: UserService) {
     this.userService.currentUserId.subscribe((userId) => (this.currentUserId = userId));
 
+  }
+
+  updateOrder(order: IOrder) {
+    this.orderSource.next(order)
+  }
+
+  updateCart(list: IItem[]) {
+    this.cartSource.next(list)
   }
 
   showFilter() {
@@ -176,39 +201,6 @@ export class BackendService {
     return this.searchStatusSource.getValue()
   }
 
-  getItemQuantityData(userId: number, itemId: number) {
-    return this.transformOrder(this.http.get(this.baseUrl + 'cart/quantity_info',
-      {params: {["item_id"]: itemId, ["user_id"]: userId}}));
-  }
-
-  getCartPageData(userId: number) {
-    return this.transformOrder(this.http.get(this.baseUrl + '/cart/',
-      {params: {["user_id"]: userId}}));
-  }
-
-  transformOrder(data: any) {
-    return data.pipe(
-      map((orderList: any) => {
-        const items: IItemQuantity[] = orderList.items.map((item: any) => {
-          return {
-            itemId: item.item.itemId,
-            itemQuantity: item.quantity,
-            hasRecipe: item.item.type.id == -2
-          } as IItemQuantity
-        });
-        return {
-          id: orderList.id,
-          date: "",
-          address: "",
-          deliverDate: "",
-          price: 0,
-          orderNumber: "",
-          items: items
-        }
-      })
-    ) as IOrder
-  }
-
   getUserInfo(userId: number) {
     return this.http.get<IUser>(this.baseUrl + '/info/' + userId, {params: {["user_id"]: userId}})
       .pipe(map((value) => (this.getUser(value))))
@@ -263,5 +255,49 @@ export class BackendService {
       }
     );
   }
-}
 
+  getCartPageData(userId: number) {
+    return this.http.get<IOrder>(this.baseUrl + '/cart/' + userId)
+      .pipe(map((value) => (this.transformOrder(value, userId))))
+      .subscribe((value) => {
+        this.updateOrder(value)
+      })
+  }
+
+  getItemQuantityData(userId: number, itemId: number) {
+    const num: number[] = []
+    this.http.get<number>(this.baseUrl + 'cart/quantity_info', {params: {["item_id"]: itemId, ["user_id"]: userId}})
+      .subscribe((value) => num.push(value))
+    return <number>num.pop()
+  }
+
+
+  transformOrder(data: any, userId: number) {
+    const list: IItemQuantity[] = []
+    const tmp: IItem[] = []
+
+    for (let i = 0; i < data.items.length; i++) {
+      let item = data.items[i]
+      // console.log("item", item)
+
+      list.push({
+        itemId: item.item.id,
+        itemQuantity: item.quantity,
+        hasRecipe: item.item.type.id == -2
+      } as IItemQuantity )
+
+      tmp.push(item.item)
+      // console.log('list', list)
+    }
+    this.updateCart(this.transformList(tmp))
+    return {
+      id: data.id,
+      date: "",
+      address: "",
+      deliverDate: "",
+      price: 0,
+      orderNumber: "",
+      items: list
+    } as IOrder
+  }
+}
