@@ -37,12 +37,14 @@ export class CartItemCardComponent {
   increaseQuantity() {
     this.quantity++;
     this.itemQuantity.itemQuantity = this.quantity;
+    this.backendService.addToCartItem(<number>this.userId, this.item.id, 1)
   }
 
   decreaseQuantity() {
     if (this.quantity != 1) {
       this.quantity--;
       this.itemQuantity.itemQuantity = this.quantity;
+      this.backendService.addToCartItem(<number>this.userId, this.item.id, -1)
     }
   }
 
