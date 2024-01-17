@@ -351,8 +351,8 @@ export class BackendService {
 
   parseIdToNumber(id: number) {
     let def = '00000000';
-    let tmp = id.toString()
-    tmp = tmp.substring(1, tmp.length)
+    let tmp = Math.abs(id).toString()
+    tmp = tmp.substring(0, tmp.length)
     return def.substring(0, def.length - tmp.length) + tmp
   }
 
