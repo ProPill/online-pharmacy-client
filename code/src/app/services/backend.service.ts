@@ -6,10 +6,8 @@ import {IUser} from "../models/user";
 import {IOrder} from "../models/order";
 import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
-import {items} from "../data/items";
 import {IPharmacy} from "../models/pharmacy";
 import {UserService} from "./user.service";
-import {orders} from "../data/orders";
 
 @Injectable({
   providedIn: 'root'
@@ -196,7 +194,6 @@ export class BackendService {
       .subscribe((value) => {
         this.changeItems(value);
         this.searchStatusSource.next(value.length != 0);
-        console.log("val", value)
       })
     return this.searchStatusSource.getValue()
   }
@@ -256,6 +253,24 @@ export class BackendService {
     );
   }
 
+  deleteItemFromOrder(itemId: number) {
+    this.deleteItem(itemId).subscribe((value) => console.log('deleted', value));
+    this.getCartPageData(<number>this.currentUserId)
+  }
+
+  deleteItem(itemId: number) {
+    return this.http.delete<IItem>(this.baseUrl + '/cart/delete',
+      {params: {["user_id"]: <number>this.currentUserId, ["item_id"]: itemId}})
+  }
+
+  getCartPageDataAfterDelete() {
+    let data = this.http.get<any>(this.baseUrl + '/cart/' + this.currentUserId)
+    data.pipe(map((value) => {
+      this.updateOrder(this.transformOrder(value, <number>this.currentUserId))
+      this.updateCart(value.items)
+    }))
+  }
+
   getCartPageData(userId: number) {
     return this.http.get<IOrder>(this.baseUrl + '/cart/' + userId)
       .pipe(map((value) => (this.transformOrder(value, userId))))
@@ -278,7 +293,6 @@ export class BackendService {
 
     for (let i = 0; i < data.items.length; i++) {
       let item = data.items[i]
-      // console.log("item", item)
 
       list.push({
         itemId: item.item.id,
@@ -287,7 +301,6 @@ export class BackendService {
       } as IItemQuantity )
 
       tmp.push(item.item)
-      // console.log('list', list)
     }
     this.updateCart(this.transformList(tmp))
     return {

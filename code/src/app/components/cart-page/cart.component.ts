@@ -17,25 +17,28 @@ export class CartComponent {
   order: IOrder;
   items: IItem[]
   onFilter: boolean;
-  isEmpty: boolean = true;
+  // isEmpty: boolean = true;
 
   private userId: number | null;
 
   constructor(private backendService: BackendService,
               private userService: UserService,
               private router: Router) {
-    this.backendService.currentOrder.subscribe((value) => this.order = value)
-    this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value)
-    this.backendService.currentCart.subscribe((value) => this.items = value)
   }
 
   ngOnInit() {
-    this.isEmpty = this.order.items.length == 0;
+      this.backendService.currentOrder.subscribe((value) => this.order = value);
+      this.backendService.currentCart.subscribe((list) => (this.items = list))
+      this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+      this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value);
   }
 
   onMain() {
     this.backendService.showFilter()
     this.router.navigate(['/main']);
+  }
+
+  isEmpty() {
+    return this.order.items.length == 0;
   }
 }

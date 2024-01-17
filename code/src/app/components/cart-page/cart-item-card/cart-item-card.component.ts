@@ -49,4 +49,9 @@ export class CartItemCardComponent {
   calculateCost() {
     return this.cost = this.item.cost * this.quantity;
   }
+
+  deleteItem() {
+    this.backendService.deleteItemFromOrder(this.item.id);
+    this.backendService.getCartPageData(<number>this.userId)
+  }
 }
