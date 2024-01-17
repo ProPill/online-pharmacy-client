@@ -16,7 +16,7 @@ export class CartOrderCardComponent {
   @Input() items: IItem[];
   price: number = 50;
   checkboxChecked: boolean;
-  @Input() hasRecipeItems: boolean;
+  @Input() shouldHaveCheckbox: boolean;
   private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
@@ -25,7 +25,7 @@ export class CartOrderCardComponent {
   }
 
   ngOnInit() {
-    this.checkboxChecked = !this.hasRecipeItems
+    this.checkboxChecked = !this.shouldHaveCheckbox
   }
 
   calculatePrice() {
@@ -50,12 +50,12 @@ export class CartOrderCardComponent {
         .forEach(orderCard => {
           orderCard.querySelectorAll(".button-color")
               .forEach(button => {
-                if (this.hasRecipeItems && !this.checkboxChecked)
+                if (this.shouldHaveCheckbox && !this.checkboxChecked)
                 {
                   this.checkboxChecked = true
                   button.classList.remove('inactive')
                 }
-                else if (this.hasRecipeItems && this.checkboxChecked) {
+                else if (this.shouldHaveCheckbox && this.checkboxChecked) {
                   this.checkboxChecked = false
                   button.classList.add('inactive')
                 }

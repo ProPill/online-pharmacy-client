@@ -7,6 +7,7 @@ import {BackendService} from "../../services/backend.service";
 import {IItem} from "../../models/item";
 import {isEmpty} from "rxjs";
 import {IItemQuantity} from "../../models/item_quantity";
+import {IUser} from "../../models/user";
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +20,7 @@ export class CartComponent {
   onFilter: boolean;
   hasRecipeItems: boolean
   statusChecked: boolean = false
+  user: IUser | null
 
   private userId: number | null;
 
@@ -29,11 +31,22 @@ export class CartComponent {
     this.backendService.currentCart.subscribe((list) => (this.items = list))
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value);
+    this.backendService.currentUser.subscribe((value) => this.user = value);
     this.hasRecipeOnlyItems()
   }
 
   ngOnInit() {
     this.hasRecipeOnlyItems()
+    this.getRole()
+  }
+
+  getRole()
+  {
+    if (this.user != null)
+    {
+      return this.user.roleId
+    }
+    else return 0
   }
 
   onMain() {
@@ -57,15 +70,19 @@ export class CartComponent {
         .forEach(orderCard => {
           orderCard.querySelectorAll(".button-color")
               .forEach(button => {
-                if (!this.hasRecipeItems) {
+                if (!this.shouldHaveCheckbox()) {
                   button.classList.remove('inactive')
                 }
-                else if (this.hasRecipeItems && !this.statusChecked) {
+                else if (this.shouldHaveCheckbox() && !this.statusChecked) {
                   button.classList.add('inactive')
                   this.statusChecked = true
                 }
               })
         })
     return this.hasRecipeItems
+  }
+
+  shouldHaveCheckbox() {
+    return (this.hasRecipeOnlyItems() && this.getRole() != -2)
   }
 }
