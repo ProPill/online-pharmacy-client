@@ -35,8 +35,4 @@ export class HeaderAuthorizedComponent {
     this.backendService.hideFilter()
     this.router.navigate(['/user'])
   }
-
-  changeFilterStatus() {
-    this.onFilterChange.emit(this.onFilter);
-  }
 }
