@@ -1,5 +1,5 @@
 <div class="card">
-  <img class="card img" src="/assets/pictures/instead-of-photo-img.png" (click)="onProductCardPage()">
+  <img class="card img" src="{{item.image}}" (click)="onProductCardPage()">
   <div class="card textarea" (click)="onProductCardPage()">
       <span class="card title">{{ item.title }}</span>
       <span class="card info">Производитель: {{ item.manufacturer }}</span>

@@ -9,6 +9,7 @@ import {HeaderUnauthorizedComponent} from "../components/header/header-unauthori
 import {RegistrationPageComponent} from "../components/registration-page/registration-page.component";
 import {AccountComponent} from "../components/user-page/account/account.component";
 import {OrderPageComponent} from "../components/order-page/order-page.component";
+import {ItemNotFoundComponent} from "../components/main-page/item-not-found/item-not-found.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'user', component: AccountComponent },
   { path: 'unauthorized', component: HeaderUnauthorizedComponent },
   { path: 'order-page', component: OrderPageComponent },
+  { path: 'item-not-found', component: ItemNotFoundComponent}
 ];
 
 @NgModule({

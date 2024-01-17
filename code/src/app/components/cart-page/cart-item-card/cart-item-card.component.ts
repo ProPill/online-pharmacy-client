@@ -19,7 +19,7 @@ export class CartItemCardComponent {
   quantity: number = 1;
   cost: number = 0;
 
-  private userId: number = -1;
+  private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
