@@ -2,7 +2,7 @@
   <span class="text title">Ваш заказ</span>
   <div *ngIf="hasRecipeItems" class="text line">
     <form>
-        <input class="text" type="checkbox" id="checkbox-id" (click)="changeOrderButtonColor()">
+        <input class="text" type="checkbox" id="checkbox-id" (click)="checkOrderButtonColor()">
         <label for="checkbox-id">
           У меня есть рецепт
       </label>
@@ -17,6 +17,6 @@
     <span class="text price">{{ calculatePrice() }}₽</span>
   </div>
   <div class="text buttons">
-    <button class="button-color" (click)="createOrder()">Оформить заказ</button>
+    <button class="button-color" name="create-order" (click)="createOrder()">Оформить заказ</button>
   </div>
 </div>

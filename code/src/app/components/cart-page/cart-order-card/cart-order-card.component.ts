@@ -1,7 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {IOrder} from "../../../models/order";
-import {IItemQuantity} from "../../../models/item_quantity";
-import {items} from "../../../data/items";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {BackendService} from "../../../services/backend.service";
@@ -17,16 +15,17 @@ export class CartOrderCardComponent {
   @Input() order: IOrder;
   @Input() items: IItem[];
   price: number = 50;
-  checkboxChecked: boolean = true;
-  hasRecipeItems: boolean = false;
+  checkboxChecked: boolean;
+  @Input() hasRecipeItems: boolean;
   private userId: number | null;
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
+    this.checkOrderButtonColor()
   }
 
   ngOnInit() {
-    this.hasRecipeOnlyItems();
+    this.checkboxChecked = !this.hasRecipeItems
   }
 
   calculatePrice() {
@@ -48,41 +47,21 @@ export class CartOrderCardComponent {
     } else return null;
   }
 
-  hasRecipeOnlyItems() {
-    this.order.items.forEach(item => {
-      if (item.hasRecipe) {
-        this.hasRecipeItems = true;
-        this.checkboxChecked = false;
-        document.querySelectorAll(".card-order")
-          .forEach(orderCard => {
-            orderCard.querySelectorAll(".button-color")
+  checkOrderButtonColor() {
+    document.querySelectorAll(".card-order")
+        .forEach(orderCard => {
+          orderCard.querySelectorAll(".button-color")
               .forEach(button => {
-                button.classList.add('inactive')
+                if (this.hasRecipeItems && !this.checkboxChecked)
+                {
+                  this.checkboxChecked = true
+                  button.classList.remove('inactive')
+                }
+                else if (this.hasRecipeItems && this.checkboxChecked) {
+                  this.checkboxChecked = false
+                  button.classList.add('inactive')
+                }
               })
-          })
-        return
-      }
-    })
-  }
-
-  changeOrderButtonColor() {
-    this.checkboxChecked = !this.checkboxChecked;
-    if (this.checkboxChecked) {
-      document.querySelectorAll(".card-order")
-        .forEach(orderCard => {
-          orderCard.querySelectorAll(".button-color")
-            .forEach(button => {
-              button.classList.remove('inactive')
-            })
         })
-    } else {
-      document.querySelectorAll(".card-order")
-        .forEach(orderCard => {
-          orderCard.querySelectorAll(".button-color")
-            .forEach(button => {
-              button.classList.add('inactive')
-            })
-        })
-    }
   }
 }
