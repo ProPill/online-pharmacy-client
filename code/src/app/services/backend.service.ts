@@ -31,7 +31,7 @@ export class BackendService {
 
   private cartSource = new BehaviorSubject<IItem[]>([]);
   currentCart = this.cartSource.asObservable()
-  
+
   private ordersListSource = new BehaviorSubject<IOrder[]>([]);
   currentOrdersList = this.ordersListSource.asObservable()
 
@@ -63,7 +63,7 @@ export class BackendService {
   updateCart(list: IItem[]) {
     this.cartSource.next(list)
   }
-  
+
   updateOrders(list: IOrder[]) {
     this.ordersListSource.next(list)
   }
@@ -271,12 +271,11 @@ export class BackendService {
     const transformedOrders: IOrder[] = [];
 
     for (let i = 0; i < data.length; i++) {
-      let order = data[i]
-      transformedOrders.push(this.transformOrder(order))
+      let order = data[i];
+      transformedOrders.push(this.transformOrder(order, <number>this.currentUserId))
     }
     return transformedOrders
   }
-}
 
   deleteItemFromOrder(itemId: number) {
     this.deleteItem(itemId).subscribe((value) => console.log('deleted', value));
