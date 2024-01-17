@@ -19,6 +19,7 @@ export class CartComponent {
   items: IItem[]
   onFilter: boolean;
   hasRecipeItems: boolean
+  checkboxRequired: boolean
   statusChecked: boolean = false
   user: IUser | null
 
@@ -33,10 +34,12 @@ export class CartComponent {
     this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value);
     this.backendService.currentUser.subscribe((value) => this.user = value);
     this.hasRecipeOnlyItems()
+    this.shouldHaveCheckbox()
   }
 
   ngOnInit() {
     this.hasRecipeOnlyItems()
+    this.shouldHaveCheckbox()
     this.getRole()
   }
 
@@ -83,6 +86,7 @@ export class CartComponent {
   }
 
   shouldHaveCheckbox() {
-    return (this.hasRecipeOnlyItems() && this.getRole() != -2)
+    this.checkboxRequired = this.hasRecipeItems && this.getRole() != -2
+    return this.checkboxRequired
   }
 }
