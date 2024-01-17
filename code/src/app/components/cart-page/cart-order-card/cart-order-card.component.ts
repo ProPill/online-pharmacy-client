@@ -39,12 +39,10 @@ export class CartOrderCardComponent {
 
   createOrder() {
     if (this.checkboxChecked) {
+      this.order.price = parseInt(this.calculatePrice())
+      this.backendService.updateOrder(this.order)
       this.router.navigate(['/order-page']);
-      return {
-        id: '', date: '', address: '', deliverDate: '',
-        price: this.price, orderNumber: '', items: this.order.items
-      }
-    } else return null;
+    }
   }
 
   checkOrderButtonColor() {
