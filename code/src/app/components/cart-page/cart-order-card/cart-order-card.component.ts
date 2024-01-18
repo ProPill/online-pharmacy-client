@@ -66,22 +66,6 @@ export class CartOrderCardComponent {
         })
   }
 
-  hasRecipeOnlyItems() {
-    this.hasRecipeItems = false
-    this.order.items.forEach(item => {
-      if (item.hasRecipe) {
-        this.hasRecipeItems = true;
-        return
-      }
-    })
-    return this.hasRecipeItems
-  }
-
-  shouldHaveCheckbox() {
-    this.checkboxRequired = this.hasRecipeItems && this.getRole() != -2
-    return this.checkboxRequired
-  }
-
   getRole()
   {
     if (this.user != null)
