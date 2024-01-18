@@ -33,15 +33,11 @@ export class CartComponent {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value);
     this.backendService.currentUser.subscribe((value) => this.user = value);
-    // this.hasRecipeOnlyItems()
-    // this.shouldHaveCheckbox()
   }
 
   ngOnInit() {
     this.getRole()
     this.hasRecipeOnlyItems()
-    // this.shouldHaveCheckbox()
-    this.checkColor()
   }
 
   getRole()
@@ -63,6 +59,11 @@ export class CartComponent {
   }
 
   hasRecipeOnlyItems() {
+    if (this.user != null) {
+      if (this.user.roleId == -2) {
+        return false
+      }
+    }
     this.hasRecipeItems = false
     this.order.items.forEach(item => {
       if (item.hasRecipe) {
@@ -86,14 +87,5 @@ export class CartComponent {
           })
       })
     return this.hasRecipeItems
-  }
-
-  shouldHaveCheckbox() {
-    this.checkboxRequired = this.hasRecipeItems && this.getRole() != -2
-    return this.checkboxRequired
-  }
-
-  checkColor() {
-
   }
 }
