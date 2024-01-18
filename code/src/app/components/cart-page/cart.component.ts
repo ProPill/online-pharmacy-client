@@ -63,6 +63,11 @@ export class CartComponent {
   }
 
   hasRecipeOnlyItems() {
+    if (this.user != null) {
+      if (this.user.roleId == -2) {
+        return false
+      }
+    }
     this.hasRecipeItems = false
     this.order.items.forEach(item => {
       if (item.hasRecipe) {

@@ -25,18 +25,11 @@ export class CartOrderCardComponent {
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentUser.subscribe((value) => this.user = value);
-
-
   }
 
   ngOnInit() {
     this.checkboxChecked = !this.hasRecipeItems
-    // this.checkOrderButtonColor()
-    // this.getRole()
-    // this.hasRecipeOnlyItems()
-    // this.shouldHaveCheckbox()
-    // this.checkboxChecked = !this.checkboxRequired
-    // this.checkOrderButtonColor()
+    console.log("checkbox in init", this.checkboxChecked)
   }
 
   calculatePrice() {
@@ -49,6 +42,7 @@ export class CartOrderCardComponent {
   }
 
   createOrder() {
+    console.log("checbox in create", this.checkboxChecked)
     if (this.checkboxChecked) {
       this.order.price = parseInt(this.calculatePrice())
       this.backendService.updateOrder(this.order)
