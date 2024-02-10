@@ -1,12 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RegistrationService } from './registration.service';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {BackendService} from "./backend.service";
 
 describe('RegistrationService', () => {
   let service: RegistrationService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [ HttpClientTestingModule ]
+    });
     service = TestBed.inject(RegistrationService);
   });
 

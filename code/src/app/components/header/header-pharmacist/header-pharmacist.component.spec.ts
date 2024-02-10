@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderPharmacistComponent } from './header-pharmacist.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {BackendService} from "../../../services/backend.service";
 
 describe('HeaderPharmacistComponent', () => {
   let component: HeaderPharmacistComponent;
@@ -8,7 +10,8 @@ describe('HeaderPharmacistComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderPharmacistComponent]
+      declarations: [HeaderPharmacistComponent],
+      imports: [ HttpClientTestingModule ]
     });
     fixture = TestBed.createComponent(HeaderPharmacistComponent);
     component = fixture.componentInstance;

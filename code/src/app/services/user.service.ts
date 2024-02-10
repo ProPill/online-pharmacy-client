@@ -2,6 +2,9 @@ import {Injectable, numberAttribute} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {ItemComponent} from "../components/main-page/item/item.component";
 import {IItem} from "../models/item";
+import {LoginService} from "./login.service";
+import {PharmacistService} from "./pharmacist.service";
+import {RegistrationService} from "./registration.service";
 
 @Injectable({
   providedIn: 'root'
