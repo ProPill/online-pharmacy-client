@@ -1,12 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { IOrder } from "../../models/order";
 import { Router } from '@angular/router';
-import {orders} from "../../data/orders";
 import {UserService} from "../../services/user.service";
 import {BackendService} from "../../services/backend.service";
 import {IItem} from "../../models/item";
-import {isEmpty} from "rxjs";
-import {IItemQuantity} from "../../models/item_quantity";
 import {IUser} from "../../models/user";
 
 @Component({
@@ -19,7 +16,6 @@ export class CartComponent {
   items: IItem[]
   onFilter: boolean;
   hasRecipeItems: boolean = true
-  checkboxRequired: boolean = true
   statusChecked: boolean = false
   user: IUser | null
 
@@ -59,10 +55,8 @@ export class CartComponent {
   }
 
   hasRecipeOnlyItems() {
-    if (this.user != null) {
-      if (this.user.roleId == -2) {
-        return false
-      }
+    if (this.user != null && this.user.roleId == -2) {
+      return false;
     }
     this.hasRecipeItems = false
     this.order.items.forEach(item => {
@@ -71,21 +65,22 @@ export class CartComponent {
         return
       }
     })
-    console.log(this.hasRecipeItems)
     document.querySelectorAll(".card-order")
-      .forEach(orderCard => {
-        orderCard.querySelectorAll(".button-color")
-          .forEach(button => {
-            if (!this.hasRecipeItems) {
-              button.classList.remove('inactive')
-            }
-            else if (this.hasRecipeItems && !this.statusChecked) {
-              console.log("adding inactive")
-              button.classList.add('inactive')
-              this.statusChecked = true
-            }
-          })
-      })
+        .forEach(orderCard => {
+          const buttonColors = orderCard.querySelectorAll(".button-color");
+
+          if (buttonColors) {
+            buttonColors.forEach(button => {
+              if (!this.hasRecipeItems) {
+                button.classList.remove('inactive');
+              } else if (this.hasRecipeItems && !this.statusChecked) {
+                console.log("adding inactive");
+                button.classList.add('inactive');
+                this.statusChecked = true;
+              }
+            });
+          }
+        });
     return this.hasRecipeItems
   }
 }
