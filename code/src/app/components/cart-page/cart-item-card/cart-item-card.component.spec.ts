@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartItemCardComponent } from './cart-item-card.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {BackendService} from "../../../services/backend.service";
 
 describe('CartItemCardComponent', () => {
   let component: CartItemCardComponent;
@@ -8,7 +10,9 @@ describe('CartItemCardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CartItemCardComponent]
+      declarations: [CartItemCardComponent],
+      imports: [ HttpClientTestingModule ],
+      providers: [ BackendService ]
     });
     fixture = TestBed.createComponent(CartItemCardComponent);
     component = fixture.componentInstance;

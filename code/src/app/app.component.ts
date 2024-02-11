@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {items as itemsdata} from './data/items'
 import {IItem} from "./models/item";
 import {IHeader} from "./models/header";
