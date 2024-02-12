@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {BackendService} from "../../../services/backend.service";
 import {IItem} from "../../../models/item";
+import {IUser} from "../../../models/user";
 
 @Component({
   selector: 'app-cart-order-card',
@@ -15,17 +16,20 @@ export class CartOrderCardComponent {
   @Input() order: IOrder;
   @Input() items: IItem[];
   price: number = 50;
+  @Input() hasRecipeItems: boolean;
   checkboxChecked: boolean;
-  @Input() shouldHaveCheckbox: boolean;
+  @Input() checkboxRequired: boolean = true;
   private userId: number | null;
+  user: IUser | null
 
   constructor(private backendService: BackendService, private userService: UserService, private router: Router) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
-    this.checkOrderButtonColor()
+    this.backendService.currentUser.subscribe((value) => this.user = value);
   }
 
   ngOnInit() {
-    this.checkboxChecked = !this.shouldHaveCheckbox
+    this.checkboxChecked = !this.hasRecipeItems
+    console.log("checkbox in init", this.checkboxChecked)
   }
 
   calculatePrice() {
@@ -38,6 +42,7 @@ export class CartOrderCardComponent {
   }
 
   createOrder() {
+    console.log("checbox in create", this.checkboxChecked)
     if (this.checkboxChecked) {
       this.order.price = parseInt(this.calculatePrice())
       this.backendService.updateOrder(this.order)
@@ -50,16 +55,23 @@ export class CartOrderCardComponent {
         .forEach(orderCard => {
           orderCard.querySelectorAll(".button-color")
               .forEach(button => {
-                if (this.shouldHaveCheckbox && !this.checkboxChecked)
-                {
+                if (this.hasRecipeItems && !this.checkboxChecked)                {
                   this.checkboxChecked = true
                   button.classList.remove('inactive')
                 }
-                else if (this.shouldHaveCheckbox && this.checkboxChecked) {
-                  this.checkboxChecked = false
+                else if (this.hasRecipeItems && this.checkboxChecked) {                  this.checkboxChecked = false
                   button.classList.add('inactive')
                 }
               })
         })
+  }
+
+  getRole()
+  {
+    if (this.user != null)
+    {
+      return this.user.roleId
+    }
+    else return 0
   }
 }

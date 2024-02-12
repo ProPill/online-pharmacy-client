@@ -18,7 +18,8 @@ export class CartComponent {
   order: IOrder;
   items: IItem[]
   onFilter: boolean;
-  hasRecipeItems: boolean
+  hasRecipeItems: boolean = true
+  checkboxRequired: boolean = true
   statusChecked: boolean = false
   user: IUser | null
 
@@ -32,12 +33,11 @@ export class CartComponent {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.backendService.currentFilterStatus.subscribe((value) => this.onFilter = value);
     this.backendService.currentUser.subscribe((value) => this.user = value);
-    this.hasRecipeOnlyItems()
   }
 
   ngOnInit() {
-    this.hasRecipeOnlyItems()
     this.getRole()
+    this.hasRecipeOnlyItems()
   }
 
   getRole()
@@ -59,6 +59,11 @@ export class CartComponent {
   }
 
   hasRecipeOnlyItems() {
+    if (this.user != null) {
+      if (this.user.roleId == -2) {
+        return false
+      }
+    }
     this.hasRecipeItems = false
     this.order.items.forEach(item => {
       if (item.hasRecipe) {
@@ -66,23 +71,21 @@ export class CartComponent {
         return
       }
     })
+    console.log(this.hasRecipeItems)
     document.querySelectorAll(".card-order")
-        .forEach(orderCard => {
-          orderCard.querySelectorAll(".button-color")
-              .forEach(button => {
-                if (!this.shouldHaveCheckbox()) {
-                  button.classList.remove('inactive')
-                }
-                else if (this.shouldHaveCheckbox() && !this.statusChecked) {
-                  button.classList.add('inactive')
-                  this.statusChecked = true
-                }
-              })
-        })
+      .forEach(orderCard => {
+        orderCard.querySelectorAll(".button-color")
+          .forEach(button => {
+            if (!this.hasRecipeItems) {
+              button.classList.remove('inactive')
+            }
+            else if (this.hasRecipeItems && !this.statusChecked) {
+              console.log("adding inactive")
+              button.classList.add('inactive')
+              this.statusChecked = true
+            }
+          })
+      })
     return this.hasRecipeItems
-  }
-
-  shouldHaveCheckbox() {
-    return (this.hasRecipeOnlyItems() && this.getRole() != -2)
   }
 }
