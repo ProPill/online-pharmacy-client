@@ -1,19 +1,17 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { CartOrderCardComponent } from './cart-order-card.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {BackendService} from "../../../services/backend.service";
-import {of} from "rxjs";
-import {IUser} from "../../../models/user";
-import {IOrder} from "../../../models/order";
-import {IItem} from "../../../models/item";
-import {users} from "../../../data/users";
-import {items} from "../../../data/items";
-import {orders} from "../../../data/orders";
-import {UserService} from "../../../services/user.service";
-import {Router} from "@angular/router";
-import {IItemQuantity} from "../../../models/item_quantity";
-import {RouterTestingModule} from "@angular/router/testing";
+import { UserService } from '../../../services/user.service';
+import { BackendService } from '../../../services/backend.service';
+import { of } from 'rxjs';
+import { orders } from '../../../data/orders';
+import { IOrder } from '../../../models/order';
+import { IItem } from '../../../models/item';
+import { IItemQuantity } from '../../../models/item_quantity';
+import { users } from '../../../data/users';
+import { items } from '../../../data/items';
+import { routes } from '../../../routes/routes';
 
 describe('CartOrderCardComponent', () => {
   let component: CartOrderCardComponent;
@@ -21,7 +19,7 @@ describe('CartOrderCardComponent', () => {
   let router: Router;
 
   const userServiceMock = {
-    currentUserId: of(0),
+    currentUserId: of(-1),
   };
 
   const backendServiceMock = {
@@ -35,7 +33,7 @@ describe('CartOrderCardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [CartOrderCardComponent],
       providers: [
         { provide: UserService, useValue: userServiceMock },
@@ -70,13 +68,14 @@ describe('CartOrderCardComponent', () => {
     expect(component.price).toEqual(expectedPrice);
   });
 
-  it('should create order and navigate on createOrder() when checkboxChecked is true', fakeAsync(() => {
+  it('should create order and navigate on createOrder() when checkboxChecked is true', () => {
+    const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
+
     component.checkboxChecked = true;
     component.createOrder();
-    tick();
     expect(backendServiceMock.updateOrder).toHaveBeenCalledWith(orderMock);
-    expect(router.navigate).toHaveBeenCalledWith(['/order-page']);
-  }));
+    expect(navigateSpy).toHaveBeenCalledWith(['/order-page']);
+  });
 
   it('should not create order on createOrder() when checkboxChecked is false', () => {
     component.checkboxChecked = false;
