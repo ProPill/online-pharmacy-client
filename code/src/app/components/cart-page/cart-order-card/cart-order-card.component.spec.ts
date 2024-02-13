@@ -30,6 +30,7 @@ describe('CartOrderCardComponent', () => {
   const orderMock: IOrder = orders[0];
 
   const itemsMock: IItem[] = [items[0], items[1]];
+  const userMock = users[0];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -84,8 +85,8 @@ describe('CartOrderCardComponent', () => {
   });
 
   it('should return user role when user is not null', () => {
-    const roleId = users[0].roleId;
-    component.user = users[0];
+    const roleId = userMock.roleId;
+    component.user = userMock;
 
     const result = component.getRole();
     expect(result).toEqual(roleId);

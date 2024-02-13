@@ -44,6 +44,9 @@ import {UserService} from "./services/user.service";
     AppRoutingModule,
     FormsModule
   ],
+  exports:[
+    CartOrderCardComponent, CartItemCardComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

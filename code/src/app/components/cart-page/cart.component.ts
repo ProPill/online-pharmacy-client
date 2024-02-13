@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import { IOrder } from "../../models/order";
 import { Router } from '@angular/router';
 import {UserService} from "../../services/user.service";
@@ -11,6 +11,7 @@ import {IUser} from "../../models/user";
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
+
 export class CartComponent {
   order: IOrder;
   items: IItem[]
