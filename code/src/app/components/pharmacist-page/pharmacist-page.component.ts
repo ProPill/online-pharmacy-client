@@ -1,8 +1,9 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, NgModule, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {pharmacies} from "../../data/pharmacies";
 import {PharmacistService} from "../../services/pharmacist.service";
+
 
 @Component({
   selector: 'app-pharmacist-page',

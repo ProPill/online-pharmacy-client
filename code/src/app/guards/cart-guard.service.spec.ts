@@ -3,21 +3,21 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../services/user.service';
 import { BackendService } from '../services/backend.service';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {orderGuard} from "./order.guard";
+import {cartGuard} from "./cart-guard.service";
 
-describe('orderGuard', () => {
-  let guard: orderGuard;
+describe('cartGuard', () => {
+  let guard: cartGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
-        orderGuard,
+        cartGuard,
         UserService,
         BackendService
       ]
     });
-    guard = TestBed.inject(orderGuard);
+    guard = TestBed.inject(cartGuard);
   });
 
   it('should be created', () => {

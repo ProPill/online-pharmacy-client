@@ -23,6 +23,11 @@ import { HeaderPharmacistComponent } from './components/header/header-pharmacist
 import { HeaderUnauthorizedComponent } from './components/header/header-unauthorized/header-unauthorized.component';
 import { OrderPageComponent } from "./components/order-page/order-page.component";
 import { ItemNotFoundComponent } from './components/main-page/item-not-found/item-not-found.component';
+import {BackendService} from "./services/backend.service";
+import {LoginService} from "./services/login.service";
+import {PharmacistService} from "./services/pharmacist.service";
+import {RegistrationService} from "./services/registration.service";
+import {UserService} from "./services/user.service";
 
 @NgModule({
   declarations: [
@@ -39,7 +44,9 @@ import { ItemNotFoundComponent } from './components/main-page/item-not-found/ite
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  exports:[
+    CartOrderCardComponent, CartItemCardComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

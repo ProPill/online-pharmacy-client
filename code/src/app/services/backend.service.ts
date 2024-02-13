@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {map, take} from 'rxjs/operators';
 import {IItem} from "../models/item";
 import {IUser} from "../models/user";
@@ -8,9 +7,10 @@ import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {IPharmacy} from "../models/pharmacy";
 import {UserService} from "./user.service";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BackendService {
   private baseUrl = 'http://localhost:8080/api';
