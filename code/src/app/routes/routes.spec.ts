@@ -17,6 +17,7 @@ import { OrderPageComponent } from '../components/order-page/order-page.componen
 
 import { of } from 'rxjs';
 import {routes} from "./routes";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 // Создаем фейковый guard для тестирования
 class FakeGuard {
@@ -30,7 +31,10 @@ describe('AppRoutingModule', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes(routes)],
+      imports: [
+        RouterTestingModule.withRoutes(routes),
+        HttpClientTestingModule // добавляем HttpClientModuleTestingModule
+      ],
       declarations: [
         MainPageComponent,
         LoginPageComponent,
