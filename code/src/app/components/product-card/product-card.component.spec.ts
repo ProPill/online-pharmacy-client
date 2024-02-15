@@ -34,24 +34,29 @@ describe('ProductCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Уменьшение количества товаров (>1).
   it('decrease (>1)', () => {
     component.quantity = 3;
     component.decreaseQuantity();
     expect(component.quantity).toBe(2);
   });
 
+  // Уменьшение количества товаров (=1).
   it('decrease (=1)', () => {
     component.quantity = 1;
     component.decreaseQuantity();
     expect(component.quantity).toBe(0);
   });
 
+
+  // Увеличение количества товаров.
   it('increase', () => {
     component.quantity = 2;
     component.increaseQuantity();
     expect(component.quantity).toBe(3);
   });
 
+  // Вызов метода сервиса при добавлении товаров в корзину.
   it('should call service method on addItemToCart', () => {
     spyOn(backendService, 'addToCartItem').and.stub();
     spyOn(component.router, 'navigate').and.stub();
@@ -64,6 +69,7 @@ describe('ProductCardComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['/main']);
   });
 
+  // Расчет стоимости товаров.
   it('calculateCost - should calculate cost correctly', () => {
     component.item = {
       id: 1,
@@ -78,6 +84,7 @@ describe('ProductCardComponent', () => {
     expect(component.calculateCost()).toBe(30);
   });
 
+  // Переключение флага отображения аптек.
   it('showPharmacies - should toggle showPharmaciesFlag', () => {
     component.showPharmaciesFlag = false;
     component.showPharmacies();
@@ -86,6 +93,7 @@ describe('ProductCardComponent', () => {
     expect(component.showPharmaciesFlag).toBeFalsy();
   });
 
+  // Правильное установление свойства Chosen на основе количества товаров.
   it('should set Chosen correctly based on quantity', () => {
     component.quantity = 0;
     component.Chosen = true;
@@ -95,11 +103,13 @@ describe('ProductCardComponent', () => {
     expect(component.Chosen).toBeTruthy();
   });
 
+  // Правильное получение userId.
   it('userId should be received properly', () => {
     userService.changeUserId(123);
     expect(component.userId).toEqual(123);
   });
 
+  // Установление значения количества товаров по умолчанию в 1, если оно не указано в itemsSafe.
   it('should default quantity to 1 if not in itemsSafe', () => {
     component.itemId = 3;
     component.itemsSafe = new Map<number, number>();
@@ -107,13 +117,7 @@ describe('ProductCardComponent', () => {
     expect(component.quantity).toEqual(1);
   });
 
-  it('should default quantity to 1 if not in itemsSafe', () => {
-    component.itemId = 3;
-    component.itemsSafe = new Map<number, number>();
-    component.ngOnInit();
-    expect(component.quantity).toEqual(1);
-  });
-
+  // Установление списка аптек корректно из backendService.
   it('should set pharmacies correctly from backendService', () => {
     const testPharmacies: IPharmacy[] = [
       {id: 1, details: {name: 'Pharmacy 1', address: 'Address 1', workingHours: '9am - 5pm', phone: '123-456-7890'}},

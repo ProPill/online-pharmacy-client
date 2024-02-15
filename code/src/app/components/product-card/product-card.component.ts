@@ -30,13 +30,13 @@ export class ProductCardComponent {
     this.userService.itemIdObservable.subscribe((itemId) => (this.itemId = itemId));
 
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].id == this.itemId){
+      if (this.items[i].id == this.itemId) {
         this.item = this.items[i];
         break;
       }
     }
     this.quantity = <number>this.itemsSafe.get(this.itemId);
-    if (this.quantity == null) this.quantity=1;
+    if (this.quantity == null) this.quantity = 1;
     this.pharmacies = this.backendService.getAllPharmaciesById(this.itemId);
   }
 
@@ -67,5 +67,6 @@ export class ProductCardComponent {
     return this.cost = this.item.cost * this.quantity;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }
