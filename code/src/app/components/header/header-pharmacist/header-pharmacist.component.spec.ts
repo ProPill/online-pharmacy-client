@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderPharmacistComponent } from './header-pharmacist.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {BackendService} from "../../../services/backend.service";
 import {RouterTestingModule} from "@angular/router/testing";
 import {routes} from "../../../routes/routes";
@@ -51,7 +50,7 @@ describe('HeaderPharmacistComponent', () => {
     expect(routerSpy).toHaveBeenCalledWith(['/pharmacist']);
   });
 
-  it('should call onLogOut and navigate to /main', () => {
+  it('should call onLogOut() and navigate to /main', () => {
     const routerSpy = spyOn(TestBed.inject(Router), 'navigate');
     component.onLogOut();
     expect(backendServiceMock.showFilter).toHaveBeenCalled();
@@ -63,13 +62,13 @@ describe('HeaderPharmacistComponent', () => {
     const emitSpy = spyOn(component.onFilterChange, 'emit');
     component.onFilter = true;
     component.changeFilterStatus();
-    expect(emitSpy).toHaveBeenCalledWith(true); // Change this argument based on your expected behavior
+    expect(emitSpy).toHaveBeenCalledWith(true);
   });
 
   it('should call changeFilterStatus and emit onFilterChange event with false', () => {
     const emitSpy = spyOn(component.onFilterChange, 'emit');
     component.onFilter = false;
     component.changeFilterStatus();
-    expect(emitSpy).toHaveBeenCalledWith(false); // Change this argument based on your expected behavior
+    expect(emitSpy).toHaveBeenCalledWith(false);
   });
 });
