@@ -98,4 +98,8 @@ export class HeaderComponent {
     });
     this.reloadList(true)
   }
+
+  getUserId() {
+    return this.userId;
+  }
 }
