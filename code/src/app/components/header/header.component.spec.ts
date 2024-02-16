@@ -62,20 +62,48 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should not call getUserInfo when userId is null in constructor', () => {
+    userServiceMock.currentUserId = of(null);
+    const fixture: ComponentFixture<HeaderComponent> = TestBed.createComponent(HeaderComponent);
+    component = fixture.componentInstance;
+    expect(backendServiceMock.getUserInfo).not.toHaveBeenCalled();
+  });
+
   it('should call showFilter when searchItems is called with null request', () => {
     const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
-    component.searchRequest = EMPTY_REQUEST;
+    const mockElement = document.createElement('div');
+    mockElement.setAttribute('name', 'searchRequest');
+    mockElement.setAttribute('ng-reflect-model', EMPTY_REQUEST);
+
+    const nodeList = [mockElement] as any as NodeListOf<Element>;
+    const querySelectorAllSpy = spyOn(document, 'querySelectorAll').and.returnValue(nodeList);
+
     component.searchItems();
     expect(backendServiceMock.showFilter).toHaveBeenCalled();
+    expect(querySelectorAllSpy).toHaveBeenCalledWith("[name='searchRequest']");
+    nodeList[0].setAttribute('ng-reflect-model', EMPTY_REQUEST);
+    mockElement.dispatchEvent(new Event('ngModelChange'));
+    expect(component.searchRequest).toEqual(EMPTY_REQUEST);
     expect(backendServiceMock.searchItem).toHaveBeenCalledWith(EMPTY_REQUEST);
     expect(navigateSpy).toHaveBeenCalledWith(['/main']);
   });
 
+
   it('should call showFilter when searchItems is called with not null request', () => {
     const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
-    component.searchRequest = NOT_EMPTY_REQUEST;
+    const mockElement = document.createElement('div');
+    mockElement.setAttribute('name', 'searchRequest');
+    mockElement.setAttribute('ng-reflect-model', NOT_EMPTY_REQUEST);
+
+    const nodeList = [mockElement] as any as NodeListOf<Element>;
+    const querySelectorAllSpy = spyOn(document, 'querySelectorAll').and.returnValue(nodeList);
+
     component.searchItems();
     expect(backendServiceMock.showFilter).toHaveBeenCalled();
+    expect(querySelectorAllSpy).toHaveBeenCalledWith("[name='searchRequest']");
+    nodeList[0].setAttribute('ng-reflect-model', NOT_EMPTY_REQUEST);
+    mockElement.dispatchEvent(new Event('ngModelChange'));
+    expect(component.searchRequest).toEqual(NOT_EMPTY_REQUEST);
     expect(backendServiceMock.searchItem).toHaveBeenCalledWith(NOT_EMPTY_REQUEST);
     expect(navigateSpy).toHaveBeenCalledWith(['/main']);
   });
@@ -86,7 +114,7 @@ describe('HeaderComponent', () => {
     component.onMain();
     expect(backendServiceMock.showFilter).toHaveBeenCalled();
     expect(navigateSpy).toHaveBeenCalledWith(['/main']);
-    expect(component.reloadList).toHaveBeenCalledWith(true);
+    expect(component.reloadList).toHaveBeenCalled();
   });
 
   it('should call showFilter and searchItem when changeFilterStatus is called with true', () => {
@@ -181,13 +209,13 @@ describe('HeaderComponent', () => {
     spyOn(component, 'reloadList');
     component.searchRequest = 'non-empty';
     component.onSearchInput({} as Event);
-    expect(component.reloadList).toHaveBeenCalledWith(true);
+    expect(component.reloadList).toHaveBeenCalled();
   });
 
   it('should call changeItems when reloadList id called'), () => {
     const list = [items[0], items[1]]
     backendServiceMock.defaultItems = of(list)
-    component.reloadList(true);
+    component.reloadList();
     expect(backendServiceMock.changeItems).toHaveBeenCalledWith(list)
   }
 });
