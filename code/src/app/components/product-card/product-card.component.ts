@@ -37,7 +37,6 @@ export class ProductCardComponent {
     }
     this.quantity = <number>this.itemsSafe.get(this.itemId);
     if (this.quantity == null) this.quantity = 1;
-    this.pharmacies = this.backendService.getAllPharmaciesById(this.itemId);
   }
 
   showPharmacies() {
@@ -68,5 +67,6 @@ export class ProductCardComponent {
   }
 
   ngOnInit() {
+    this.pharmacies = this.backendService.getAllPharmaciesById(this.itemId);
   }
 }

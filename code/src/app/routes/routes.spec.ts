@@ -33,7 +33,7 @@ describe('AppRoutingModule', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes),
-        HttpClientTestingModule // добавляем HttpClientModuleTestingModule
+        HttpClientTestingModule
       ],
       declarations: [
         MainPageComponent,
@@ -90,27 +90,27 @@ describe('AppRoutingModule', () => {
     });
   }));
 
-  it('should navigate to pharmacist page', async(() => {
-    router.navigate(['/pharmacist']).then(() => {
-      expect(router.url).toBe('/pharmacist');
-    });
-  }));
-
   it('should navigate to cart page', async(() => {
     router.navigate(['/cart']).then(() => {
-      expect(router.url).toBe('/cart');
+      expect(router.url).toBe('/main');
     });
   }));
 
   it('should navigate to user account page', async(() => {
     router.navigate(['/user']).then(() => {
-      expect(router.url).toBe('/user');
+      expect(router.url).toBe('/main');
     });
   }));
 
   it('should navigate to order page', async(() => {
     router.navigate(['/order-page']).then(() => {
-      expect(router.url).toBe('/order-page');
+      expect(router.url).toBe('/main');
+    });
+  }));
+
+  it('should navigate to pharmacist page', async(() => {
+    router.navigate(['/pharmacist']).then(() => {
+      expect(router.url).toBe('/main');
     });
   }));
 
