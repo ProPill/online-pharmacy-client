@@ -6,6 +6,7 @@ on:
       - jekasrs-patch-pipeline
       - test/*
       - dev
+      - test-user-servise
   pull_request:
     types: [closed]
 
