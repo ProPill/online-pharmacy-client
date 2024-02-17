@@ -15,7 +15,8 @@ describe('AppComponent', () => {
   let component: AppComponent;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent,
+      declarations: [
+        AppComponent,
         HeaderComponent,
         FilterComponent,
         HeaderUnauthorizedComponent,
