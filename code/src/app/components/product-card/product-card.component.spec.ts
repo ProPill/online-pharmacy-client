@@ -15,8 +15,7 @@ describe('ProductCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProductCardComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule
-      ],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [UserService, BackendService],
     }).compileComponents();
 
