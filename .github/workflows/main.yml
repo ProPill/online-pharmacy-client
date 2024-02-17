@@ -16,15 +16,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Navigate to project directory
-      run: ls
-
-    - name: Navigate to project directory
-      run: cd code
-
-    - name: Navigate to project directory
-      run: ls
       
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -35,10 +26,16 @@ jobs:
       run: npm install -g @angular/cli
 
     - name: Install dependencies
-      run: npm install
+      run: |
+        cd code/
+        npm install
 
     - name: Build Angular project
-      run: ng build
+      run: |
+        cd code/
+        ng build
 
     - name: Run tests
-      run: ng test
+      run: |
+        cd code/
+        ng test
