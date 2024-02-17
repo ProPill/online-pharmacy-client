@@ -1,7 +1,6 @@
 <div class="card-order">
   <span class="text title">Ваш заказ</span>
-  <div *ngIf="shouldHaveCheckbox" class="text line">
-    <form>
+  <div *ngIf="hasRecipeItems" class="text line">    <form>
         <input class="text" type="checkbox" id="checkbox-id" (click)="checkOrderButtonColor()">
         <label for="checkbox-id">
           У меня есть рецепт

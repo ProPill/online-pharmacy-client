@@ -5,7 +5,7 @@
       <app-cart-item-card [itemQuantity]="item" [item]="items[i]"></app-cart-item-card>
     </div>
   </div>
-  <app-cart-order-card [order]="order" [items]="items" [shouldHaveCheckbox]="shouldHaveCheckbox()"></app-cart-order-card>
+  <app-cart-order-card [order]="order" [items]="items" [hasRecipeItems]="hasRecipeOnlyItems()"></app-cart-order-card>
 </div>
 <ng-template #elseBlock>
   <div class="content empty">
