@@ -3,6 +3,7 @@ name: Angular CI
 on:
   push:
     branches:
+      - jekasrs-patch-pipeline
       - test/*
       - dev
   pull_request:
@@ -16,6 +17,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Navigate to project directory
+      run: cd code/
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
@@ -28,7 +32,7 @@ jobs:
       run: npm install
 
     - name: Build Angular project
-      run: ng build --prod
+      run: ng build
 
     - name: Run tests
       run: ng test
