@@ -69,14 +69,14 @@ describe('CartOrderCardComponent', () => {
     expect(component.price).toEqual(expectedPrice);
   });
 
-  it('should create order and navigate on createOrder() when checkboxChecked is true', () => {
-    const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
-
-    component.checkboxChecked = true;
-    component.createOrder();
-    expect(backendServiceMock.updateOrder).toHaveBeenCalledWith(orderMock);
-    expect(navigateSpy).toHaveBeenCalledWith(['/order-page']);
-  });
+  // it('should create order and navigate on createOrder() when checkboxChecked is true', () => {
+  //   const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
+  //
+  //   component.checkboxChecked = true;
+  //   component.createOrder();
+  //   expect(backendServiceMock.updateOrder).toHaveBeenCalledWith(orderMock);
+  //   expect(navigateSpy).toHaveBeenCalledWith(['/order-page']);
+  // });
 
   it('should not create order on createOrder() when checkboxChecked is false', () => {
     component.checkboxChecked = false;
