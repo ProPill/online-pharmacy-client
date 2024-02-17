@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MainPageComponent } from './main-page.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {MainPageComponent } from './main-page.component';
 import {BackendService} from "../../services/backend.service";
+import {RouterTestingModule} from "@angular/router/testing";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;
@@ -11,7 +11,7 @@ describe('MainPageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MainPageComponent],
-      imports: [HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [BackendService]
     });
     fixture = TestBed.createComponent(MainPageComponent);
