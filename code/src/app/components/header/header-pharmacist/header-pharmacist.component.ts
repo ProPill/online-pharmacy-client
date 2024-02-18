@@ -27,7 +27,7 @@ export class HeaderPharmacistComponent {
     this.backendService.showFilter()
     this.router.navigate(['/main']);
     this.backendService.logout();
-    this.userService.changeUserId(0)
+    // this.userService.changeUserId(0)
   }
 
   changeFilterStatus() {

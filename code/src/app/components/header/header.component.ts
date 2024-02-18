@@ -47,7 +47,7 @@ export class HeaderComponent {
   onMain() {
     this.backendService.showFilter()
     this.router.navigate(['/main']);
-    this.reloadList(true)
+    this.reloadList()
   }
 
   changeFilterStatus(status: boolean) {
@@ -83,7 +83,7 @@ export class HeaderComponent {
     return this.userId != null && this.user != null
   }
 
-  reloadList(val: boolean) {
+  reloadList() {
     this.backendService.defaultItems
       .subscribe((items) =>
       this.backendService.changeItems(items))
@@ -96,6 +96,6 @@ export class HeaderComponent {
         this.searchRequest = ''
       }
     });
-    this.reloadList(true)
+    this.reloadList()
   }
 }
