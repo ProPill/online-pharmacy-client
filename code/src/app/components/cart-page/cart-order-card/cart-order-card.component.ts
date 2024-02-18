@@ -28,7 +28,6 @@ export class CartOrderCardComponent {
 
   ngOnInit() {
     this.checkboxChecked = !this.hasRecipeItems
-    console.log("checkbox in init", this.checkboxChecked)
   }
 
   calculatePrice() {

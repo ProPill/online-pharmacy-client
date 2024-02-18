@@ -22,9 +22,9 @@ describe('CartOrderCardComponent', () => {
     currentUserId: of(-1),
   };
 
-  const backendServiceMock = {
-    currentUser: of(users[0]),
-    updateOrder: jasmine.createSpy('updateOrder'),
+  let backendServiceMock: {
+    currentUser: any;
+    updateOrder: jasmine.Spy;
   };
 
   const orderMock: IOrder = orders[0];
@@ -33,6 +33,12 @@ describe('CartOrderCardComponent', () => {
   const userMock = users[0];
 
   beforeEach(() => {
+
+    backendServiceMock = {
+      currentUser: of(users[0]),
+      updateOrder: jasmine.createSpy('updateOrder'),
+    };
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [CartOrderCardComponent],
@@ -69,20 +75,35 @@ describe('CartOrderCardComponent', () => {
     expect(component.price).toEqual(expectedPrice);
   });
 
-  // it('should create order and navigate on createOrder() when checkboxChecked is true', () => {
-  //   const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
-  //
-  //   component.checkboxChecked = true;
-  //   component.createOrder();
-  //   expect(backendServiceMock.updateOrder).toHaveBeenCalledWith(orderMock);
-  //   expect(navigateSpy).toHaveBeenCalledWith(['/order-page']);
-  // });
+  it('should create order and navigate on createOrder() when checkboxChecked is true', () => {
+    const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
+    spyOn(component, 'calculatePrice');
 
-  it('should not create order on createOrder() when checkboxChecked is false', () => {
-    component.checkboxChecked = false;
+    component.checkboxChecked = true;
+    fixture.detectChanges();
     component.createOrder();
-    expect(backendServiceMock.updateOrder).not.toHaveBeenCalled();
+
+    expect(component.calculatePrice).toHaveBeenCalled();
+    const result = parseInt(component.calculatePrice());
+    expect(component.order.price).toEqual(result);
+    expect(backendServiceMock.updateOrder).toHaveBeenCalledWith(orderMock);
+    expect(navigateSpy).toHaveBeenCalledWith(['/order-page']);
   });
+
+  it('should not create order on createOrder() when checkboxChecked is false', fakeAsync(() => {
+    backendServiceMock.updateOrder.and.returnValue(of({}));
+    const navigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.stub();
+    component.hasRecipeItems = true;
+    component.checkboxChecked = false;
+
+    spyOn(component, 'calculatePrice').and.callThrough();
+    component.createOrder();
+    tick();
+
+    expect(component.calculatePrice).not.toHaveBeenCalled();
+    expect(backendServiceMock.updateOrder).not.toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalledWith();
+  }));
 
   it('should return user role when user is not null', () => {
     const roleId = userMock.roleId;
