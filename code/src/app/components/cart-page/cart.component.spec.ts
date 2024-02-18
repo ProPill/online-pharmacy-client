@@ -4,8 +4,6 @@ import {CartComponent} from './cart.component';
 import {UserService} from '../../services/user.service';
 import {BackendService} from '../../services/backend.service';
 import {of} from 'rxjs';
-import {IUser} from '../../models/user';
-import {IItem} from '../../models/item';
 import {users} from "../../data/users";
 import {orders} from "../../data/orders";
 import {CartOrderCardComponent} from "./cart-order-card/cart-order-card.component";

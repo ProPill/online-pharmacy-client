@@ -13,7 +13,6 @@ describe('CartItemCardComponent', () => {
   let component: CartItemCardComponent;
   let fixture: ComponentFixture<CartItemCardComponent>;
 
-// мокируем сервисы
   const userServiceMock = {
     currentUserId: of(-1),
   };
