@@ -121,6 +121,8 @@ describe('OrderPageComponent', () => {
     mockToday.setMonth(1);
     mockToday.setFullYear(2024);
 
+    jasmine.clock().mockDate(mockToday);
+
     spyOn(component, 'padZero').and.callThrough();
 
     const deliveryDate = component.getDeliveryDate();
