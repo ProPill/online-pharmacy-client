@@ -12,33 +12,31 @@ import {BackendService} from "../../services/backend.service";
 })
 export class ProductCardComponent {
   @Input() item: IItem;
+  title: string = 'ProPill'
   pharmacies: IPharmacy[];
   Chosen: boolean = true;
   showPharmaciesFlag: boolean = false;
   quantity: number = 1;
   cost: number = 0;
   itemsSafe: Map<number, number>;
-  private userId: number | null;
-  private itemId: number;
-  items: IItem[];
+  userId: number | null;
+  itemId: number;
+  items: IItem[] = [];
 
-  constructor(private userService: UserService, private router: Router, private backendService: BackendService) {
+  constructor(private userService: UserService, public router: Router, private backendService: BackendService) {
     this.userService.currentUserId.subscribe((userId) => (this.userId = userId));
     this.userService.itemsObservable.subscribe((itemsSafe) => (this.itemsSafe = itemsSafe));
     this.backendService.currentItems.subscribe((list) => (this.items = list));
     this.userService.itemIdObservable.subscribe((itemId) => (this.itemId = itemId));
 
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].id == this.itemId){
+      if (this.items[i].id == this.itemId) {
         this.item = this.items[i];
         break;
       }
     }
-
     this.quantity = <number>this.itemsSafe.get(this.itemId);
-    if (this.quantity == null) this.quantity=1;
-    this.pharmacies = this.backendService.getAllPharmaciesById(this.itemId);
-    console.log(this.pharmacies);
+    if (this.quantity == null) this.quantity = 1;
   }
 
   showPharmacies() {
@@ -66,5 +64,9 @@ export class ProductCardComponent {
 
   calculateCost() {
     return this.cost = this.item.cost * this.quantity;
+  }
+
+  ngOnInit() {
+    this.pharmacies = this.backendService.getAllPharmaciesById(this.itemId);
   }
 }

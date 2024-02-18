@@ -17,7 +17,7 @@ export class OrderPageComponent {
 
   customerName: string;
   customerPhone: string;
-  pharmacy: IPharmacy;
+  pharmacy: IPharmacy | null;
   selectedPharmaName: string;
   deliveryPrice: number = 50.0;
 
@@ -26,8 +26,6 @@ export class OrderPageComponent {
   isAdded: boolean = false;
 
   deliveryDate: string;
-  timeExpire: string;
-
   EMPTY_FIELD_ERROR = "Поле не должно быть пустым";
   NOT_CHOSEN_PHARMACY = "Нужно выбрать аптеку для заказа";
   user: IUser
@@ -46,10 +44,10 @@ export class OrderPageComponent {
     this.backendService.currentUser.subscribe((value) => {
       if (value != null) {
         this.user = value
-      }})
-    this.customerName = this.user.name;
-    this.customerPhone = this.user.phone.toString();
-
+        this.customerName = this.user.name;
+        this.customerPhone = this.user.phone.toString();
+      }
+    })
     this.calculatePrice();
   }
 
@@ -58,12 +56,12 @@ export class OrderPageComponent {
   }
 
   confirmOrder() {
-    if (!this.pharmacy) {
+    if (this.pharmacy == null) {
       this.isChosenPharmacy = false;
       return;
     }
     const num = this.backendService.placeOrder(this.user.id, this.getCreateDate(), this.deliveryDate,
-    this.calculatePrice(), this.pharmacy.id, this.order);
+      this.calculatePrice(), this.pharmacy.id, this.order);
     this.isAdded = num == 200;
   }
 
