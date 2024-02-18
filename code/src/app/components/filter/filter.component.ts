@@ -73,5 +73,4 @@ export class FilterComponent {
     });
     this.onReloadList.emit(true)
   }
-
 }

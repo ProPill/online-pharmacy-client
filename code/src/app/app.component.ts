@@ -12,7 +12,7 @@ import {IOrder} from "./models/order";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Propill'
+  title = 'ProPill'
   items: IItem[] = itemsdata
   header: IHeader
   filter: IFilter
