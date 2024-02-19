@@ -4,6 +4,7 @@ import { BackendService } from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {items} from "../data/items";
 import {IItem} from "../models/item";
+import {IOrder} from "../models/order";
 import {orders} from "../data/orders";
 import {users} from "../data/users";
 import {UserService} from "./user.service";
@@ -241,5 +242,24 @@ describe('BackendService', () => {
 
     expect(result).toEqual(expected);
   });
+
+ it('should place an order successfully', () => {
+    const user_id = 1;
+    const creation_date = '2024-02-20';
+    const delivery_date = '2024-02-25';
+    const sum_price = 100;
+    const pharmacy_id = 123;
+
+    const order: IOrder = orders[0]
+
+    const expectedUrl = `http://localhost:8080/api/order?user_id=${user_id}&creation_date=${creation_date}&delivery_date=${delivery_date}&sum_price=${sum_price}&pharmacy_id=${pharmacy_id}&items=0&items=1&items=1`;
+
+    backendService.placeOrder(user_id, creation_date, delivery_date, sum_price, pharmacy_id, order);
+
+    const req = httpTestingController.expectOne(expectedUrl);
+    expect(req.request.method).toBe('POST');
+
+    req.flush({});
+ });
 });
 
