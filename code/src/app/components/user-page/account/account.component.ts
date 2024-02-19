@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {IOrder} from "../../../models/order";
-import {orders as ordersdata} from "../../../data/orders";
 import {UserService} from "../../../services/user.service";
 import {Router} from "@angular/router";
 import {BackendService} from "../../../services/backend.service";
@@ -26,10 +25,6 @@ export class AccountComponent {
         this.user = value
       }})
     this.loadOrders()
-  }
-
-  ngOnInit(): void {
-
   }
 
   loadOrders() {
