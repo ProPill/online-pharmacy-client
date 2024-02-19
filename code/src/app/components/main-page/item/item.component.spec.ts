@@ -9,16 +9,13 @@ import {Router} from "@angular/router";
 import {items} from "../../../data/items";
 import {IItem} from "../../../models/item";
 import {ItemComponent} from "./item.component";
-import {HeaderComponent} from "../../header/header.component";
 
 describe('ItemComponent', () => {
   let component: ItemComponent;
   let fixture: ComponentFixture<ItemComponent>;
   let router: Router;
 
-  const userWithRoleId2Mock = users[0]
   const userWithRoleId1Mock = users[1]
-  const userWithRoleId3Mock = users[2]
 
   const userIdNullMock = null;
   const itemIdMock = 1;
