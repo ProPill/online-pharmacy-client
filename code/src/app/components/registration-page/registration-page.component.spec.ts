@@ -89,24 +89,49 @@ describe('RegistrationPageComponent', () => {
     expect(component.PasswordErrorMessage).toContain('Пароль должен быть от 6 до 16 символов! Можно использовать латиницу и цифры от 0 до 9!');
   }));
 
-  // it('should navigate to main page if registration is successful', fakeAsync(() => {
-  //   registrationServiceSpy.registration.and.returnValue(of(new Map<number, number>([[200, 123]])));
-  //   backendServiceSpy.getUserInfo.and.returnValue(of({}));
-  //
-  //   component.name = 'John Doe';
-  //   component.phone = '+123456789';
-  //   component.password = 'password';
-  //   component.repeatPassword = 'password';
-  //
-  //   component.onRegistration();
-  //   tick();
-  //
-  //   expect(component.isValidName).toBeTrue();
-  //   expect(component.isValidPhone).toBeTrue();
-  //   expect(component.isValidPassword).toBeTrue();
-  //   expect(component.isValidRepeatPassword).toBeTrue();
-  //
-  //   expect(userServiceSpy.changeUserId).toHaveBeenCalledWith(123);
-  //   expect(router.navigate).toHaveBeenCalledWith(['mock-route']); // Используем мок-маршрут
-  // }));
+  it('should navigate to main page if registration is successful', fakeAsync(() => {
+    spyOn(router, 'navigate');
+    const spyReturnValue = new Map<number, number>([[200, 123]]);
+    registrationServiceSpy.registration.and.returnValue(Promise.resolve(spyReturnValue));
+
+    component.name = 'John Doe';
+    component.phone = '+123456789';
+    component.password = 'password';
+    component.repeatPassword = 'password';
+
+    component.onRegistration();
+    tick();
+
+    expect(component.isValidName).toBeTrue();
+    expect(component.isValidPhone).toBeTrue();
+    expect(component.isValidPassword).toBeTrue();
+    expect(component.isValidRepeatPassword).toBeTrue();
+
+    expect(userServiceSpy.changeUserId).toHaveBeenCalledWith(123);
+    expect(router.navigate).toHaveBeenCalledWith(['/main']);
+  }));
+
+  it('should refresh name', () => {
+    component.isValidName = false;
+    component.refresh_name();
+    expect(component.isValidName).toBeTrue();
+  });
+
+  it('should refresh phone', () => {
+    component.isValidPhone = false;
+    component.refresh_phone();
+    expect(component.isValidPhone).toBeTrue();
+  });
+
+  it('should refresh password', () => {
+    component.isValidPassword = false;
+    component.refresh_password();
+    expect(component.isValidPassword).toBeTrue();
+  });
+
+  it('should refresh repeat_password', () => {
+    component.isValidRepeatPassword = false;
+    component.refresh_repeat_password();
+    expect(component.isValidRepeatPassword).toBeTrue();
+  });
 });
