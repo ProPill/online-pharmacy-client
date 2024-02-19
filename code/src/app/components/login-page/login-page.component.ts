@@ -32,7 +32,7 @@ export class LoginPageComponent {
         const userId = myMap.get(200);
         this.userService.changeUserId(userId!);
         this.backendService.getUserInfo(userId!)
-        await this.router.navigate(['main']);
+        await this.router.navigate(['/main']);
       }
       else {
         this.isValidUsername = false;
