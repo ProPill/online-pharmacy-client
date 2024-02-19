@@ -166,6 +166,7 @@ export class BackendService {
         manufacturer: item.manufacturer,
         recipeOnly: item.type.id == -2,
         special: item.speciality_id != null,
+        specialityId: item.speciality_id,
         cost: item.price,
         image: item.picture_url
       } as IItem);
@@ -219,11 +220,6 @@ export class BackendService {
       roleId: data.role.id,
       specialityId: data.speciality_id
         } as IUser
-  }
-
-  getUserRole(userId: number) {
-    this.getUserInfo(userId);
-    return this.currentUser
   }
 
   getAllPharmaciesById(itemId: number): IPharmacy[] {

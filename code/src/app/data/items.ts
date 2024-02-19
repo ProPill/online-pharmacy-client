@@ -7,6 +7,7 @@ export const items: IItem[] = [
     manufacturer: 'Швеция',
     recipeOnly: true,
     special: false,
+    specialityId: null,
     cost: 850.00,
     image: 'assets/pictures/order-success-img.png'
   },
@@ -17,6 +18,27 @@ export const items: IItem[] = [
     manufacturer: 'Болгария',
     recipeOnly: false,
     special: false,
+    specialityId: null,
+    cost: 850.00,
+    image: ''
+  },
+  {
+    id: 2,
+    title: 'Аквалор софт duo 250 мл душ/струя',
+    manufacturer: 'Болгария',
+    recipeOnly: false,
+    special: true,
+    specialityId: -8,
+    cost: 850.00,
+    image: ''
+  },
+  {
+    id: 3,
+    title: 'Аквалор софт duo 250 мл душ/струя',
+    manufacturer: 'Болгария',
+    recipeOnly: false,
+    special: true,
+    specialityId: -8,
     cost: 850.00,
     image: ''
   }
