@@ -118,4 +118,27 @@ describe('CartOrderCardComponent', () => {
     const result = component.getRole();
     expect(result).toEqual(0);
   });
+  it('should remove "inactive" class from button if hasRecipeItems and checkboxChecked is false', () => {
+    component.checkOrderButtonColor();
+
+    const button = fixture.nativeElement.querySelector('.card-order .button-color');
+    expect(button.classList.contains('inactive')).toBeFalsy();
+  });
+
+  it('should add "inactive" class to button if hasRecipeItems and checkboxChecked is true', () => {
+    component.hasRecipeItems = true;
+    component.checkboxChecked = true;
+    component.checkOrderButtonColor();
+
+    const button = fixture.nativeElement.querySelector('.card-order .button-color');
+    expect(button.classList.contains('inactive')).toBeTruthy();
+  });
+
+  it('should not modify checkboxChecked if !hasRecipeItems', () => {
+    component.hasRecipeItems = false;
+    const initialCheckboxChecked = component.checkboxChecked;
+    component.checkOrderButtonColor();
+
+    expect(component.checkboxChecked).toEqual(initialCheckboxChecked);
+  });
 });
