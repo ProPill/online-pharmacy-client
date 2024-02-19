@@ -35,12 +35,12 @@
   </div>
   <div *ngIf="this.userNotNull(); else elseBlock2">
     <div *ngIf="onFilter">
-      <app-filter (onReloadList)="reloadList($event)" [hasAccess]="this.isDoctor() || this.isAdmin()"></app-filter>
+      <app-filter (onReloadList)="reloadList()" [hasAccess]="this.isDoctor() || this.isAdmin()"></app-filter>
     </div>
   </div>
   <ng-template #elseBlock2>
     <div *ngIf="onFilter">
-      <app-filter (onReloadList)="reloadList($event)" [hasAccess]="false"></app-filter>
+      <app-filter (onReloadList)="reloadList()" [hasAccess]="false"></app-filter>
     </div>
   </ng-template>
 </div>

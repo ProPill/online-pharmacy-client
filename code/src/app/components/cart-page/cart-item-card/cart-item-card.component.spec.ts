@@ -13,7 +13,6 @@ describe('CartItemCardComponent', () => {
   let component: CartItemCardComponent;
   let fixture: ComponentFixture<CartItemCardComponent>;
 
-// мокируем сервисы
   const userServiceMock = {
     currentUserId: of(-1),
   };
@@ -30,15 +29,7 @@ describe('CartItemCardComponent', () => {
     hasRecipe: items[0].recipeOnly
   };
 
-  const itemMock: IItem = {
-    id: 0,
-    title: 'Аквалор софт duo 150 мл душ/струя',
-    manufacturer: 'Швеция',
-    recipeOnly: true,
-    special: false,
-    cost: 850.00,
-    image: 'assets/pictures/order-success-img.png'
-  };
+  const itemMock: IItem = items[0]
 
   beforeEach(() => {
     TestBed.configureTestingModule({
