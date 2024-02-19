@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { FilterComponent } from './filter.component';
 import { Router } from '@angular/router';
 import { BackendService } from '../../services/backend.service';
 import { UserService } from '../../services/user.service';
-import { of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {users} from "../../data/users";
 import {IItem} from "../../models/item";
 import {routes} from "../../routes/routes";
 import {RouterTestingModule} from "@angular/router/testing";
+import {IUser} from "../../models/user";
 
 describe('FilterComponent', () => {
   let component: FilterComponent;
   let fixture: ComponentFixture<FilterComponent>;
   let router: Router;
-  let userService: UserService;
-  let backendService: BackendService;
 
   const userWithRoleId2Mock = users[0]
   const userWithRoleId1Mock = users[1]
-  const userWithRoleId3Mock = users[2]
 
   const SOME_FILTER = 'someFilter'
   const NEW_FILTER = 'newFilter'
@@ -30,16 +28,26 @@ describe('FilterComponent', () => {
     clearUserId: jasmine.createSpy('clearUserId').and.callThrough(),
   };
 
-  const backendServiceMock = {
-    currentUser: of(null),
-    currentSearchStatus: of(false),
-    currentFilterStatus: of(false),
-    getSpecialCategoryItemsList: jasmine.createSpy('getSpecialCategoryItemsList'),
-    getItemsByType: jasmine.createSpy('getItemsByType'),
-    defaultItems: of([] as IItem[])
+
+  let backendServiceMock: {
+    currentUser: Observable<IUser | null>,
+    currentSearchStatus: Observable<boolean>,
+    currentFilterStatus: Observable<boolean>,
+    getSpecialCategoryItemsList: jasmine.Spy,
+    getItemsByType: jasmine.Spy,
+    defaultItems: Observable<IItem[]>
   };
 
+
   beforeEach(() => {
+    backendServiceMock = {
+      currentUser: of(null),
+      currentSearchStatus: of(false),
+      currentFilterStatus: of(false),
+      getSpecialCategoryItemsList: jasmine.createSpy('getSpecialCategoryItemsList'),
+      getItemsByType: jasmine.createSpy('getItemsByType'),
+      defaultItems: of([] as IItem[])
+    };
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [FilterComponent],
@@ -52,8 +60,6 @@ describe('FilterComponent', () => {
     fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    userService = TestBed.inject(UserService);
-    backendService = TestBed.inject(BackendService);
   });
 
   it('should create the component', () => {
@@ -88,7 +94,7 @@ describe('FilterComponent', () => {
     expect(component.selectedFilter).toEqual(NEW_FILTER);
     expect(component.selectedFilterId).toEqual(0);
     expect(component.activateFilterButtonColor).toHaveBeenCalled();
-    expect(backendService.getItemsByType).toHaveBeenCalledWith(0);
+    expect(backendServiceMock.getItemsByType).toHaveBeenCalledWith(0);
   });
 
   it('should set filter and filterId and call activateMethod and backendService when selectFilter() is called with a different filter and no user', () => {
@@ -102,36 +108,35 @@ describe('FilterComponent', () => {
     expect(component.selectedFilter).toEqual(RECIPE_FILTER);
     expect(component.selectedFilterId).toEqual(-2);
     expect(component.activateFilterButtonColor).toHaveBeenCalled();
-    expect(backendService.getItemsByType).toHaveBeenCalledWith(-2);
+    expect(backendServiceMock.getItemsByType).toHaveBeenCalledWith(-2);
   });
 
-  it('should set filter and do not call getSpecialty when selectFilter() is called with normal user', () => {
+  it('should set filter and do not call getSpecialty when selectFilter() is called with normal user',() => {
+    spyOn(component, 'activateFilterButtonColor');
+
     component.selectedFilter = SOME_FILTER;
     component.user = userWithRoleId1Mock
-    spyOn(component, 'activateFilterButtonColor');
-
     component.selectFilter(RECIPE_FILTER);
-    fixture.detectChanges();
 
     expect(component.selectedFilter).toEqual(RECIPE_FILTER);
     expect(component.selectedFilterId).toEqual(-2);
-    expect(backendService.getSpecialCategoryItemsList).not.toHaveBeenCalled()
+    expect(backendServiceMock.getSpecialCategoryItemsList).not.toHaveBeenCalled()
     expect(component.activateFilterButtonColor).toHaveBeenCalled();
-    expect(backendService.getItemsByType).toHaveBeenCalledWith(-2);
+    expect(backendServiceMock.getItemsByType).toHaveBeenCalledWith(-2);
   });
 
-  it('should set filter and call getSpecialty when selectFilter() is called with special user', () => {
-    component.selectedFilter = SOME_FILTER;
-    component.user = userWithRoleId2Mock
+  it('should set filter and call getSpecialty when selectFilter() is called with special user',() => {
     spyOn(component, 'activateFilterButtonColor');
 
+    component.selectedFilter = SOME_FILTER;
+    component.user = userWithRoleId2Mock
     component.selectFilter(RECIPE_FILTER);
 
     expect(component.selectedFilter).toEqual(RECIPE_FILTER);
     expect(component.selectedFilterId).toEqual(-2);
-    expect(backendService.getSpecialCategoryItemsList).toHaveBeenCalledWith(component.user.specialityId as number);
+    expect(backendServiceMock.getSpecialCategoryItemsList).toHaveBeenCalledWith(component.user.specialityId as number);
     expect(component.activateFilterButtonColor).toHaveBeenCalled();
-    expect(backendService.getItemsByType).toHaveBeenCalledWith(-2);
+    expect(backendServiceMock.getItemsByType).toHaveBeenCalledWith(-2);
   });
 
   it('should activate filter button color for the selected filter', () => {
