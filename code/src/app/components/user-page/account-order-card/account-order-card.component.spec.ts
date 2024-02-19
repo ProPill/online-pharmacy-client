@@ -4,13 +4,14 @@ import { UserService } from '../../../services/user.service';
 import { AccountOrderCardComponent } from './account-order-card.component';
 import { IOrder } from '../../../models/order';
 import {orders} from "../../../data/orders";
+import {of} from "rxjs";
 
 describe('AccountOrderCardComponent', () => {
     let component: AccountOrderCardComponent;
     let fixture: ComponentFixture<AccountOrderCardComponent>;
 
     const userServiceMock = {
-        currentUserId: jasmine.createSpy('currentUserId').and.returnValue(123),
+        currentUserId: of(2),
     };
 
     const orderMock: IOrder = orders[0]
@@ -33,6 +34,6 @@ describe('AccountOrderCardComponent', () => {
     });
 
     it('should set userId from UserService', () => {
-        expect(component['userId']).toEqual(123);
+        expect(component['userId']).toEqual(2);
     });
 });
