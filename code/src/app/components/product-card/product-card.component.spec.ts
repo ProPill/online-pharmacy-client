@@ -76,6 +76,7 @@ describe('ProductCardComponent', () => {
       manufacturer: 'Test manufacturer',
       recipeOnly: false,
       special: false,
+      specialityId: null,
       cost: 10,
       image: 'http test'
     };
