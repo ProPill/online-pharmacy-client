@@ -62,7 +62,6 @@ export class PharmacistService {
         success = false;
       }
     );
-
     return success;
   }
 }
