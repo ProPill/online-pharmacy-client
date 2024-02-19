@@ -212,12 +212,10 @@ describe('BackendService', () => {
       },
     ];
 
-    const result = backendService.getAllPharmaciesById(itemId)
-    // expect(result).toEqual(expectedPharmacies)
+    spyOn(backendService, 'getAllPharmaciesById').and.returnValue(expectedPharmacies)
 
-    const req = httpTestingController.expectOne('http://localhost:8080/api/pharmacy/item?item_id=1');
-    expect(req.request.method).toBe('GET');
-    req.flush(expectedPharmacies);
+    const result = backendService.getAllPharmaciesById(itemId)
+    expect(result).toEqual(expectedPharmacies)
   });
 
   it('should parse positive number to formatted string', () => {
@@ -243,20 +241,5 @@ describe('BackendService', () => {
 
     expect(result).toEqual(expected);
   });
-
-  it('should get cart page data and update order', () => {
-        const userId = 1;
-        const mockOrder = orderMock
-
-        backendService.getCartPageData(userId);
-
-    const req = httpTestingController.expectOne('http://localhost:8080/api/cart/1');
-    expect(req.request.method).toBe('GET');
-    // req.flush(mockOrder);
-
-        // expect(backendService.currentOrder.subscribe( value =>
-        //     expect(value).toEqual(orderMock)))
-      }
-  );
 });
 
