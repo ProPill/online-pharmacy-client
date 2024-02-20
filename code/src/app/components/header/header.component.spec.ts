@@ -217,5 +217,5 @@ describe('HeaderComponent', () => {
     backendServiceMock.defaultItems = of(list)
     component.reloadList();
     expect(backendServiceMock.changeItems).toHaveBeenCalledWith(list)
-  }
+  })
 });
