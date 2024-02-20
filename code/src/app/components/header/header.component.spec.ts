@@ -212,7 +212,7 @@ describe('HeaderComponent', () => {
     expect(component.reloadList).toHaveBeenCalled();
   });
 
-  it('should call changeItems when reloadList id called'), () => {
+  it('should call changeItems when reloadList id called', () => {
     const list = [items[0], items[1]]
     backendServiceMock.defaultItems = of(list)
     component.reloadList();
