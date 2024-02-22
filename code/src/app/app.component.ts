@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {items as itemsdata} from './data/items'
 import {IItem} from "./models/item";
 import {IHeader} from "./models/header";
@@ -12,7 +12,7 @@ import {IOrder} from "./models/order";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Propill'
+  title = 'ProPill'
   items: IItem[] = itemsdata
   header: IHeader
   filter: IFilter

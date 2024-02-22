@@ -29,6 +29,9 @@ export class MainPageComponent {
     if (tmp != null) {
       this.typeId = parseInt(tmp)
     }
+    else {
+      this.typeId = null
+    }
     this.backendService.showFilter()
     this.loadList(this.searchRequest, this.typeId)
   }
@@ -41,12 +44,10 @@ export class MainPageComponent {
 
   listIsEmpty() {
     if (this.firstLoad) {
-      // console.log('first load')
       this.firstLoad = !this.firstLoad
       return false;
     }
     else {
-      // console.log('else')
       return this.items.length == 0
     }
   }

@@ -3,12 +3,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../services/user.service';
 import { BackendService } from '../services/backend.service';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {orderGuard} from "./order.guard";
-import {Router} from "@angular/router";
+import {cartGuard} from "./cart-guard.service";
 import {IUser} from "../models/user";
+import {Router} from "@angular/router";
 
-describe('orderGuard', () => {
-  let guard: orderGuard;
+describe('cartGuard', () => {
+  let guard: cartGuard;
   let userService: UserService;
   let backendService: BackendService;
   let router: Router;
@@ -16,9 +16,9 @@ describe('orderGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [orderGuard, UserService, BackendService],
+      providers: [cartGuard, UserService, BackendService],
     });
-    guard = TestBed.inject(orderGuard);
+    guard = TestBed.inject(cartGuard);
     userService = TestBed.inject(UserService);
     backendService = TestBed.inject(BackendService);
     router = TestBed.inject(Router);
@@ -77,6 +77,3 @@ describe('orderGuard', () => {
     }));
   });
 });
-
-
-

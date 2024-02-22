@@ -12,7 +12,6 @@ import {IUser} from "../../../models/user";
   styleUrls: ['./cart-order-card.component.css']
 })
 export class CartOrderCardComponent {
-  title: 'cart-order-card';
   @Input() order: IOrder;
   @Input() items: IItem[];
   price: number = 50;
@@ -29,7 +28,6 @@ export class CartOrderCardComponent {
 
   ngOnInit() {
     this.checkboxChecked = !this.hasRecipeItems
-    console.log("checkbox in init", this.checkboxChecked)
   }
 
   calculatePrice() {

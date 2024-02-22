@@ -1,15 +1,16 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, NgModule, Output} from "@angular/core";
 import {IUser} from "../../models/user";
 import { Router } from '@angular/router';
 import {UserService} from "../../services/user.service";
 import {BackendService} from "../../services/backend.service";
+
+
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent {
   @Input() user: IUser | null;
   title = 'Header';
@@ -46,7 +47,7 @@ export class HeaderComponent {
   onMain() {
     this.backendService.showFilter()
     this.router.navigate(['/main']);
-    this.reloadList(true)
+    this.reloadList()
   }
 
   changeFilterStatus(status: boolean) {
@@ -82,7 +83,7 @@ export class HeaderComponent {
     return this.userId != null && this.user != null
   }
 
-  reloadList(val: boolean) {
+  reloadList() {
     this.backendService.defaultItems
       .subscribe((items) =>
       this.backendService.changeItems(items))
@@ -95,6 +96,6 @@ export class HeaderComponent {
         this.searchRequest = ''
       }
     });
-    this.reloadList(true)
+    this.reloadList()
   }
 }

@@ -3,12 +3,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../services/user.service';
 import { BackendService } from '../services/backend.service';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {orderGuard} from "./order.guard";
+import {pharmacistGuard} from "./pharmacist-guard.service";
+
 import {Router} from "@angular/router";
 import {IUser} from "../models/user";
 
-describe('orderGuard', () => {
-  let guard: orderGuard;
+describe('pharmacistGuard', () => {
+  let guard: pharmacistGuard;
   let userService: UserService;
   let backendService: BackendService;
   let router: Router;
@@ -16,9 +17,9 @@ describe('orderGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [orderGuard, UserService, BackendService],
+      providers: [pharmacistGuard, UserService, BackendService],
     });
-    guard = TestBed.inject(orderGuard);
+    guard = TestBed.inject(pharmacistGuard);
     userService = TestBed.inject(UserService);
     backendService = TestBed.inject(BackendService);
     router = TestBed.inject(Router);
@@ -35,7 +36,7 @@ describe('orderGuard', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/main']);
     }));
 
-    it('should return true if userId.role == -1', async(() => {
+    it('should return false and navigate to "/main" if userId.role = -1', async(() => {
       const user: IUser = {
         id: 1,
         name: 'Test User',
@@ -45,10 +46,12 @@ describe('orderGuard', () => {
       }
       backendService.changeUser(user);
       userService.changeUserId(1);
-      expect(guard.canActivate()).toBe(true);
+      spyOn(router, 'navigate');
+      expect(guard.canActivate()).toBe(false);
+      expect(router.navigate).toHaveBeenCalledWith(['/main']);
     }));
 
-    it('should return true if userId.role == -2', async(() => {
+    it('should return false and navigate to "/main" if userId.role = -2', async(() => {
       const user: IUser = {
         id: 1,
         name: 'Test User',
@@ -58,10 +61,12 @@ describe('orderGuard', () => {
       }
       backendService.changeUser(user);
       userService.changeUserId(1);
-      expect(guard.canActivate()).toBe(true);
+      spyOn(router, 'navigate');
+      expect(guard.canActivate()).toBe(false);
+      expect(router.navigate).toHaveBeenCalledWith(['/main']);
     }));
 
-    it('should return false and navigate to "/main" if userId.role = -3', async(() => {
+    it('should return true if userId.role == -3', async(() => {
       const user: IUser = {
         id: 1,
         name: 'Test User',
@@ -71,12 +76,7 @@ describe('orderGuard', () => {
       }
       backendService.changeUser(user);
       userService.changeUserId(1);
-      spyOn(router, 'navigate');
-      expect(guard.canActivate()).toBe(false);
-      expect(router.navigate).toHaveBeenCalledWith(['/main']);
+      expect(guard.canActivate()).toBe(true);
     }));
   });
 });
-
-
-

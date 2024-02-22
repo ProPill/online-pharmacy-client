@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {IItem} from "../../../models/item";
 import {IItemQuantity} from "../../../models/item_quantity";
-import {items} from "../../../data/items";
 import {UserService} from "../../../services/user.service";
 import {Router} from "@angular/router";
 import {BackendService} from "../../../services/backend.service";

@@ -15,7 +15,7 @@ import {cartGuard} from "../guards/cart-guard.service";
 import {orderGuard} from "../guards/order.guard";
 import {authGuard} from "../guards/auth.guard";
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'main', component: MainPageComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'registration', component: RegistrationPageComponent },

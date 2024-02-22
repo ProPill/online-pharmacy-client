@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {map, take} from 'rxjs/operators';
 import {IItem} from "../models/item";
 import {IUser} from "../models/user";
@@ -8,9 +7,10 @@ import {IItemQuantity} from "../models/item_quantity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {IPharmacy} from "../models/pharmacy";
 import {UserService} from "./user.service";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BackendService {
   private baseUrl = 'http://localhost:8080/api';
@@ -166,6 +166,7 @@ export class BackendService {
         manufacturer: item.manufacturer,
         recipeOnly: item.type.id == -2,
         special: item.speciality_id != null,
+        specialityId: item.speciality_id,
         cost: item.price,
         image: item.picture_url
       } as IItem);
@@ -219,11 +220,6 @@ export class BackendService {
       roleId: data.role.id,
       specialityId: data.speciality_id
         } as IUser
-  }
-
-  getUserRole(userId: number) {
-    this.getUserInfo(userId);
-    return this.currentUser
   }
 
   getAllPharmaciesById(itemId: number): IPharmacy[] {
@@ -308,7 +304,6 @@ export class BackendService {
           return val
         }))
   }
-
 
   transformOrder(data: any, userId: number) {
     const list: IItemQuantity[] = []

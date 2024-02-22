@@ -39,7 +39,9 @@ import { ItemNotFoundComponent } from './components/main-page/item-not-found/ite
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  exports:[
+    CartOrderCardComponent, CartItemCardComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

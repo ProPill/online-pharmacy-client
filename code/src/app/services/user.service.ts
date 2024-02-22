@@ -1,7 +1,5 @@
-import {Injectable, numberAttribute} from '@angular/core';
+import {Injectable}  from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {ItemComponent} from "../components/main-page/item/item.component";
-import {IItem} from "../models/item";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +27,8 @@ export class UserService {
     this.items.set(id, quantity);
     this.itemsSource.next(this.items);
   }
-    clearUserId() {
-      this.userIdSource.next(null)
-    }
+
+  clearUserId() {
+    this.userIdSource.next(null)
+  }
 }
